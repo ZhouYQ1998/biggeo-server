@@ -1,0 +1,4 @@
+spring:
+  profiles:
+    active: summer
+    include: common

@@ -1,0 +1,47 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "edu.zju.gis.dldsj.server.config.ApplicationConfigs",
+      "name": "application-info",
+      "type": "edu.zju.gis.dldsj.server.config.ApplicationConfigs"
+    },
+    {
+      "sourceType": "edu.zju.gis.dldsj.server.config.CommonSetting",
+      "name": "settings",
+      "type": "edu.zju.gis.dldsj.server.config.CommonSetting"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "edu.zju.gis.dldsj.server.config.ApplicationConfigs",
+      "name": "application-info.authority",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "edu.zju.gis.dldsj.server.config.ApplicationConfigs",
+      "name": "application-info.name",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "edu.zju.gis.dldsj.server.config.ApplicationConfigs",
+      "name": "application-info.release",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "edu.zju.gis.dldsj.server.config.ApplicationConfigs",
+      "name": "application-info.version",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "edu.zju.gis.dldsj.server.config.CommonSetting",
+      "name": "settings.front-end-region-list",
+      "type": "java.util.List<java.lang.String>"
+    },
+    {
+      "sourceType": "edu.zju.gis.dldsj.server.config.CommonSetting",
+      "name": "settings.session-max-age",
+      "type": "java.lang.String"
+    }
+  ]
+}

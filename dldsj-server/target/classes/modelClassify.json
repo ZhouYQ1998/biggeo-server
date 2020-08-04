@@ -1,0 +1,46 @@
+{
+  "editableTabs": [
+    {
+      "title": "Tab A",
+      "name": "A",
+      "content": [
+        {
+          "name": "trjanls"
+        },
+        {
+          "name": "example"
+        },
+        {
+          "name": "spatialclustering"
+        },
+        {
+          "name": "networkanls"
+        },
+        {
+          "name": "networkanls"
+        }
+      ]
+    },
+    {
+      "title": "Tab B",
+      "name": "B",
+      "content": [
+        {
+          "name": "trjanls"
+        },
+        {
+          "name": "flow_clustering"
+        },
+        {
+          "name": "计算DTW"
+        },
+        {
+          "name": "spatialanls"
+        },
+        {
+          "name": "virspace"
+        }
+      ]
+    }
+  ]
+}
