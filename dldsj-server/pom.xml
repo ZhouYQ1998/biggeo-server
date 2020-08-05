@@ -37,12 +37,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>edu.zju.gis</groupId>
-            <artifactId>dldsj-prototype</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <!-- 分页插件 -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
@@ -76,27 +70,6 @@
 
     <build>
         <plugins>
-            <!--<plugin>-->
-            <!--<groupId>org.apache.maven.plugins</groupId>-->
-            <!--<artifactId>maven-shade-plugin</artifactId>-->
-            <!--<version>3.2.0</version>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<phase>package</phase>-->
-            <!--<goals>-->
-            <!--<goal>shade</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-            <!--<minimizeJar>true</minimizeJar>-->
-            <!--<transformers>-->
-            <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-            <!--<mainClass>DldsjApplication</mainClass>-->
-            <!--</transformer>-->
-            <!--</transformers>-->
-            <!--</configuration>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--</plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
