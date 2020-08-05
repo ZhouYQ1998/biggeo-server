@@ -114,6 +114,7 @@ public class UserController {
                 result.setMessage("用户名或密码错误");
             }
         }
+        System.out.println(result.toString());
         return result.toString();
     }
 
