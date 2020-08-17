@@ -35,3 +35,4 @@ settings:
     - http://10.79.231.81:8082
     - http://td1:8082
   sessionMaxAge: 36000
+  dir4TempFile: /Users/moral/summer/temp
