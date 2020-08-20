@@ -11,9 +11,9 @@ spring:
     name: ${application-info.name}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.79.231.81:3306/eduPlatform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
-    username: root
-    password: qwerasdfzxcv@2020_
+    url: jdbc:mysql://10.79.231.81:3306/eduPlatform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: group1
+    password: zjugis_group1
   servlet:
     multipart:
       max-file-size: 200MB
