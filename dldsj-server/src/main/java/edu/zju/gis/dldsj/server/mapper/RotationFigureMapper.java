@@ -14,11 +14,11 @@ import java.util.List;
 public interface RotationFigureMapper {
     List<RotationFigure> findAl();
 
-    void save(RotationFigure rotationFigure);
-
-    RotationFigure findById(Integer id);
-
-    void delete(Integer[] id);
-
-    void update(RotationFigure rotationFigure);
+//    void save(RotationFigure rotationFigure);
+//
+//    RotationFigure findById(Integer id);
+//
+//    void delete(Integer[] id);
+//
+//    void update(RotationFigure rotationFigure);
 }

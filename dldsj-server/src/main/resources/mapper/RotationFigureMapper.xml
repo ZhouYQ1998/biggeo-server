@@ -18,50 +18,50 @@
 		SELECT
 		ID,IMG_PATH,PAGE_PATH,SAVE_TIME,PAGE_TYPE
 		FROM
-		rotation_figure
+		rotation_figure2
 	</select>
 
-    <!-- 添加客户 -->
-    <insert id="save" parameterType="edu.zju.gis.dldsj.server.entity.RotationFigure">
-		INSERT INTO rotation_figure
-		(IMG_PATH,PAGE_PATH,PAGE_TYPE)
-		VALUES
-		(#{IMG_PATH},#{PAGE_PATH},#{PAGE_TYPE})
-	</insert>
+<!--    &lt;!&ndash; 添加 &ndash;&gt;-->
+<!--    <insert id="save" parameterType="edu.zju.gis.dldsj.server.entity.RotationFigure">-->
+<!--		INSERT INTO rotation_figure2-->
+<!--		(IMG_PATH,PAGE_PATH,PAGE_TYPE)-->
+<!--		VALUES-->
+<!--		(#{IMG_PATH},#{PAGE_PATH},#{PAGE_TYPE})-->
+<!--	</insert>-->
 
-    <!-- 根据id查询对象 -->
-    <select id="findById" parameterType="int" resultType="edu.zju.gis.dldsj.server.entity.RotationFigure">
-		SELECT
-		ID,IMG_PATH,PAGE_PATH,SAVE_TIME,PAGE_TYPE
-		FROM
-		rotation_figure
-		WHERE
-		id = #{value}
-	</select>
+<!--    &lt;!&ndash; 根据id查询对象 &ndash;&gt;-->
+<!--    <select id="findById" parameterType="int" resultType="edu.zju.gis.dldsj.server.entity.RotationFigure">-->
+<!--		SELECT-->
+<!--		ID,IMG_PATH,PAGE_PATH,SAVE_TIME,PAGE_TYPE-->
+<!--		FROM-->
+<!--		rotation_figure2-->
+<!--		WHERE-->
+<!--		id = #{value}-->
+<!--	</select>-->
 
-    <!-- 根据id修改对象 -->
-    <update id="update" parameterType="edu.zju.gis.dldsj.server.entity.RotationFigure">
-		UPDATE
-		rotation_figure
-		SET
-		IMG_PATH = #{IMG_PATH},
-		PAGE_PATH = #{PAGE_PATH},
-		PAGE_TYPE = #{PAGE_TYPE}
-		WHERE
-		id = #{ID}
-	</update>
+<!--    &lt;!&ndash; 根据id修改对象 &ndash;&gt;-->
+<!--    <update id="update" parameterType="edu.zju.gis.dldsj.server.entity.RotationFigure">-->
+<!--		UPDATE-->
+<!--		rotation_figure2-->
+<!--		SET-->
+<!--		IMG_PATH = #{IMG_PATH},-->
+<!--		PAGE_PATH = #{PAGE_PATH},-->
+<!--		PAGE_TYPE = #{PAGE_TYPE}-->
+<!--		WHERE-->
+<!--		id = #{ID}-->
+<!--	</update>-->
 
-    <!-- 删除对象 -->
-    <delete id="delete" parameterType="Integer[]">
-        DELETE FROM
-        rotation_figure
-        <where>
-            ID
-            <foreach collection="array" item="id" open="in (" close=")" separator=",">
-                #{ID}
-            </foreach>
-        </where>
-    </delete>
+<!--    &lt;!&ndash; 删除对象 &ndash;&gt;-->
+<!--    <delete id="delete" parameterType="Integer[]">-->
+<!--        DELETE FROM-->
+<!--        rotation_figure2-->
+<!--        <where>-->
+<!--            ID-->
+<!--            <foreach collection="array" item="id" open="in (" close=")" separator=",">-->
+<!--                #{ID}-->
+<!--            </foreach>-->
+<!--        </where>-->
+<!--    </delete>-->
 
 <!--    &lt;!&ndash; 根据用户名与密码查询对象 &ndash;&gt;-->
 <!--    <select id="Login" resultType="edu.zju.gis.dldsj.server.entity.RotationFigure">-->

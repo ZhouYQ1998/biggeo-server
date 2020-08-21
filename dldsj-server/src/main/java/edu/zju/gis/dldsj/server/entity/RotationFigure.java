@@ -8,7 +8,7 @@ import java.util.Date;
  * @author Jinghaoyu
  * @version 1.0 2020/08/20
  *
- * 轮播图实体类
+ * 轮播图视图实体类
  */
 @Getter
 @Setter

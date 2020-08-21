@@ -66,41 +66,41 @@ public class RotationFigureController {
         return result;
     }
 
-    //保存数据
-    @RequestMapping("/save")
-    @ResponseBody
-    public Map<String,Object> save(RotationFigure rotationFigure){
-        try {
-            rotationFigureService.save(rotationFigure);
-            result.put("success",true);
-        } catch (Exception e){
-            e.printStackTrace();
-            result.put("success",false);
-            result.put("msg",e.getMessage());
-        }
-        return result;
-    }
-
-    //根据id查询对象
-    @RequestMapping("/findById")
-    @ResponseBody
-    public RotationFigure findById(Integer id){
-        return rotationFigureService.findById(id);
-    }
-
-    //删除数据
-    @RequestMapping("/delete")
-    @ResponseBody
-    public Map<String, Object> delete(Integer[] id){
-        try {
-            rotationFigureService.delete(id);
-            result.put("success", true);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            result.put("success", false);
-            result.put("msg", e.getMessage());
-        }
-        return result;
-    }
+//    //保存数据
+//    @RequestMapping("/save")
+//    @ResponseBody
+//    public Map<String,Object> save(RotationFigure rotationFigure){
+//        try {
+//            rotationFigureService.save(rotationFigure);
+//            result.put("success",true);
+//        } catch (Exception e){
+//            e.printStackTrace();
+//            result.put("success",false);
+//            result.put("msg",e.getMessage());
+//        }
+//        return result;
+//    }
+//
+//    //根据id查询对象
+//    @RequestMapping("/findById")
+//    @ResponseBody
+//    public RotationFigure findById(Integer id){
+//        return rotationFigureService.findById(id);
+//    }
+//
+//    //删除数据
+//    @RequestMapping("/delete")
+//    @ResponseBody
+//    public Map<String, Object> delete(Integer[] id){
+//        try {
+//            rotationFigureService.delete(id);
+//            result.put("success", true);
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//            result.put("success", false);
+//            result.put("msg", e.getMessage());
+//        }
+//        return result;
+//    }
 }

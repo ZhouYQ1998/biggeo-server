@@ -14,9 +14,9 @@ import java.util.List;
 public interface RotationFigureService {
     List<RotationFigure> findAll();
 
-    void save(RotationFigure rotationFigure);
-
-    RotationFigure findById(Integer id);
-
-    void delete(Integer[] id);
+//    void save(RotationFigure rotationFigure);
+//
+//    RotationFigure findById(Integer id);
+//
+//    void delete(Integer[] id);
 }

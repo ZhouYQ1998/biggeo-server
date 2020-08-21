@@ -26,27 +26,27 @@ public class RotationFigureServiceImpl implements RotationFigureService {
         return rotationFigureMapper.findAl();
     }
 
-    @Override
-    public void save(RotationFigure rotationFigure) {
-
-        //判断是添加还是修改
-        if(rotationFigure.getId()!=null){
-            rotationFigureMapper.update(rotationFigure);
-        }
-        else {
-            rotationFigureMapper.save(rotationFigure);
-        }
-    }
-
-    @Override
-    public RotationFigure findById(Integer id) {
-        return rotationFigureMapper.findById(id);
-    }
-
-    @Override
-    public void delete(Integer[] id) {
-        rotationFigureMapper.delete(id);
-    }
+//    @Override
+//    public void save(RotationFigure rotationFigure) {
+//
+//        //判断是添加还是修改
+//        if(rotationFigure.getId()!=null){
+//            rotationFigureMapper.update(rotationFigure);
+//        }
+//        else {
+//            rotationFigureMapper.save(rotationFigure);
+//        }
+//    }
+//
+//    @Override
+//    public RotationFigure findById(Integer id) {
+//        return rotationFigureMapper.findById(id);
+//    }
+//
+//    @Override
+//    public void delete(Integer[] id) {
+//        rotationFigureMapper.delete(id);
+//    }
 
 
 }
