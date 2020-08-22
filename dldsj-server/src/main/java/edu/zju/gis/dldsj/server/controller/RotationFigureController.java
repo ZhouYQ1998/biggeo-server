@@ -1,10 +1,14 @@
 package edu.zju.gis.dldsj.server.controller;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import edu.zju.gis.dldsj.server.common.ResultInfo;
 import edu.zju.gis.dldsj.server.entity.RotationFigure;
+import edu.zju.gis.dldsj.server.mapper.RotationFigureMapper;
 import edu.zju.gis.dldsj.server.service.RotationFigureService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,68 +43,17 @@ public class RotationFigureController {
         return rotationFigureService.findAll();
     }
 
-    //设计Map集合存储需要给页面的对象数据
-    private Map<String, Object> result = new HashMap<String, Object>();
-
     //分页查询
     @RequestMapping("/listByPage")
     @ResponseBody  //将对象转成json
-    private Map<String,Object> listByPage(Integer page, Integer rows){
-        //设置分页参数
-        PageHelper.startPage(page, rows);
-
-        //查询所有数据
-        List<RotationFigure> list = rotationFigureService.findAll();
-
-        //使用PageInfo来封装查询结果
-        PageInfo<RotationFigure> pageInfo = new PageInfo<RotationFigure>(list);
-
-        //从PageInfo对象取出查询结果
-        //总记录数
-        long total = pageInfo.getTotal();
-        //当前页数据列表
-        List<RotationFigure> custList = pageInfo.getList();
-
-        result.put("total", total);
-        result.put("rows", custList);
-        return result;
+    public ResultInfo findByPaging(Integer pageNum, Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        Map param = new HashMap();
+        Page<RotationFigure> data = rotationFigureService.findByPaging(param);
+        JSONObject result = new JSONObject();
+        result.put("employees",data);
+        result.put("pages",data.getPages());
+        result.put("total",data.getTotal());
+        return ResultInfo.getInfo(result);
     }
-
-//    //保存数据
-//    @RequestMapping("/save")
-//    @ResponseBody
-//    public Map<String,Object> save(RotationFigure rotationFigure){
-//        try {
-//            rotationFigureService.save(rotationFigure);
-//            result.put("success",true);
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            result.put("success",false);
-//            result.put("msg",e.getMessage());
-//        }
-//        return result;
-//    }
-//
-//    //根据id查询对象
-//    @RequestMapping("/findById")
-//    @ResponseBody
-//    public RotationFigure findById(Integer id){
-//        return rotationFigureService.findById(id);
-//    }
-//
-//    //删除数据
-//    @RequestMapping("/delete")
-//    @ResponseBody
-//    public Map<String, Object> delete(Integer[] id){
-//        try {
-//            rotationFigureService.delete(id);
-//            result.put("success", true);
-//        } catch (Exception e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//            result.put("success", false);
-//            result.put("msg", e.getMessage());
-//        }
-//        return result;
-//    }
 }
