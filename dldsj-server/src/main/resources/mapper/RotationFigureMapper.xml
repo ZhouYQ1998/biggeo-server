@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 该文件编写mybatis中的mapper接口里面的方法，提供对应的sql语句 -->
+<!--
+/**
+ * @author Jinghaoyu
+ * @version 1.0 2020/08/20
+ *
+ * 轮播图
+ */
+-->
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.RotationFigureMapper">
+	<resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.RotationFigure">
+		<id column="ID" jdbcType="INTEGER" property="id"/>
+		<result column="IMG_PATH" jdbcType="VARCHAR" property="imgPath"/>
+		<result column="PAGE_PATH" jdbcType="VARCHAR" property="pagePath"/>
+		<result column="PAGE_TYPE" jdbcType="VARCHAR" property="pageType"/>
+		<result column="SAVE_TIME" jdbcType="TIMESTAMP" property="saveTime"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+        ID, IMG_PATH, PAGE_PATH, PAGE_TYPE, SAVE_TIME
+    </sql>
+    <!-- 查询所有数据 -->
+    <select id="findAll" resultType="edu.zju.gis.dldsj.server.entity.RotationFigure">
+		SELECT
+		ID,IMG_PATH,PAGE_PATH,SAVE_TIME,PAGE_TYPE
+		FROM
+		rotation_figure2
+	</select>
+
+	<select id="findByPaging" resultMap="BaseResultMap" parameterType="map">
+		SELECT
+		ID,IMG_PATH,PAGE_PATH,SAVE_TIME,PAGE_TYPE
+		FROM
+		rotation_figure2
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from rotation_figure2
+		where ID = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByPage" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from rotation_figure2
+		limit #{offset,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+	</select>
+	<select id="selectById2" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from rotation_figure2
+		where ID = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectById" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from rotation_figure2
+		where ID=#{roleId,jdbcType=INTEGER} limit #{offset,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from rotation_figure2
+        where ID = #{id,jdbcType=INTEGER}
+    </delete>
+	<delete id="deleteById" parameterType="Integer">
+        delete
+        from rotation_figure2
+        where ID = #{id,jdbcType=INTEGER}
+    </delete>
+	<insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.RotationFigure">
+        insert into rotation_figure2 (ID,
+                              ID,
+                              IMG_PATH,
+                              PAGE_PATH,
+                              SAVE_TIME,
+                              PAGE_TYPE)
+        values (#{id,jdbcType=INTEGER},
+                #{imgPath,jdbcType=VARCHAR},
+                #{pagePath,jdbcType=VARCHAR},
+                #{pageType,jdbcType=VARCHAR},
+                #{saveTime,jdbcType=TIMESTAMP})
+    </insert>
+	<insert id="insertSelective" parameterType="edu.zju.gis.dldsj.server.entity.RotationFigure">
+		insert into rotation_figure2
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="pagePath != null">
+				PAGE_PATH,
+			</if>
+			<if test="img_Path != null">
+				IMG_PATH,
+			</if>
+			<if test="saveTime != null">
+				SAVE_TIME,
+			</if>
+			<if test="pageType != null">
+				PAGE_TYPE
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="pagePath != null">
+				#{pagePath,jdbcType=VARCHAR},
+			</if>
+			<if test="img_Path != null">
+				#{img_Path,jdbcType=VARCHAR},
+			</if>
+			<if test="saveTime != null">
+				#{saveTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="pageType != null">
+				#{pageType,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="edu.zju.gis.dldsj.server.entity.RotationFigure">
+		update rotation_figure2
+		<set>
+			<if test="id != null">
+				ID = #{id,jdbcType=INTEGER},
+			</if>
+			<if test="pagePath != null">
+				PAGE_PATH = #{pagePath,jdbcType=VARCHAR},
+			</if>
+			<if test="img_Path != null">
+				IMG_PATH = #{img_Path,jdbcType=VARCHAR},
+			</if>
+			<if test="saveTime != null">
+				SAVE_TIME = #{saveTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="pageType != null">
+				PAGE_TYPE = #{pageType,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where ID = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.RotationFigure">
+        update rotation_figure2
+        set ID           = #{id,jdbcType=INTEGER},
+            IMG_PATH              = #{imgPath,jdbcType=VARCHAR},
+            PAGE_PATH         = #{pagePath,jdbcType=VARCHAR},
+            PAGE_TYPE          = #{pageType,jdbcType=VARCHAR},
+            SAVE_TIME        = #{saveType,jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+	<select id="ifFigureExist" parameterType="Integer" resultType="int">
+      select count(*) from rotation_figure2 where ID = #{ID,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

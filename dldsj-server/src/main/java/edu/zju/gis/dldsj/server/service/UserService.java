@@ -17,4 +17,6 @@ public interface UserService extends BaseService<User, String> {
     void deleteByRoleId(String roleId);
 
     boolean ifUserNameExist(String userName);
+
+
 }
