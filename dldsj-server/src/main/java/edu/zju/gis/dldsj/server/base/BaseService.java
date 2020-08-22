@@ -14,7 +14,7 @@ public interface BaseService<T , ID extends Serializable> {
      * 根据查询条件获取列表
      * @return
      */
-    Page<T> search(BaseFilter params, Page page);
+    Page<T> search(BaseFilter<ID> params, Page page);
 
     /**
      * 通过主键查询实体

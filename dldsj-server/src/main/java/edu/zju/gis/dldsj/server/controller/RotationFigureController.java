@@ -1,6 +1,6 @@
 package edu.zju.gis.dldsj.server.controller;
 
-import com.github.pagehelper.PageHelper;
+import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.service.RotationFigureService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -26,6 +24,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/rotationFigure")
 public class RotationFigureController {
+
     @Resource
     private RotationFigureService rotationFigureService;
 
@@ -38,9 +37,7 @@ public class RotationFigureController {
     //分页查询
     @RequestMapping("/listByPage")
     @ResponseBody
-    public Result findByPaging(Integer pageNum, Integer pageSize){
-        PageHelper.startPage(pageNum,pageSize);
-        Map param = new HashMap();
-        return Result.success().setBody(rotationFigureService.findByPaging(param));
+    public Result findByPaging(Page page){
+        return Result.success().setBody(rotationFigureService.getByPage(page.getOffset(), page.getPageSize()));
     }
 }

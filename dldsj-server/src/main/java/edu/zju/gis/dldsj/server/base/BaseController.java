@@ -15,7 +15,7 @@ import java.io.Serializable;
  * 实现Controller的基础CURD方法
  * @date 2019/4/29
  **/
-public abstract class BaseController<T , Service extends BaseService, ID extends Serializable, Search extends BaseFilter> {
+public abstract class BaseController<T , Service extends BaseService, ID extends Serializable, Search extends BaseFilter<ID>> {
 
     /**
      * 注入Service
@@ -34,6 +34,18 @@ public abstract class BaseController<T , Service extends BaseService, ID extends
     @ResponseBody
     public Result getPage(@RequestBody Search param, Page page) {
         return Result.success().setBody(service.search(param, page));
+    }
+
+    /**
+     * 获取已经分页的数据结果
+     * 默认pageNo=1, pageSize=20
+     * @param page
+     * @return
+     */
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    @ResponseBody
+    public Result getPageWithoutSearch(Page page) {
+        return Result.success().setBody(service.getByPage(page.getOffset(), page.getPageSize()));
     }
 
     /**

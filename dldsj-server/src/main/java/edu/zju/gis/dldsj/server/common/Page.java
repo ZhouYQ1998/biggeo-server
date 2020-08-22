@@ -77,5 +77,9 @@ public class Page<T> {
             throw new UnsupportedOperationException();
         }
     }
+
+    public Integer getOffset() {
+        return this.pageSize * (this.pageNo-1);
+    }
 }
 
