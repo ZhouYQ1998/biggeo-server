@@ -1,5 +1,7 @@
 package edu.zju.gis.dldsj.server.base;
 
+import edu.zju.gis.dldsj.server.common.Page;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,6 +9,12 @@ import java.util.List;
  * Service接口基类
  */
 public interface BaseService<T , ID extends Serializable> {
+
+    /**
+     * 根据查询条件获取列表
+     * @return
+     */
+    Page<T> search(BaseFilter params, Page page);
 
     /**
      * 通过主键查询实体
@@ -22,7 +30,6 @@ public interface BaseService<T , ID extends Serializable> {
      * 更新实体
      */
     void update(T t);
-
 
     /**
      * 通过主键删除实体

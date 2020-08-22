@@ -1,6 +1,7 @@
 package edu.zju.gis.dldsj.server.service.impl;
 
 import com.github.pagehelper.Page;
+import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
 import edu.zju.gis.dldsj.server.entity.RotationFigure;
 import edu.zju.gis.dldsj.server.mapper.RotationFigureMapper;
 import edu.zju.gis.dldsj.server.service.RotationFigureService;
@@ -18,7 +19,7 @@ import java.util.Map;
  */
 
 @Service
-public class RotationFigureServiceImpl implements RotationFigureService {
+public class RotationFigureServiceImpl extends BaseServiceImpl<RotationFigureMapper, RotationFigure, Integer> implements RotationFigureService {
 
     @Resource
     private RotationFigureMapper rotationFigureMapper;
@@ -28,50 +29,10 @@ public class RotationFigureServiceImpl implements RotationFigureService {
         return rotationFigureMapper.findAll();
     }
 
-    @Override
-    public List<RotationFigure> getById(Integer id, int offset, int size) {
-        return rotationFigureMapper.selectById(id, offset, size);
-    }
-
-    @Override
-    public void deleteById(Integer id) {
-        rotationFigureMapper.deleteById(id);
-    }
-
-    @Override
-    public boolean ifFigureExist(Integer id) {
-        int a = rotationFigureMapper.ifFigureExist(id);
-        return a > 0 ? true : false;
-    }
 
     @Override
     public Page<RotationFigure> findByPaging(Map param) {
         return rotationFigureMapper.findByPaging(param);
-    }
-
-    @Override
-    public RotationFigure select(Integer pk) {
-        return rotationFigureMapper.selectByPrimaryKey(pk);
-    }
-
-    @Override
-    public int insert(RotationFigure rotationFigure) {
-        return rotationFigureMapper.insertSelective(rotationFigure);
-    }
-
-    @Override
-    public void update(RotationFigure rotationFigure) {
-        rotationFigureMapper.updateByPrimaryKeySelective(rotationFigure);
-    }
-
-    @Override
-    public void delete(Integer id) {
-        rotationFigureMapper.deleteByPrimaryKey(id);
-    }
-
-    @Override
-    public boolean isExist(Integer id) {
-        return rotationFigureMapper.selectByPrimaryKey(id) != null;
     }
 
     @Override

@@ -17,11 +17,5 @@ import java.util.Map;
 public interface RotationFigureService extends BaseService<RotationFigure, Integer> {
     List<RotationFigure> findAll();
 
-    List<RotationFigure> getById(Integer id, int offset, int size);
-
-    void deleteById(Integer id);
-
-    boolean ifFigureExist(Integer id);
-
     Page<RotationFigure> findByPaging(Map param);
 }
