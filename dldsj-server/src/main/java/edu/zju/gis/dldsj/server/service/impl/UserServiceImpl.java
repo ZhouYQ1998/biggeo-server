@@ -1,5 +1,6 @@
 package edu.zju.gis.dldsj.server.service.impl;
 
+import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
 import edu.zju.gis.dldsj.server.mapper.UserMapper;
 import edu.zju.gis.dldsj.server.entity.User;
 import edu.zju.gis.dldsj.server.service.UserService;
@@ -13,7 +14,7 @@ import java.util.List;
  * @version 1.0 2018/08/09
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseServiceImpl<UserMapper, User, String> implements UserService {
     @Autowired
     private UserMapper userMapper;
 
