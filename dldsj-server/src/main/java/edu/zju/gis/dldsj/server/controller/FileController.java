@@ -3,12 +3,14 @@ package edu.zju.gis.dldsj.server.controller;
 import com.google.gson.*;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.config.CommonSetting;
+import edu.zju.gis.dldsj.server.entity.mapProject;
 import edu.zju.gis.dldsj.server.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -40,6 +42,7 @@ public class FileController {
         if (files.size() == 0)
             return Result.error("获取文件失败。");
         File tempDir = new File(setting.getDir4TempFile());
+        System.out.println(tempDir);
         if (!tempDir.exists())
             return Result.error("临时存放目录不存在:" + tempDir.getAbsolutePath());
         for (MultipartFile file : files) {
@@ -116,7 +119,6 @@ public class FileController {
                 sb.append((char) ch);
             }
             fileReader.close();
-            String str = StringUtil.replaceAllBlank(sb.toString());
             JsonParser jsonParser = new JsonParser();
             JsonArray jsonObject = jsonParser.parse(sb.toString()).getAsJsonArray();
             Gson gson = new GsonBuilder().setLenient().create();
@@ -125,4 +127,23 @@ public class FileController {
             return Result.error("文件读取失败：" + e.getMessage());
         }
     }
+    @RequestMapping(value = "/temp/jsonSubmit", method = RequestMethod.POST)
+    @ResponseBody
+    //读取JSON文件内容
+    private Result jsontoFile(@RequestBody mapProject mapJson, @RequestParam("name") String name) {
+        try {
+            String path=setting.getDir4TempFile();
+            File file = new File(path+"\\projectJson\\"+name);
+            // 创建文件
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+            writer.write("[{layers : "+mapJson.getLayers()+",style : "+mapJson.getStyle()+"}]");
+            writer.close();
+            return Result.success().setBody(file.getAbsoluteFile());
+        } catch (Exception e) {
+            return Result.error("文件写入失败：" + e.getMessage());
+        }
+    }
 }
+
+
