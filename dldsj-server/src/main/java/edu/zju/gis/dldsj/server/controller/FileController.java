@@ -129,7 +129,7 @@ public class FileController {
     }
     @RequestMapping(value = "/temp/jsonSubmit", method = RequestMethod.POST)
     @ResponseBody
-    //读取JSON文件内容
+    //前端请求到json数据以及文件名，将其写入指定路径
     private Result jsontoFile(@RequestBody mapProject mapJson, @RequestParam("name") String name) {
         try {
             String path=setting.getDir4TempFile();
