@@ -17,50 +17,9 @@ import java.util.List;
 
 @Service
 public class LecturesServiceImpl extends BaseServiceImpl<LectureMapper, Lecture,String> implements LectureService {
-    @Autowired
-    LectureMapper lectureMapper;
 
-    @Override
-    public Lecture selectByPrimaryKey(String id) {
-        return lectureMapper.selectByPrimaryKey(id);
-    }
-
-    public List<Lecture> search(BaseFilter<String> params) {
-        return lectureMapper.search(params);
-    }
-
-    public int insertSelective(Lecture lecture) {
-        return 0;
-    }
-
-    public int updateByPrimaryKeySelective(Lecture lecture) {
-        return 0;
-    }
-
-    public int updateByPrimaryKey(Lecture lecture) {
-        return 0;
-    }
-
-    public int deleteByPrimaryKey(String pk) {
-        return 0;
-    }
-
-    public List<Lecture> selectByPage(int offset, int size) {
-        return null;
-    }
-
-    public int deleteBatch(List<String> ts) {
-        return 0;
-    }
-
-    @Override
-    public List<Lecture> selectAll() {
-        return lectureMapper.selectAll();
-    }
-
-    @Override
     public List<Lecture> selectByOrder(String type, String typeOrder) {
-        return lectureMapper.selectByOrder(type,typeOrder);
+        return mapper.selectByOrder(type,typeOrder);
     }
 
 

@@ -15,7 +15,8 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class Lecture extends BaseFilter<String> {
+public class Lecture {
+    String id;
     String name;
     String speaker;
     String time;

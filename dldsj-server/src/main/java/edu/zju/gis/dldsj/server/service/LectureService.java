@@ -14,10 +14,6 @@ import java.util.List;
 
 public interface LectureService extends BaseService<Lecture,String> {
 
-    Lecture selectByPrimaryKey(String id);
-
-    List<Lecture> selectAll();
-
     List<Lecture> selectByOrder(String type,String typeOrder);
 
 }

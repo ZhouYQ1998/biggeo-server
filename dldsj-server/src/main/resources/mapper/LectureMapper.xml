@@ -3,14 +3,14 @@
 <mapper namespace="edu.zju.gis.dldsj.server.mapper.LectureMapper">
     <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.Lecture">
         <result column="ID" jdbcType="VARCHAR" property="id"/>
-        <result column="Name" jdbcType="VARCHAR" property="name"/>
-        <result column="Speaker" jdbcType="VARCHAR" property="speaker"/>
-        <result column="Place" jdbcType="VARCHAR" property="place"/>
-        <result column="Href" jdbcType="VARCHAR" property="href"/>
-        <result column="Time" jdbcType="VARCHAR" property="time"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="SPEAKER" jdbcType="VARCHAR" property="speaker"/>
+        <result column="PLACE" jdbcType="VARCHAR" property="place"/>
+        <result column="HREF" jdbcType="VARCHAR" property="href"/>
+        <result column="TIME" jdbcType="VARCHAR" property="time"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID, Name, Speaker, Place, Time, Href
+        ID, NAME, SPEAKER, PLACE, TIME, HREF
     </sql>
     <sql id="TABLE_NAME">
         tb_lectures
@@ -28,15 +28,8 @@
         <include refid="Base_Column_List"/>
         FROM <include refid="TABLE_NAME"/>
         <where>
-            <if test="name!=null and name.length() &gt; 0">AND Name like "%${name}%"</if>
+            <if test="name!=null and name.length() &gt; 0">AND NAME like "%${name}%"</if>
         </where>
-    </select>
-
-    <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from <include refid="TABLE_NAME"/>
-        where Name = #{Lename,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -46,12 +39,5 @@
         ORDER BY
          ${param1} ${param2}
     </select>
-
-    <select id="selectAll" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from <include refid="TABLE_NAME"/>
-    </select>
-
 
 </mapper>
