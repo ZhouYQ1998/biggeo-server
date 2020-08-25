@@ -2,6 +2,7 @@ package edu.zju.gis.dldsj.server.utils;
 
 import com.google.gson.Gson;
 import scala.math.Ordering;
+
 import java.util.List;
 import java.util.Map;
 
@@ -67,4 +68,5 @@ public class StringUtil {
         String end = sbd.toString();
         return end.substring(0, end.length() - 1);
     }
+
 }
