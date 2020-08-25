@@ -1,10 +1,7 @@
 package edu.zju.gis.dldsj.server.service;
 
-import edu.zju.gis.dldsj.server.base.BaseMapper;
 import edu.zju.gis.dldsj.server.base.BaseService;
 import edu.zju.gis.dldsj.server.entity.Lecture;
-
-import java.util.Date;
 import java.util.List;
 
 /**

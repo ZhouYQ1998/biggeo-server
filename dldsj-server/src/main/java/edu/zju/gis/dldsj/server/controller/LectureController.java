@@ -9,7 +9,6 @@ import edu.zju.gis.dldsj.server.entity.Lecture;
 import edu.zju.gis.dldsj.server.entity.searchPojo.LectureSearchPojo;
 import edu.zju.gis.dldsj.server.service.LectureService;
 import lombok.extern.log4j.Log4j;
-import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
