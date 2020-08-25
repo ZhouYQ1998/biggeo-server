@@ -20,5 +20,5 @@ import java.util.List;
 public class CommonSetting {
     private List<String> frontEndRegionList;
     private String sessionMaxAge;
-    private String dir4TempFile;
+    private String fileSavepath;
 }

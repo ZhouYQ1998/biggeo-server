@@ -41,7 +41,7 @@ public class FileController {
     public Result submitTempFile(@RequestParam("file") List<MultipartFile> files) {
         if (files.size() == 0)
             return Result.error("获取文件失败。");
-        File tempDir = new File(setting.getDir4TempFile());
+        File tempDir = new File(setting.getFileSavepath());
         System.out.println(tempDir);
         if (!tempDir.exists())
             return Result.error("临时存放目录不存在:" + tempDir.getAbsolutePath());
@@ -72,7 +72,7 @@ public class FileController {
     @RequestMapping(value = "/temp/list", method = RequestMethod.GET)
     @ResponseBody
     public Result getTempFileList() {
-        File tempDir = new File(setting.getDir4TempFile());
+        File tempDir = new File(setting.getFileSavepath());
         if (!tempDir.exists())
             return Result.error("临时存放目录不存在:" + tempDir.getAbsolutePath());
         List<String> fileNameList = new ArrayList<>();
@@ -95,7 +95,7 @@ public class FileController {
     @RequestMapping(value = "/temp/{fileName}", method = RequestMethod.GET)
     @ResponseBody
     public Result readFile(@PathVariable String fileName) {
-        File tempFile = new File(Paths.get(setting.getDir4TempFile(), fileName).toString());
+        File tempFile = new File(Paths.get(setting.getFileSavepath(), fileName).toString());
         if (!tempFile.exists())
             return Result.error("文件不存在:" + tempFile.getAbsolutePath());
         String suffix = tempFile.getName().substring(tempFile.getName().lastIndexOf("."));
@@ -121,8 +121,7 @@ public class FileController {
             fileReader.close();
             JsonParser jsonParser = new JsonParser();
             JsonArray jsonObject = jsonParser.parse(sb.toString()).getAsJsonArray();
-            Gson gson = new GsonBuilder().setLenient().create();
-            return Result.success().setBody(gson.toJson(jsonObject));
+            return Result.success().setBody(jsonObject);
         } catch (Exception e) {
             return Result.error("文件读取失败：" + e.getMessage());
         }
@@ -132,7 +131,7 @@ public class FileController {
     //前端请求到json数据以及文件名，将其写入指定路径
     private Result jsontoFile(@RequestBody mapProject mapJson, @RequestParam("name") String name) {
         try {
-            String path=setting.getDir4TempFile();
+            String path=setting.getFileSavepath();
             File file = new File(path+"\\projectJson\\"+name);
             // 创建文件
             file.createNewFile();
