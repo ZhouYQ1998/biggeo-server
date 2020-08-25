@@ -13,11 +13,11 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class Lecture {
-    String id;
-    String name;
-    String speaker;
-    String time;
-    String place;
-    String href;
+    private String id;
+    private String name;
+    private String speaker;
+    private String time;
+    private String place;
+    private String href;
 }
 
