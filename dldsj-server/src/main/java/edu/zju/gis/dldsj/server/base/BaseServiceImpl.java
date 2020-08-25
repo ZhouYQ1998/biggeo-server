@@ -46,7 +46,7 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T , ID e
      * @param params
      * @return
      */
-    public Page<T> search(BaseFilter params, Page page) {
+    public Page<T> search(BaseFilter<ID> params, Page page) {
         PageHelper.startPage(page.getPageNo(), page.getPageSize());
         return new Page<>(mapper.search(params));
     }
