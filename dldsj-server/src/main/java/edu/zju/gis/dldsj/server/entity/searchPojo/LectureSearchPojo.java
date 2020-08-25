@@ -14,5 +14,5 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class LectureSearchPojo extends BaseFilter<String> {
-    public String name;
+    private String name;
 }

@@ -47,12 +47,7 @@ public class LectureController extends BaseController<Lecture, LectureService, S
         else{
             orderType2 = "ASC";
         }
-
-        String orderBy = order+" "+orderType2;
-        PageHelper.startPage(page.getPageNo(),page.getPageSize(),orderBy);
-//        Page<Lecture> ll = service.search(param,page);
-        List<Lecture> listL = service.selectByOrder(order,orderType);
-        Page<Lecture> Repage = new Page<>(listL);
-        return Result.success().setBody(Repage);
+        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+        return Result.success().setBody(new Page<>(service.selectByOrder(order,orderType)));
     }
 }
