@@ -39,15 +39,8 @@ public class LectureController extends BaseController<Lecture, LectureService, S
         Page page = new Page();
         page.setPageNo(pageNo);
         page.setPageSize(pageSize);
-        //如果输入desc就降序排列，否则升序排列
-        String orderType2;
-        if (orderType.equals("desc")){
-            orderType2 = "DESC";
-        }
-        else{
-            orderType2 = "ASC";
-        }
+
         PageHelper.startPage(page.getPageNo(),page.getPageSize());
-        return Result.success().setBody(new Page<>(service.selectByOrder(order,orderType)));
+        return Result.success().setBody(service.selectByOrder(order,orderType,page));
     }
 }

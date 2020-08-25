@@ -1,6 +1,7 @@
 package edu.zju.gis.dldsj.server.service;
 
 import edu.zju.gis.dldsj.server.base.BaseService;
+import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.Lecture;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 public interface LectureService extends BaseService<Lecture,String> {
 
-    List<Lecture> selectByOrder(String type,String typeOrder);
+
+    Page<Lecture> selectByOrder(String type,String typeOrder,Page page);
 
 }
