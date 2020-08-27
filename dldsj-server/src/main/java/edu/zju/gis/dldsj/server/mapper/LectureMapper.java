@@ -1,11 +1,7 @@
 package edu.zju.gis.dldsj.server.mapper;
-
 import edu.zju.gis.dldsj.server.base.BaseMapper;
+import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.Lecture;
-import edu.zju.gis.dldsj.server.entity.User;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.Date;
 import java.util.List;
 
 
@@ -17,6 +13,6 @@ import java.util.List;
 public interface LectureMapper extends BaseMapper<Lecture,String> {
 
     //type为排序的字段，typeOrder为升序或降序
-    List<Lecture> selectByOrder(String type,String typeOrder);
+    List<Lecture> selectByOrder(String type, String typeOrder);
 
 }

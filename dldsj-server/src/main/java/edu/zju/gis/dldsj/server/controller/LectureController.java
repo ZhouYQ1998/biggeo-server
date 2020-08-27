@@ -9,7 +9,6 @@ import edu.zju.gis.dldsj.server.entity.Lecture;
 import edu.zju.gis.dldsj.server.entity.searchPojo.LectureSearchPojo;
 import edu.zju.gis.dldsj.server.service.LectureService;
 import lombok.extern.log4j.Log4j;
-import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,20 +39,8 @@ public class LectureController extends BaseController<Lecture, LectureService, S
         Page page = new Page();
         page.setPageNo(pageNo);
         page.setPageSize(pageSize);
-        //如果输入desc就降序排列，否则升序排列
-        String orderType2;
-        if (orderType.equals("desc")){
-            orderType2 = "DESC";
-        }
-        else{
-            orderType2 = "ASC";
-        }
 
-        String orderBy = order+" "+orderType2;
-        PageHelper.startPage(page.getPageNo(),page.getPageSize(),orderBy);
-//        Page<Lecture> ll = service.search(param,page);
-        List<Lecture> listL = service.selectByOrder(order,orderType);
-        Page<Lecture> Repage = new Page<>(listL);
-        return Result.success().setBody(Repage);
+        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+        return Result.success().setBody(service.selectByOrder(order,orderType,page));
     }
 }

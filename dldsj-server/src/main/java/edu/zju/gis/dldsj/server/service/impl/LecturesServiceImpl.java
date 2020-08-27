@@ -1,11 +1,12 @@
 package edu.zju.gis.dldsj.server.service.impl;
 
-import edu.zju.gis.dldsj.server.base.BaseFilter;
+import com.github.pagehelper.PageHelper;
 import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
+import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.Lecture;
 import edu.zju.gis.dldsj.server.mapper.LectureMapper;
 import edu.zju.gis.dldsj.server.service.LectureService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +19,18 @@ import java.util.List;
 @Service
 public class LecturesServiceImpl extends BaseServiceImpl<LectureMapper, Lecture,String> implements LectureService {
 
-    public List<Lecture> selectByOrder(String type, String typeOrder) {
-        return mapper.selectByOrder(type,typeOrder);
+    public Page<Lecture> selectByOrder(String type, String orderType, Page page) {
+
+        //如果输入desc就降序排列，否则升序排列
+        String orderType2;
+        if (orderType.equals("desc")){
+            orderType2 = "DESC";
+        }
+        else{
+            orderType2 = "ASC";
+        }
+        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+        return new Page<>(mapper.selectByOrder(type,orderType2));
     }
 
 

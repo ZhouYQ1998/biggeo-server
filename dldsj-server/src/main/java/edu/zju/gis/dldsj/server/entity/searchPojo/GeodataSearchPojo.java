@@ -7,12 +7,14 @@ import lombok.ToString;
 
 /**
  * @author Jiarui
- * @date 2020/8/24
+ * @date 2020/8/25
  */
-
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class LectureSearchPojo extends BaseFilter<String> {
-    private String name;
+public class GeodataSearchPojo extends BaseFilter<String> {
+    private String title;
+    private String uploader;
+    private String source;
+    private String type;
 }

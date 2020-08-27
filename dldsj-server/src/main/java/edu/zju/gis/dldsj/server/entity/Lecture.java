@@ -1,11 +1,8 @@
 package edu.zju.gis.dldsj.server.entity;
 
-import edu.zju.gis.dldsj.server.base.BaseFilter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.Date;
 
 /**
  * @author Jiarui
@@ -16,11 +13,11 @@ import java.util.Date;
 @Setter
 @ToString(callSuper = true)
 public class Lecture {
-    String id;
-    String name;
-    String speaker;
-    String time;
-    String place;
-    String href;
+    private String id;
+    private String name;
+    private String speaker;
+    private String time;
+    private String place;
+    private String href;
 }
 
