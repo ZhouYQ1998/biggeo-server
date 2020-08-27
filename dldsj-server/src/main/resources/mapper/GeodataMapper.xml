@@ -6,13 +6,14 @@
         <result column="TITLE" jdbcType="VARCHAR" property="title"/>
         <result column="UPLOADER" jdbcType="VARCHAR" property="uploader"/>
         <result column="TIME" jdbcType="TIMESTAMP" property="time"/>
+        <result column="TYPE" jdbcType="VARCHAR" property="type"/>
         <result column="TAGS" jdbcType="VARCHAR" property="tags"/>
         <result column="SOURCE" jdbcType="VARCHAR" property="source"/>
         <result column="PIC" jdbcType="VARCHAR" property="pic"/>
         <result column="PATH" jdbcType="VARCHAR" property="path"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID, TITLE, UPLOADER, TIME, TAGS, SOURCE, PIC , PATH
+        ID, TITLE, UPLOADER, TIME, TYPE, TAGS, SOURCE, PIC , PATH
     </sql>
     <sql id="TABLE_NAME">
         tb_geographic_data

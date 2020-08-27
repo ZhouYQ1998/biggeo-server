@@ -1,6 +1,7 @@
 package edu.zju.gis.dldsj.server.controller;
 
 import edu.zju.gis.dldsj.server.base.BaseController;
+import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.entity.Geodata;
 import edu.zju.gis.dldsj.server.entity.searchPojo.GeodataSearchPojo;
@@ -27,31 +28,34 @@ public class GeodataController extends BaseController<Geodata, GeodataService,St
     /**
      * 按照type来分类
      * @param type
+     * @param page
      */
     @RequestMapping(value = "/bytype",method = RequestMethod.GET)
     @ResponseBody
-    public Result getByType(@RequestParam String type){
-        return Result.success().setBody(service.selectByType(type));
+    public Result getByType(@RequestParam String type,Page page){
+        return Result.success().setBody(service.selectByType(type,page));
     }
 
     /**
      * 按照source来分类
      * @param source
+     * @param page
      */
     @RequestMapping(value = "/bysource",method = RequestMethod.GET)
     @ResponseBody
-    public Result getBySource(@RequestParam String source){
-        return Result.success().setBody(service.selectBySource(source));
+    public Result getBySource(@RequestParam String source, Page page){
+        return Result.success().setBody(service.selectBySource(source,page));
     }
 
     /**
      * 按照uploader来分类
      * @param uploader
+     * @param page
      */
     @RequestMapping(value = "/byuploader",method = RequestMethod.GET)
     @ResponseBody
-    public Result getByUploader(@RequestParam String uploader){
-        return Result.success().setBody(service.selectByUploader(uploader));
+    public Result getByUploader(@RequestParam String uploader, Page page){
+        return Result.success().setBody(service.selectByUploader(uploader,page));
     }
 
 
@@ -61,7 +65,7 @@ public class GeodataController extends BaseController<Geodata, GeodataService,St
      */
     @RequestMapping(value = "/dis",method = RequestMethod.GET)
     @ResponseBody
-    public Result getdis(@RequestParam String field){
+    public Result getdis(@RequestParam String field, Page page){
         Map<String,String> res = service.getDistinctField(field);
         return Result.success().setBody(res);
     }

@@ -1,6 +1,8 @@
 package edu.zju.gis.dldsj.server.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
+import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.Geodata;
 import edu.zju.gis.dldsj.server.mapper.GeodataMapper;
 import edu.zju.gis.dldsj.server.service.GeodataService;
@@ -18,16 +20,19 @@ import java.util.Map;
 public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper,Geodata,String> implements GeodataService {
 
     //数据目录功能，根据type、uploader或source等目录字段，返回数据(单选)
-    public List<Geodata> selectByType(String type) {
-        return mapper.selectByType(type);
+    public Page<Geodata> selectByType(String type,Page page) {
+        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+        return new Page<>(mapper.selectByType(type));
     }
 
-    public List<Geodata> selectByUploader(String uploader) {
-        return mapper.selectByUploader(uploader);
+    public Page<Geodata> selectByUploader(String uploader,Page page) {
+        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+        return new Page<>(mapper.selectByUploader(uploader));
     }
 
-    public List<Geodata> selectBySource(String source) {
-        return mapper.selectBySource(source);
+    public Page<Geodata> selectBySource(String source,Page page) {
+        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+        return new Page<>(mapper.selectBySource(source));
     }
 
     //根据输入字段名称，返回结果的唯一不同值与对应数量
