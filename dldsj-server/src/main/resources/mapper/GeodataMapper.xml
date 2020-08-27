@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.GeodataMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.Geodata">
+        <result column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="TITLE" jdbcType="VARCHAR" property="title"/>
+        <result column="UPLOADER" jdbcType="VARCHAR" property="uploader"/>
+        <result column="TIME" jdbcType="TIMESTAMP" property="time"/>
+        <result column="TAGS" jdbcType="VARCHAR" property="tags"/>
+        <result column="SOURCE" jdbcType="VARCHAR" property="source"/>
+        <result column="PIC" jdbcType="VARCHAR" property="pic"/>
+        <result column="PATH" jdbcType="VARCHAR" property="path"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID, TITLE, UPLOADER, TIME, TAGS, SOURCE, PIC , PATH
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_geographic_data
+    </sql>
+
+    <!--  数据目录中的功能  -->
+    <select id="selectByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where TYPE = #{type,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByUploader" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where UPLOADER= #{uploader,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectBySource" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where SOURCE = #{source ,jdbcType=VARCHAR}
+    </select>
+
+
+    <!--  查找功能  -->
+    <select id="search" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="TABLE_NAME"/>
+        <where>
+            <if test="title!=null and title.length() &gt; 0">AND TITLE like "%${title}%"</if>
+            <if test="uploader!=null and uploader.length() &gt; 0">AND UPLOADER like "%${uploader}%"</if>
+            <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
+            <if test="type!=null and type.length() &gt; 0">AND TYPE like "%${type}%"</if>
+        </where>
+    </select>
+
+    <!--  查询不重复的字段名  -->
+    <select id="getDistinctField" parameterType="java.lang.String" resultMap="BaseResultMap" statementType="STATEMENT">
+        SELECT DISTINCT
+        ${_parameter}
+        FROM <include refid="TABLE_NAME"/>
+    </select>
+    <!--  根据某一字段名返回其个数  -->
+    <select id="getCountOfField" parameterType="String" resultType="String" statementType="STATEMENT">
+        SELECT COUNT(*)
+        FROM <include refid="TABLE_NAME"/>
+        WHERE ${arg0} = '${arg1}'
+    </select>
+
+
+</mapper>
