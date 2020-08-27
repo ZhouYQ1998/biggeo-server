@@ -4,7 +4,6 @@ import com.google.gson.*;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.config.CommonSetting;
 import edu.zju.gis.dldsj.server.entity.mapProject;
-import edu.zju.gis.dldsj.server.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,13 +65,15 @@ public class FileController {
 
     /**
      * 获取临时路径下的子文件
-     *
+     * type=1 访问工程文件夹 type=2 访问数据文件夹
      * @return 文件路径集合-不包含目录
      */
     @RequestMapping(value = "/temp/list", method = RequestMethod.GET)
     @ResponseBody
-    public Result getTempFileList() {
-        File tempDir = new File(setting.getMapfileSavepath());
+    public Result getTempFileList(@RequestParam("type") Integer type) {
+        String filepath="projectJson";
+        if(type==2) filepath="dataJson";
+        File tempDir = new File(setting.getMapfileSavepath()+File.separator+filepath);
         if (!tempDir.exists())
             return Result.error("临时存放目录不存在:" + tempDir.getAbsolutePath());
         List<String> fileNameList = new ArrayList<>();
@@ -88,24 +89,29 @@ public class FileController {
     }
 
     /**
-     * 获取临时路径下的子文件
-     *
-     * @return 文件路径集合-不包含目录
+     * 获取存储工程和数据json路径下的子文件，通过type判别当前访问的是数据文件夹或者工程文件夹
+     * type=1 访问工程文件夹 type=2 访问数据文件夹
+     * @return json文件内容
      */
     @RequestMapping(value = "/temp/{fileName}", method = RequestMethod.GET)
     @ResponseBody
-    public Result readFile(@PathVariable String fileName) {
-        File tempFile = new File(Paths.get(setting.getMapfileSavepath(), fileName).toString());
+    public Result readprojectFile(@PathVariable String fileName, @RequestParam("type") Integer type) {
+        String filepath="projectJson";
+        if(type==2) filepath="dataJson";
+        File tempFile = new File(Paths.get(setting.getMapfileSavepath()+File.separator+filepath, fileName).toString());
         if (!tempFile.exists())
             return Result.error("文件不存在:" + tempFile.getAbsolutePath());
-        String suffix = tempFile.getName().substring(tempFile.getName().lastIndexOf("."));
-        switch (suffix) {
-            case ".json":
-                return readJSONArray(tempFile);
-            case ".shp":
-                return Result.error("暂不支持shp文件。");
-            default:
-                return Result.error("暂不支持该文件类型。");
+        else {
+            String suffix = tempFile.getName().substring(tempFile.getName().lastIndexOf("."));
+            switch (suffix) {
+                case ".json":
+                    return readJSONArray(tempFile);
+                case ".shp":
+                    return Result.error("暂不支持shp文件。");
+                default:
+                    return Result.error("暂不支持该文件类型。");
+            }
+
         }
     }
 
@@ -120,23 +126,49 @@ public class FileController {
             }
             fileReader.close();
             JsonParser jsonParser = new JsonParser();
-            JsonArray jsonObject = jsonParser.parse(sb.toString()).getAsJsonArray();
-            return Result.success().setBody(jsonObject);
+            return Result.success().setBody(jsonParser.parse(sb.toString()));
         } catch (Exception e) {
             return Result.error("文件读取失败：" + e.getMessage());
         }
     }
+    /**
+     * 向存储工程json路径提交工程json
+     *
+     * @return json文件路径
+     */
     @RequestMapping(value = "/temp/jsonSubmit", method = RequestMethod.POST)
     @ResponseBody
-    //前端请求到json数据以及文件名，将其写入指定路径
+    //前端请求提供json数据以及文件名，后端将其写入指定路径
     private Result jsontoFile(@RequestBody mapProject mapJson, @RequestParam("name") String name) {
         try {
             String path=setting.getMapfileSavepath();
-            File file = new File(path+"\\projectJson\\"+name);
+            File file = new File(path+File.separator+"projectJson"+File.separator+name);
             // 创建文件
             file.createNewFile();
             FileWriter writer = new FileWriter(file);
             writer.write("[{layers : "+mapJson.getLayers()+",style : "+mapJson.getStyle()+"}]");
+            writer.close();
+            return Result.success().setBody(file.getAbsoluteFile());
+        } catch (Exception e) {
+            return Result.error("文件写入失败：" + e.getMessage());
+        }
+    }
+    /**
+     * 向存储数据json路径提交json数据
+     *
+     * @return json文件路径
+     */
+    @RequestMapping(value = "/temp/dataSubmit", method = RequestMethod.POST)
+    @ResponseBody
+    //前端请求提供json数据以及文件名，后端将其写入指定路径
+    private Result adddataFile(@RequestBody String jsonString, @RequestParam("name") String name) {
+        try {
+            String path=setting.getMapfileSavepath();
+            File file = new File(path+File.separator+"dataJson"+File.separator+name);
+            // 创建文件
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+            writer.write(jsonString);
             writer.close();
             return Result.success().setBody(file.getAbsoluteFile());
         } catch (Exception e) {
