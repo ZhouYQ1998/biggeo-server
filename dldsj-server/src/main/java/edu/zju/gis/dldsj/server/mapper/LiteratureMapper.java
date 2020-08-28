@@ -1,6 +1,7 @@
 package edu.zju.gis.dldsj.server.mapper;
 
 import edu.zju.gis.dldsj.server.base.BaseMapper;
+import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.Literature;
 
 
@@ -21,4 +22,6 @@ public interface LiteratureMapper extends BaseMapper<Literature,String> {
     List<Literature> getDistinctField(String field);
     //计算该字段共有多少条数据
     String getCountOfField(String field,String field2);
+
+    List<Literature> selectByTime(Integer time1, Integer time2, Page page);
 }

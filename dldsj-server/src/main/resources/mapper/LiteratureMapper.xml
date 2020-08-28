@@ -63,5 +63,21 @@
         WHERE ${arg0} = '${arg1}'
     </select>
 
+    <!-- 时间段查询传参Date -->
+    <select id="selectByTime" resultMap="BaseResultMap" parameterType="Integer" >
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        <where>
+            <if test="arg0!=null and arg0!=''">
+                cast(TIME as DECIMAL)<![CDATA[>=]]> #{arg0,jdbcType=INTEGER}
+            </if>
+            <if test="arg1!=null and arg1!=''">
+                and cast(TIME as DECIMAL) <![CDATA[<=]]> #{arg1,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+
 
 </mapper>

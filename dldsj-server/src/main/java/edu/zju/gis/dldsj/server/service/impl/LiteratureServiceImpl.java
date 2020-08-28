@@ -10,10 +10,7 @@ import edu.zju.gis.dldsj.server.service.LiteratureService;
 import org.springframework.stereotype.Service;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Jiarui
@@ -51,5 +48,13 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
             map.put(str,count);
         }
         return map;
+    }
+
+    //根据时间查询
+    public Page<Literature> selectByTime(String time1,String time2,Page page){
+        Integer start = Integer.parseInt(time1);
+        Integer end = Integer.parseInt(time2);
+        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+        return new Page<>(mapper.selectByTime(start,end,page));
     }
 }

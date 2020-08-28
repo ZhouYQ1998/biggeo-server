@@ -4,6 +4,7 @@ import edu.zju.gis.dldsj.server.base.BaseService;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.Literature;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -16,4 +17,6 @@ public interface LiteratureService extends BaseService<Literature,String> {
 
     //根据输入字段名称，返回结果的唯一不同值与对应数量
     Map<String,String> getDistinctField(String field);
+
+    Page<Literature> selectByTime(String time1,String time2,Page page);
 }
