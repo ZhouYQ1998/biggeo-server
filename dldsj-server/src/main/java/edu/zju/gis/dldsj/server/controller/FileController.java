@@ -95,7 +95,7 @@ public class FileController {
      */
     @RequestMapping(value = "/temp/{fileName}", method = RequestMethod.GET)
     @ResponseBody
-    public Result readprojectFile(@PathVariable String fileName, @RequestParam("type") Integer type) {
+    public Result readFile(@PathVariable String fileName, @RequestParam("type") Integer type) {
         String filepath="projectJson";
         if(type==2) filepath="dataJson";
         File tempFile = new File(Paths.get(setting.getMapfileSavepath()+File.separator+filepath, fileName).toString());
@@ -136,10 +136,10 @@ public class FileController {
      *
      * @return json文件路径
      */
-    @RequestMapping(value = "/temp/jsonSubmit", method = RequestMethod.POST)
+    @RequestMapping(value = "/temp/projectSubmit", method = RequestMethod.POST)
     @ResponseBody
     //前端请求提供json数据以及文件名，后端将其写入指定路径
-    private Result jsontoFile(@RequestBody mapProject mapJson, @RequestParam("name") String name) {
+    private Result projectSubmit(@RequestBody mapProject mapJson, @RequestParam("name") String name) {
         try {
             String path=setting.getMapfileSavepath();
             File file = new File(path+File.separator+"projectJson"+File.separator+name);
@@ -156,25 +156,55 @@ public class FileController {
     /**
      * 向存储数据json路径提交json数据
      *
-     * @return json文件路径
+     * @return 错误信息，成功则无
      */
     @RequestMapping(value = "/temp/dataSubmit", method = RequestMethod.POST)
     @ResponseBody
     //前端请求提供json数据以及文件名，后端将其写入指定路径
-    private Result adddataFile(@RequestBody String jsonString, @RequestParam("name") String name) {
-        try {
-            String path=setting.getMapfileSavepath();
-            File file = new File(path+File.separator+"dataJson"+File.separator+name);
-            // 创建文件
-            file.createNewFile();
-            FileWriter writer = new FileWriter(file);
-            writer.write(jsonString);
-            writer.close();
-            return Result.success().setBody(file.getAbsoluteFile());
-        } catch (Exception e) {
-            return Result.error("文件写入失败：" + e.getMessage());
+    public Result dataSubmit(@RequestParam("file") List<MultipartFile> files) {
+        if (files.size() == 0) return Result.error("获取文件失败。");
+        File tempDir = new File(setting.getMapfileSavepath()+File.separator+"dataJson");
+        if (!tempDir.exists())
+            return Result.error("临时存放目录不存在:" + tempDir.getAbsolutePath());
+        for (MultipartFile file : files) {
+            String fileName = file.getOriginalFilename();
+            if (fileName == null)
+                return Result.error("文件名获取失败。");
+            File localFile = new File(tempDir, fileName);
+            System.out.println(localFile.getAbsolutePath());
+            if (localFile.exists()) {
+                if (!localFile.delete())
+                    return Result.error("文件已存在，覆盖失败。");
+            }
+            try {
+                file.transferTo(localFile);
+            } catch (IOException e) {
+                return Result.error("文件上传失败：" + e.getMessage());
+            }
         }
+        return Result.success();
+    }
+    /**
+     * 在存储数据json路径删除指定文件
+     *
+     * @return 错误信息，成功则无
+     */
+    @RequestMapping(value = "/temp/dataDelete/{fileName}", method = RequestMethod.GET)
+    @ResponseBody
+    //删除数据存储路径下对应的文件
+    public Result deleteData(@PathVariable String fileName) {
+
+        File tempDir = new File(setting.getMapfileSavepath()+File.separator+"dataJson");
+        if (!tempDir.exists())
+            return Result.error("临时存放目录不存在:" + tempDir.getAbsolutePath());
+            File localFile = new File(tempDir, fileName);
+            if (localFile.exists()) {
+                if (!localFile.delete())
+                    return Result.error("文件删除失败");
+            }
+            return Result.success();
     }
 }
+
 
 
