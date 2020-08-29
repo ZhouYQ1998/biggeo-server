@@ -27,37 +27,37 @@
 		SELECT
 		ID,IMG_PATH,PAGE_PATH,SAVE_TIME,PAGE_TYPE
 		FROM
-		rotation_figure2
+		vi_rotation_figure2
 	</select>
 
 	<select id="findByPaging" resultMap="BaseResultMap" parameterType="map">
 		SELECT
 		ID,IMG_PATH,PAGE_PATH,SAVE_TIME,PAGE_TYPE
 		FROM
-		rotation_figure2
+		vi_rotation_figure2
 	</select>
 	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
-		from rotation_figure2
+		from vi_rotation_figure2
 		where ID = #{id,jdbcType=INTEGER}
 	</select>
 	<select id="selectByPage" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
-		from rotation_figure2
+		from vi_rotation_figure2
 		limit #{offset,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
 	</select>
 
 	<select id="selectById" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
-		from rotation_figure2
+		from vi_rotation_figure2
 		where ID=#{roleId,jdbcType=INTEGER} limit #{offset,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
 	</select>
 
 	<select id="ifFigureExist" parameterType="Integer" resultType="int">
-      select count(*) from rotation_figure2 where ID = #{ID,jdbcType=VARCHAR}
+      select count(*) from vi_rotation_figure2 where ID = #{ID,jdbcType=VARCHAR}
     </select>
 
 </mapper>
