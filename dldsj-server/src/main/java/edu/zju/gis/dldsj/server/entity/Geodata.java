@@ -1,6 +1,5 @@
 package edu.zju.gis.dldsj.server.entity;
 
-import edu.zju.gis.dldsj.server.base.BaseFilter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,13 +19,26 @@ public class Geodata {
     private String title;
     private String uploader;
     private Date time;
-    private String type;
+    private String type1;
+    private String type2;
     private String tags;
     private String source;
+    private String abstractInfo;
+    private String reference;
     //缩略图
     private String pic;
     //存放路径
     private String path;
+    private String newName;
+    private String oldName;
+    private String format;
 
+    //以下为第二步筛选用到的条件
+    private String filterType1;
+    private String filterType2;
+
+    //排序所用属性
+    private String orderField;
+    private String orderType;
 
 }

@@ -6,7 +6,11 @@ import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.Geodata;
 import edu.zju.gis.dldsj.server.mapper.GeodataMapper;
 import edu.zju.gis.dldsj.server.service.GeodataService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,9 +24,14 @@ import java.util.Map;
 public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper,Geodata,String> implements GeodataService {
 
     //数据目录功能，根据type、uploader或source等目录字段，返回数据(单选)
-    public Page<Geodata> selectByType(String type,Page page) {
+    public Page<Geodata> selectByType1(String type,Page page) {
         PageHelper.startPage(page.getPageNo(),page.getPageSize());
-        return new Page<>(mapper.selectByType(type));
+        return new Page<>(mapper.selectByType1(type));
+    }
+
+    public Page<Geodata> selectByType2(String type,Page page) {
+        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+        return new Page<>(mapper.selectByType2(type));
     }
 
     public Page<Geodata> selectByUploader(String uploader,Page page) {
@@ -46,11 +55,11 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper,Geodata,St
         Map<String,String> map = new HashMap<String, String>();
         for (Geodata s : list) {
             switch (field) {
-                case "TYPE":
-                    str = s.getType();
+                case "TYPE_1":
+                    str = s.getType1();
                     break;
-                case "UPLOADER":
-                    str = s.getUploader();
+                case "TYPE_2":
+                    str = s.getType2();
                     break;
                 case "SOURCE":
                     str = s.getSource();
@@ -65,4 +74,38 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper,Geodata,St
         }
         return map;
     }
+
+
+    public String FileDownload(HttpServletResponse response,String id) throws FileNotFoundException {
+        Geodata geodata = mapper.selectByPrimaryKey(id);
+        //通过id来查找某个文件的存储路径、在服务器上的newName，初始文件名，和文件格式
+        String realPath = geodata.getPath();
+        String newName = geodata.getNewName();
+        String oldName = geodata.getOldName();
+        String format = geodata.getFormat();
+        //获取文件输入流
+        FileInputStream inputStream = new FileInputStream(new File(realPath,newName));
+        //附件下载
+        String fileName = oldName+format;
+        //设置文件信息
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=" + oldName);
+
+        byte[] buff = new byte[1024];
+        //创建缓冲输入流
+        BufferedInputStream bis = null;
+        OutputStream outputStream = null;
+
+        try {
+            //文件输出流
+            outputStream = response.getOutputStream();
+            IOUtils.copy(inputStream,outputStream);
+            IOUtils.closeQuietly(inputStream);
+            IOUtils.closeQuietly(outputStream);
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+        return oldName;
+    }
+
 }
