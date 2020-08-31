@@ -24,21 +24,23 @@ public class GroupMemberController extends BaseController<GroupMember, GroupMemb
 
     /**
      * 显示所有成员
+     * @param page
      */
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
-    public Result showAllMembers() {
-        return Result.success().setBody(service.showAllMembers());
+    public Result showAllMembers(Page page) {
+        return Result.success().setBody(service.showAllMembers(page));
     }
 
     /**
      * 按照group显示成员
      * @param group
+     * @param page
      */
     @RequestMapping(value = "/group", method = RequestMethod.GET)
     @ResponseBody
-    public Result showByGroup(@RequestParam String group) {
-        return Result.success().setBody(service.showByGroup(group));
+    public Result showByGroup(@RequestParam String group,Page page) {
+        return Result.success().setBody(service.showByGroup(group,page));
     }
 
 }

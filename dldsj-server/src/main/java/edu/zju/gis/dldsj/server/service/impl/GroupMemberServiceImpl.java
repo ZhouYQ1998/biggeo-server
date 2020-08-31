@@ -1,5 +1,6 @@
 package edu.zju.gis.dldsj.server.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.GroupMember;
@@ -14,10 +15,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class GroupMemberServiceImpl extends BaseServiceImpl<GroupMemberMapper, GroupMember,String> implements GroupMemberService {
 
-    public Page<GroupMember> showAllMembers(){
+    public Page<GroupMember> showAllMembers(Page page){
+        PageHelper.startPage(page.getPageNo(),page.getPageSize());
         return new Page<>(mapper.showAllMembers());
     }
-    public Page<GroupMember> showByGroup(String group){
+    public Page<GroupMember> showByGroup(String group,Page page){
+        PageHelper.startPage(page.getPageNo(),page.getPageSize());
         return new Page<>(mapper.showByGroup(group));
     }
 }

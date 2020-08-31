@@ -11,6 +11,6 @@ import java.util.List;
  * @date 2020/8/31
  */
 public interface GroupMemberService extends BaseService<GroupMember,String> {
-    Page<GroupMember> showAllMembers();
-    Page<GroupMember> showByGroup(String group);
+    Page<GroupMember> showAllMembers(Page page);
+    Page<GroupMember> showByGroup(String group,Page page);
 }
