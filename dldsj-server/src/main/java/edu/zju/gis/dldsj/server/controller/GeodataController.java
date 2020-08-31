@@ -73,24 +73,4 @@ public class GeodataController extends BaseController<Geodata, GeodataService,St
         Map<String, String> res = service.getDistinctField(field);
         return Result.success().setBody(res);
     }
-
-
-    /**
-     * 根据输入的数据id，下载对应的数据
-     * @param response
-     * @param id
-     * @return
-     * @throws IOException
-     */
-
-    @GetMapping("/download")
-    public Result FileDownload(HttpServletResponse response,String id) throws IOException{
-
-        String filename = service.FileDownload(response,id);
-        //成功后返回成功信息
-        System.out.println("yes");
-        return Result.success().setBody(filename);
-    }
-
-
 }

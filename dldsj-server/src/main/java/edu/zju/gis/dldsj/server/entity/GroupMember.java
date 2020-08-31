@@ -1,8 +1,8 @@
 package edu.zju.gis.dldsj.server.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
-import org.springframework.stereotype.Service;
 
 /**
  * @author Jiarui
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Getter
-@Service
+@Setter
 @ToString(callSuper = true)
 public class GroupMember {
     private String id;

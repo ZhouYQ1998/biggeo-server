@@ -22,7 +22,4 @@ public interface GeodataService extends BaseService<Geodata,String> {
     //根据输入字段名称，返回结果的唯一不同值与对应数量
     Map<String,String> getDistinctField(String field);
 
-    //文件下载
-    String FileDownload(HttpServletResponse response, String id) throws FileNotFoundException;
-
     }

@@ -75,37 +75,4 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper,Geodata,St
         return map;
     }
 
-
-    public String FileDownload(HttpServletResponse response,String id) throws FileNotFoundException {
-        Geodata geodata = mapper.selectByPrimaryKey(id);
-        //通过id来查找某个文件的存储路径、在服务器上的newName，初始文件名，和文件格式
-        String realPath = geodata.getPath();
-        String newName = geodata.getNewName();
-        String oldName = geodata.getOldName();
-        String format = geodata.getFormat();
-        //获取文件输入流
-        FileInputStream inputStream = new FileInputStream(new File(realPath,newName));
-        //附件下载
-        String fileName = oldName+format;
-        //设置文件信息
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment; filename=" + oldName);
-
-        byte[] buff = new byte[1024];
-        //创建缓冲输入流
-        BufferedInputStream bis = null;
-        OutputStream outputStream = null;
-
-        try {
-            //文件输出流
-            outputStream = response.getOutputStream();
-            IOUtils.copy(inputStream,outputStream);
-            IOUtils.closeQuietly(inputStream);
-            IOUtils.closeQuietly(outputStream);
-        } catch ( IOException e ) {
-            e.printStackTrace();
-        }
-        return oldName;
-    }
-
 }
