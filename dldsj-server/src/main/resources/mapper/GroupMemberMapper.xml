@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.GroupMemberMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.GroupMember">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="TEAM" jdbcType="VARCHAR" property="group"/>
+        <result column="EMAIL" jdbcType="VARCHAR" property="email"/>
+        <result column="WORK" jdbcType="VARCHAR" property="workContent"/>
+        <result column="PHOTO" jdbcType="VARCHAR" property="photo"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID, NAME, TEAM, EMAIL, WORK, PHOTO
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_groupmember
+    </sql>
+
+    <select id="showAllMembers" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+    </select>
+
+    <select id="showByGroup" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where TEAM = #{group,jdbcType=VARCHAR}
+    </select>
+
+</mapper>
