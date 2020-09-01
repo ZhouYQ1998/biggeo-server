@@ -13,7 +13,9 @@ public interface GeodataMapper extends BaseMapper<Geodata,String> {
 
     //数据目录功能，根据type、uploader或source等目录字段，返回数据(单选)
 
-    List<Geodata> selectByType(String type);
+    List<Geodata> selectByType1(String type1);
+    List<Geodata> selectByType2(String type2);
+
     List<Geodata> selectByUploader(String uploader);
     List<Geodata> selectBySource(String source);
 

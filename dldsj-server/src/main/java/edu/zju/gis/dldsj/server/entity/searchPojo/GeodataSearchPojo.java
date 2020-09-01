@@ -16,5 +16,15 @@ public class GeodataSearchPojo extends BaseFilter<String> {
     private String title;
     private String uploader;
     private String source;
-    private String type;
+    private String type1;
+    private String type2;
+    private String tags;
+
+    //以下为第二步筛选用到的条件
+    private String filterType1;
+    private String filterType2;
+
+    //排序所用属性
+    private String orderField;
+    private String orderType;
 }
