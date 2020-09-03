@@ -70,13 +70,13 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
     }
 
     //计算查询结果中出现次数最多的作者、关键词、机构
-    public List<String> getSumOfField(LiteratureSearchPojo param,String field){
+    public Map<String,Object> getSumOfField(LiteratureSearchPojo param,String field){
         //根据现有的条件查询的结果
         List<Literature> list= mapper.search(param);
         List<String> listAll = new ArrayList();
         String allRes;
         Map map = new HashMap();
-        List res = new ArrayList();
+        Map map2 = new LinkedHashMap();
 
         for (Literature literature :list) {
             //多个作者，用"; "分隔
@@ -141,10 +141,9 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
             //for
             for (int i = 0; i < 10; i++) {
                 if (list2.get(i).getKey()!=" ") {
-                    res.add(list2.get(i).getKey() + " " + list2.get(i).getValue());
+                    map2.put(list2.get(i).getKey(),list2.get(i).getValue());
                 }
             }
-
-        return res;
+        return map2;
     }
 }

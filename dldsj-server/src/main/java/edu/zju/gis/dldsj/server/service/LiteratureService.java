@@ -17,5 +17,5 @@ public interface LiteratureService extends BaseService<Literature,String> {
     Map<String,String> getDistinctField(LiteratureSearchPojo param);
 
     //计算查询结果中出现次数最多的作者
-    List<String> getSumOfField(LiteratureSearchPojo param, String field);
+    Map<String,Object> getSumOfField(LiteratureSearchPojo param, String field);
 }
