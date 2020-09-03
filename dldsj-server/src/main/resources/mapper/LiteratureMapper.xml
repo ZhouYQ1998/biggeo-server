@@ -12,12 +12,12 @@
         <result column="PAGES" jdbcType="VARCHAR" property="pages"/>
         <result column="ABSTRACT" jdbcType="VARCHAR" property="abstractInfo"/>
         <result column="KEYWORDS" jdbcType="VARCHAR" property="keywords"/>
-        <result column="CLASSIFICATION" jdbcType="VARCHAR" property="classification"/>
+        <result column="CATEGORY" jdbcType="VARCHAR" property="classification"/>
         <result column="AU_AFFILIATION" jdbcType="VARCHAR" property="authorAffiliation"/>
         <result column="URL" jdbcType="VARCHAR" property="url"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID, TITLE, AUTHOR, YEAR, KEYWORDS, SOURCE, VOLUME,ISSUE,PAGES,ABSTRACT,CLASSIFICATION,AU_AFFILIATION,URL
+        ID, TITLE, AUTHOR, YEAR, KEYWORDS, SOURCE, VOLUME,ISSUE,PAGES,ABSTRACT,CATEGORY,AU_AFFILIATION,URL
     </sql>
     <sql id="TABLE_NAME">
         tb_academic_achievements
@@ -42,7 +42,7 @@
             <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
             <if test="keywords!=null and keywords.length() &gt; 0">AND KEYWORDS like "%${keywords}%"</if>
             <if test="year!=null and year.length() &gt; 0">AND YEAR like "%${year}%"</if>
-            <if test="classification!=null and classification.length() &gt; 0">AND CLASSIFICATION like "%${classification}%"</if>
+            <if test="classification!=null and classification.length() &gt; 0">AND CATEGORY like "%${classification}%"</if>
             <if test="yearFilter!=null and yearFilter.length() &gt; 0">AND YEAR = #{yearFilter,jdbcType=VARCHAR} </if>
             <if test="sourceFilter!=null and sourceFilter.length() &gt; 0">AND SOURCE = #{sourceFilter,jdbcType=VARCHAR} </if>
             <if test="authorAffiliationFilter!=null and authorAffiliationFilter.length() &gt; 0">AND AU_AFFILIATION = #{authorAffiliationFilter,jdbcType=VARCHAR} </if>
@@ -69,7 +69,7 @@
             <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
             <if test="keywords!=null and keywords.length() &gt; 0">AND KEYWORDS like "%${keywords}%"</if>
             <if test="year!=null and year.length() &gt; 0">AND YEAR like "%${year}%"</if>
-            <if test="classification!=null and classification.length() &gt; 0">AND CLASSIFICATION like "%${classification}%"</if>
+            <if test="classification!=null and classification.length() &gt; 0">AND CATEGORY like "%${classification}%"</if>
             <if test="yearFilter!=null and yearFilter.length() &gt; 0">AND YEAR = #{yearFilter,jdbcType=VARCHAR} </if>
             <if test="sourceFilter!=null and sourceFilter.length() &gt; 0">AND SOURCE = #{sourceFilter,jdbcType=VARCHAR} </if>
             <if test="authorAffiliationFilter!=null and authorAffiliationFilter.length() &gt; 0">AND AU_AFFILIATION = #{authorAffiliationFilter,jdbcType=VARCHAR} </if>
@@ -98,7 +98,7 @@
             <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
             <if test="keywords!=null and keywords.length() &gt; 0">AND KEYWORDS like "%${keywords}%"</if>
             <if test="year!=null and year.length() &gt; 0">AND YEAR like "%${year}%"</if>
-            <if test="classification!=null and classification.length() &gt; 0">AND CLASSIFICATION like "%${classification}%"</if>
+            <if test="classification!=null and classification.length() &gt; 0">AND CATEGORY like "%${classification}%"</if>
             <if test="yearFilter!=null and yearFilter.length() &gt; 0">AND YEAR = #{yearFilter,jdbcType=VARCHAR} </if>
             <if test="sourceFilter!=null and sourceFilter.length() &gt; 0">AND SOURCE = #{sourceFilter,jdbcType=VARCHAR} </if>
             <if test="authorAffiliationFilter!=null and authorAffiliationFilter.length() &gt; 0">AND AU_AFFILIATION = #{authorAffiliationFilter,jdbcType=VARCHAR} </if>
