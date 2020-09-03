@@ -18,9 +18,11 @@
         <result column="NEW_FILENAME" jdbcType="VARCHAR" property="newName"/>
         <result column="FORMAT" jdbcType="VARCHAR" property="format"/>
         <result column="TYPE_1" jdbcType="VARCHAR" property="filterType1"/>
+        <result column="RAM" jdbcType="VARCHAR" property="ram"/>
+
     </resultMap>
     <sql id="Base_Column_List">
-        ID, TITLE, UPLOADER, RE_TIME, TYPE_1, TYPE_2,TAGS, SOURCE, ABSTRACT,REFERENCE,PIC ,PATH, OLD_FILENAME,NEW_FILENAME,FORMAT
+        ID, TITLE, UPLOADER, RE_TIME, TYPE_1, TYPE_2,TAGS, SOURCE, ABSTRACT,REFERENCE,PIC ,PATH, OLD_FILENAME,NEW_FILENAME,FORMAT,RAM
     </sql>
     <sql id="TABLE_NAME">
         tb_geographic_data
