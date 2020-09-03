@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.GeodataMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.Geodata">
+        <result column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="TITLE" jdbcType="VARCHAR" property="title"/>
+        <result column="UPLOADER" jdbcType="VARCHAR" property="uploader"/>
+        <result column="RE_TIME" jdbcType="TIMESTAMP" property="time"/>
+        <result column="TYPE_1" jdbcType="VARCHAR" property="type1"/>
+        <result column="TYPE_2" jdbcType="VARCHAR" property="type2"/>
+        <result column="TAGS" jdbcType="VARCHAR" property="tags"/>
+        <result column="SOURCE" jdbcType="VARCHAR" property="source"/>
+        <result column="ABSTRACT" jdbcType="VARCHAR" property="abstractInfo"/>
+        <result column="REFERENCE" jdbcType="VARCHAR" property="reference"/>
+        <result column="PIC" jdbcType="VARCHAR" property="pic"/>
+        <result column="PATH" jdbcType="VARCHAR" property="path"/>
+        <result column="OLD_FILENAME" jdbcType="VARCHAR" property="oldName"/>
+        <result column="NEW_FILENAME" jdbcType="VARCHAR" property="newName"/>
+        <result column="FORMAT" jdbcType="VARCHAR" property="format"/>
+        <result column="TYPE_1" jdbcType="VARCHAR" property="filterType1"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID, TITLE, UPLOADER, RE_TIME, TYPE_1, TYPE_2,TAGS, SOURCE, ABSTRACT,REFERENCE,PIC ,PATH, OLD_FILENAME,NEW_FILENAME,FORMAT
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_geographic_data
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <!--  数据目录中的功能  -->
+    <select id="selectByType1" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where TYPE_1 = #{type1,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByType2" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where TYPE_2 = #{type2,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectBySource" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where SOURCE = #{source ,jdbcType=VARCHAR}
+    </select>
+
+
+    <!--  查找功能  -->
+    <select id="search" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="TABLE_NAME"/>
+        <where>
+            <if test="title!=null and title.length() &gt; 0">AND TITLE like "%${title}%"</if>
+            <if test="uploader!=null and uploader.length() &gt; 0">AND UPLOADER like "%${uploader}%"</if>
+            <if test="tags!=null and tags.length() &gt; 0">AND TAGS like "%${tags}%"</if>
+            <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
+            <if test="type1!=null and type1.length() &gt; 0">AND TYPE_1 like "%${type1}%"</if>
+            <if test="type2!=null and type2.length() &gt; 0">AND TYPE_2 like "%${type2}%"</if>
+            <if test="filterType1!=null and filterType1.length() &gt; 0">AND TYPE_1 = #{filterType1 ,jdbcType=VARCHAR}</if>
+            <if test="filterType2!=null and filterType2.length() &gt; 0">AND TYPE_2 = #{filterType2 ,jdbcType=VARCHAR}</if>
+        </where>
+        <if test="orderField!=null and orderType!=null">ORDER BY ${orderField} ${orderType}</if>
+    </select>
+
+    <!--  查询不重复的字段名  -->
+    <select id="getDistinctField" parameterType="java.lang.String" resultMap="BaseResultMap" statementType="STATEMENT">
+        SELECT DISTINCT
+        ${_parameter}
+        FROM <include refid="TABLE_NAME"/>
+    </select>
+    <!--  根据某一字段名返回其个数  -->
+    <select id="getCountOfField" parameterType="String" resultType="String" statementType="STATEMENT">
+        SELECT COUNT(*)
+        FROM <include refid="TABLE_NAME"/>
+        WHERE ${arg0} = '${arg1}'
+    </select>
+
+
+</mapper>

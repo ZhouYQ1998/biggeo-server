@@ -9,6 +9,6 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-public abstract class BaseFilter {
-    private String id;
+public abstract class BaseFilter<T> {
+    private T id;
 }

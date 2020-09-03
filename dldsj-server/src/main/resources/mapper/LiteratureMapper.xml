@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.LiteratureMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.Literature">
+        <result column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="TITLE" jdbcType="VARCHAR" property="title"/>
+        <result column="AUTHOR" jdbcType="VARCHAR" property="author"/>
+        <result column="YEAR" jdbcType="VARCHAR" property="year"/>
+        <result column="SOURCE" jdbcType="VARCHAR" property="source"/>
+        <result column="VOLUME" jdbcType="VARCHAR" property="volume"/>
+        <result column="ISSUE" jdbcType="VARCHAR" property="issue"/>
+        <result column="PAGES" jdbcType="VARCHAR" property="pages"/>
+        <result column="ABSTRACT" jdbcType="VARCHAR" property="abstractInfo"/>
+        <result column="KEYWORDS" jdbcType="VARCHAR" property="keywords"/>
+        <result column="CLASSIFICATION" jdbcType="VARCHAR" property="classification"/>
+        <result column="AU_AFFILIATION" jdbcType="VARCHAR" property="authorAffiliation"/>
+        <result column="URL" jdbcType="VARCHAR" property="url"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID, TITLE, AUTHOR, YEAR, KEYWORDS, SOURCE, VOLUME,ISSUE,PAGES,ABSTRACT,CLASSIFICATION,AU_AFFILIATION,URL
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_academic_achievements
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+
+    <!--  查找功能  -->
+    <select id="search" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="TABLE_NAME"/>
+        <where>
+            <if test="title!=null and title.length() &gt; 0">AND TITLE like "%${title}%"</if>
+            <if test="author!=null and author.length() &gt; 0">AND AUTHOR like "%${author}%"</if>
+            <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
+            <if test="keywords!=null and keywords.length() &gt; 0">AND KEYWORDS like "%${keywords}%"</if>
+            <if test="year!=null and year.length() &gt; 0">AND YEAR like "%${year}%"</if>
+            <if test="classification!=null and classification.length() &gt; 0">AND CLASSIFICATION like "%${classification}%"</if>
+            <if test="yearFilter!=null and yearFilter.length() &gt; 0">AND YEAR = #{yearFilter,jdbcType=VARCHAR} </if>
+            <if test="sourceFilter!=null and sourceFilter.length() &gt; 0">AND SOURCE = #{sourceFilter,jdbcType=VARCHAR} </if>
+            <if test="authorAffiliationFilter!=null and authorAffiliationFilter.length() &gt; 0">AND AU_AFFILIATION = #{authorAffiliationFilter,jdbcType=VARCHAR} </if>
+
+            <if test="startTime!=null and startTime!=''">
+                and cast(YEAR as DECIMAL)<![CDATA[>=]]> ${startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and cast(YEAR as DECIMAL) <![CDATA[<=]]> ${endTime}
+            </if>
+        </where>
+        <if test="orderField!=null and orderType!=null">ORDER BY ${orderField} ${orderType}</if>
+    </select>
+
+    <!--  查询不重复的字段名  -->
+
+    <select id="getDistinctField" resultMap="BaseResultMap" statementType="STATEMENT">
+        SELECT DISTINCT
+        ${distinctField}
+        FROM <include refid="TABLE_NAME"/>
+        <where>
+            <if test="title!=null and title.length() &gt; 0">AND TITLE like "%${title}%"</if>
+            <if test="author!=null and author.length() &gt; 0">AND AUTHOR like "%${author}%"</if>
+            <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
+            <if test="keywords!=null and keywords.length() &gt; 0">AND KEYWORDS like "%${keywords}%"</if>
+            <if test="year!=null and year.length() &gt; 0">AND YEAR like "%${year}%"</if>
+            <if test="classification!=null and classification.length() &gt; 0">AND CLASSIFICATION like "%${classification}%"</if>
+            <if test="yearFilter!=null and yearFilter.length() &gt; 0">AND YEAR = #{yearFilter,jdbcType=VARCHAR} </if>
+            <if test="sourceFilter!=null and sourceFilter.length() &gt; 0">AND SOURCE = #{sourceFilter,jdbcType=VARCHAR} </if>
+            <if test="authorAffiliationFilter!=null and authorAffiliationFilter.length() &gt; 0">AND AU_AFFILIATION = #{authorAffiliationFilter,jdbcType=VARCHAR} </if>
+            <if test="orderField!=null and orderType!=null"></if>
+
+            <if test="startTime!=null and startTime!=''">
+                and cast(YEAR as DECIMAL)<![CDATA[>=]]> ${startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and cast(YEAR as DECIMAL) <![CDATA[<=]]> ${endTime}
+            </if>
+        </where>
+    </select>
+
+
+    <!--  根据某一字段名返回其个数  -->
+    <select id="getCountOfField" parameterType="String" resultType="String" statementType="STATEMENT">
+        SELECT COUNT(*)
+        FROM <include refid="TABLE_NAME"/>
+        <where>
+            <if test="distinctField == 'YEAR'.toString() and yearDistinct!=null">AND YEAR = "${yearDistinct}" </if>
+            <if test="distinctField == 'SOURCE'.toString() and sourceDistinct!=null">AND SOURCE = "${sourceDistinct}" </if>
+            <if test="distinctField == 'AU_AFFILIATION'.toString() and authorAffiliationFilterDistinct!=null">AND AU_AFFILIATION = "${authorAffiliationFilterDistinct}" </if>
+            <if test="title!=null and title.length() &gt; 0">AND TITLE like "%${title}%"</if>
+            <if test="author!=null and author.length() &gt; 0">AND AUTHOR like "%${author}%"</if>
+            <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
+            <if test="keywords!=null and keywords.length() &gt; 0">AND KEYWORDS like "%${keywords}%"</if>
+            <if test="year!=null and year.length() &gt; 0">AND YEAR like "%${year}%"</if>
+            <if test="classification!=null and classification.length() &gt; 0">AND CLASSIFICATION like "%${classification}%"</if>
+            <if test="yearFilter!=null and yearFilter.length() &gt; 0">AND YEAR = #{yearFilter,jdbcType=VARCHAR} </if>
+            <if test="sourceFilter!=null and sourceFilter.length() &gt; 0">AND SOURCE = #{sourceFilter,jdbcType=VARCHAR} </if>
+            <if test="authorAffiliationFilter!=null and authorAffiliationFilter.length() &gt; 0">AND AU_AFFILIATION = #{authorAffiliationFilter,jdbcType=VARCHAR} </if>
+            <if test="orderField!=null and orderType!=null"></if>
+        </where>
+    </select>
+
+</mapper>

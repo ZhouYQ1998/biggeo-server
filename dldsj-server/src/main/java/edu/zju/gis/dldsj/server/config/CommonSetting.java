@@ -20,4 +20,6 @@ import java.util.List;
 public class CommonSetting {
     private List<String> frontEndRegionList;
     private String sessionMaxAge;
+    //存储可视化部分工程json文件、数据json文件以及一些图片
+    private String mapfileSavepath;
 }

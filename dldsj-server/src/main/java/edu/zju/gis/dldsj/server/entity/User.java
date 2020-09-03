@@ -27,3 +27,4 @@ public class User {
     private String avatarPath;
     private int dirUsedSize;
 }
+

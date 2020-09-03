@@ -10,6 +10,10 @@ Spring:
       enabled: true
       charset: UTF-8
       force: true
+    converters:
+      preferred-json-mapper: gson
+  gson:
+    date-format: yyyy-MM-dd HH:mm:ss
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

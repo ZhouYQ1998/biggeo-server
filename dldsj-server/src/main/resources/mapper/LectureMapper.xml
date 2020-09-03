@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.LectureMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.Lecture">
+        <result column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="SPEAKER" jdbcType="VARCHAR" property="speaker"/>
+        <result column="PLACE" jdbcType="VARCHAR" property="place"/>
+        <result column="HREF" jdbcType="VARCHAR" property="href"/>
+        <result column="TIME" jdbcType="VARCHAR" property="time"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID, NAME, SPEAKER, PLACE, TIME, HREF
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_lectures
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="search" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="TABLE_NAME"/>
+        <where>
+            <if test="name!=null and name.length() &gt; 0">AND NAME like "%${name}%"</if>
+        </where>
+    </select>
+
+    <select id="selectByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        ORDER BY
+         ${param1} ${param2}
+    </select>
+
+</mapper>

@@ -22,7 +22,7 @@ public interface BaseMapper<T , ID extends Serializable> {
      * @param params
      * @return
      */
-    List<T> search(BaseFilter params);
+    List<T> search(BaseFilter<ID> params);
 
     /**
      * 插入实体
