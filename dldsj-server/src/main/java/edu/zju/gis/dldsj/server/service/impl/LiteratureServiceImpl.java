@@ -139,8 +139,10 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                 }
             });
             //for
-            for (int i = 0; i < list2.size(); i++) {
-                res.add(list2.get(i).getKey() + " " + list2.get(i).getValue());
+            for (int i = 0; i < 10; i++) {
+                if (list2.get(i).getKey()!=" ") {
+                    res.add(list2.get(i).getKey() + " " + list2.get(i).getValue());
+                }
             }
 
         return res;
