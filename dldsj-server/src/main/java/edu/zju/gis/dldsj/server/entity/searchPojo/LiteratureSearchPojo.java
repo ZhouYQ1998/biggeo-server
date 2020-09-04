@@ -16,6 +16,7 @@ public class LiteratureSearchPojo extends BaseFilter<String> {
     private String title;
     private String author;
     private String year;
+    private String type;
     private String source;
     private String keywords;
     private String abstractInfo;

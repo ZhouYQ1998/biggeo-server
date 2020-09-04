@@ -19,6 +19,7 @@ public class Literature {
     private String title;
     private String author;
     private String year;
+    private String type;
     private String source;
     private String volume;
     private String issue;

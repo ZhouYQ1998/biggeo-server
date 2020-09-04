@@ -25,6 +25,7 @@ public class Geodata {
     private String source;
     private String abstractInfo;
     private String reference;
+
     //缩略图
     private String pic;
     //存放路径
@@ -32,6 +33,7 @@ public class Geodata {
     private String newName;
     private String oldName;
     private String format;
+    private String ram;
 
     //以下为第二步筛选用到的条件
     private String filterType1;

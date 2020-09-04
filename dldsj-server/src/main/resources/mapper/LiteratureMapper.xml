@@ -14,10 +14,11 @@
         <result column="KEYWORDS" jdbcType="VARCHAR" property="keywords"/>
         <result column="CATEGORY" jdbcType="VARCHAR" property="classification"/>
         <result column="AU_AFFILIATION" jdbcType="VARCHAR" property="authorAffiliation"/>
+        <result column="TYPE" jdbcType="VARCHAR" property="type"/>
         <result column="URL" jdbcType="VARCHAR" property="url"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID, TITLE, AUTHOR, YEAR, KEYWORDS, SOURCE, VOLUME,ISSUE,PAGES,ABSTRACT,CATEGORY,AU_AFFILIATION,URL
+        ID, TITLE, AUTHOR, YEAR, KEYWORDS, TYPE ,SOURCE, VOLUME,ISSUE,PAGES,ABSTRACT,CATEGORY,AU_AFFILIATION,URL
     </sql>
     <sql id="TABLE_NAME">
         tb_academic_achievements
@@ -39,6 +40,7 @@
         <where>
             <if test="title!=null and title.length() &gt; 0">AND TITLE like "%${title}%"</if>
             <if test="author!=null and author.length() &gt; 0">AND AUTHOR like "%${author}%"</if>
+            <if test="type!=null and type.length() &gt; 0">AND TYPE like "%${type}%"</if>
             <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
             <if test="keywords!=null and keywords.length() &gt; 0">AND KEYWORDS like "%${keywords}%"</if>
             <if test="year!=null and year.length() &gt; 0">AND YEAR like "%${year}%"</if>
