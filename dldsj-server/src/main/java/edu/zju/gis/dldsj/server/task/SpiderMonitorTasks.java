@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Jiarui
@@ -26,7 +27,8 @@ public class SpiderMonitorTasks implements Runnable{
                 String filepath = "/Users/jiarui/学习/ZJU/暑期课程/Summer_endpoint/dldsj-server/src/main/resources/test.py";
                 String cmd = "python "+filepath;
                 CmdUtil.runLocal(cmd);
-                Thread.sleep(5000);
+                //休眠一天，一天运行一次
+                TimeUnit.HOURS.sleep(24);
             } catch (InterruptedException | IOException e) {
                 log.error("AsyncService was interrupted!", e);
                 return;
