@@ -68,4 +68,81 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
         }
         return map;
     }
+
+    //计算查询结果中出现次数最多的作者、关键词、机构
+    public List<String> getSumOfField(LiteratureSearchPojo param,String field){
+        //根据现有的条件查询的结果
+        List<Literature> list= mapper.search(param);
+        List<String> listAll = new ArrayList();
+        String allRes;
+        Map map = new HashMap();
+        List res = new ArrayList();
+
+        for (Literature literature :list) {
+            //多个作者，用"; "分隔
+            //根据输入的字段计算
+            switch (field) {
+                case "author":
+                    allRes = literature.getAuthor();
+                    if (allRes.contains(";")) {
+                        String[] singleAuthors = allRes.split("; ");
+                        for (String s : singleAuthors) {
+                            listAll.add(s);
+                        }
+                    }
+                    else listAll.add(allRes);
+                    break;
+                case "keywords":
+                    allRes = literature.getKeywords();
+                    if (allRes.contains(";")) {
+                        String[] singleKeywords = allRes.split("; ");
+                    for (String s : singleKeywords) {
+                        listAll.add(s);
+                        }
+                    }
+                    else listAll.add(allRes);
+                    break;
+                case "affiliation":
+                    allRes = literature.getAuthorAffiliation();
+                    if (allRes.contains(";")) {
+                        String[] singleAffiliation = allRes.split("; ");
+                    for (String s : singleAffiliation) {
+                        listAll.add(s);
+                        }
+                    }
+                    else listAll.add(allRes);
+                    break;
+                default:
+                    return null;
+            }
+        }
+
+            Set<String> uniqueSet = new HashSet(listAll);
+            for (String temp : uniqueSet) {
+                String name = temp;
+                map.put(name,Collections.frequency(listAll,temp));
+            }
+            //按照value的数量排序
+            List<Map.Entry<String, Integer>> list2 = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
+            //list.sort()
+            list2.sort(new Comparator<Map.Entry<String, Integer>>() {
+                @Override
+                public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                    return o2.getValue().compareTo(o1.getValue());
+                }
+            });
+            //collections.sort()
+            Collections.sort(list2, new Comparator<Map.Entry<String, Integer>>() {
+                @Override
+                public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                    return o2.getValue().compareTo(o1.getValue());
+                }
+            });
+            //for
+            for (int i = 0; i < list2.size(); i++) {
+                res.add(list2.get(i).getKey() + " " + list2.get(i).getValue());
+            }
+
+        return res;
+    }
 }
