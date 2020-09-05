@@ -86,33 +86,38 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
             switch (field) {
                 case "author":
                     allRes = literature.getAuthor();
-                    if (allRes.contains(";")) {
-                        String[] singleAuthors = allRes.split("; ");
-                        for (String s : singleAuthors) {
-                            listAll.add(s);
+                    if (allRes != null) {
+                        if (allRes.contains(";")) {
+                            String[] singleAuthors = allRes.split("; ");
+                            for (String s : singleAuthors) {
+                                listAll.add(s);
+                            }
                         }
                     }
                     else listAll.add(allRes);
                     break;
                 case "keywords":
                     allRes = literature.getKeywords();
-                    if (allRes.contains(";")) {
-                        String[] singleKeywords = allRes.split("; ");
-                    for (String s : singleKeywords) {
-                        listAll.add(s);
-                        }
+                    if (allRes != null) {
+                        if (allRes.contains(";")) {
+                            String[] singleKeywords = allRes.split("; ");
+                            for (String s : singleKeywords) {
+                                listAll.add(s);
+                            }
+                        } else listAll.add(allRes);
                     }
-                    else listAll.add(allRes);
                     break;
                 case "affiliation":
                     allRes = literature.getAuthorAffiliation();
-                    if (allRes.contains(";")) {
-                        String[] singleAffiliation = allRes.split("; ");
-                    for (String s : singleAffiliation) {
-                        listAll.add(s);
+                    System.out.println(allRes);
+                    if (allRes != null){
+                        if (allRes.contains(";")) {
+                            String[] singleAffiliation = allRes.split("; ");
+                            for (String s : singleAffiliation) {
+                            listAll.add(s);
                         }
+                    } else listAll.add(allRes);
                     }
-                    else listAll.add(allRes);
                     break;
                 default:
                     return null;
