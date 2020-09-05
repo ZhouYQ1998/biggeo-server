@@ -35,6 +35,7 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                 list = mapper.getDistinctField(param);
                 break;
             default:
+                System.out.println("default");
                 list = null;
         }
         //System.out.println(list);
@@ -46,26 +47,35 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
 
         for (Literature literature : list){
             String count;
-            switch (field) {
-                case "SOURCE":
-                    str = literature.getSource();
-                    param.setSourceDistinct(str);
-                    count = mapper.getCountOfField(param);
-                    map.put(str,count);
-                    break;
-                case "YEAR":
-                    str = literature.getYear();
-                    param.setYearDistinct(str);
-                    count = mapper.getCountOfField(param);
-                    map.put(str,count);
-                    break;
-                case "AU_AFFILIATION":
-                    str = literature.getAuthorAffiliation();
-                    param.setAuthorAffiliationFilterDistinct(str);
-                    count = mapper.getCountOfField(param);
-                    map.put(str,count);
-                default:
-                    str = "xxx";
+            if (literature!=null) {
+                switch (field) {
+                    case "SOURCE":
+                        System.out.println(literature);
+                        if (literature.getSource() != null) {
+                            str = literature.getSource();
+                            param.setSourceDistinct(str);
+                            count = mapper.getCountOfField(param);
+                            map.put(str, count);
+                        }
+                        break;
+                    case "YEAR":
+                        if (literature.getYear() != null) {
+                            str = literature.getYear();
+                            param.setYearDistinct(str);
+                            count = mapper.getCountOfField(param);
+                            map.put(str, count);
+                        }
+                        break;
+                    case "AU_AFFILIATION":
+                        if (literature.getAuthorAffiliation() != null) {
+                            str = literature.getAuthorAffiliation();
+                            param.setAuthorAffiliationFilterDistinct(str);
+                            count = mapper.getCountOfField(param);
+                            map.put(str, count);
+                        }
+                    default:
+                        str = "xxx";
+                }
             }
         }
         return map;
