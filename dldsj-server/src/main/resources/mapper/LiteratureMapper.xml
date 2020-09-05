@@ -43,6 +43,7 @@
         FROM <include refid="TABLE_NAME"/>
         <where>
             <if test="title!=null and title.length() &gt; 0">AND TITLE like "%${title}%"</if>
+
             <if test="author!=null and author.length() &gt; 0">AND AUTHOR like "%${author}%"</if>
             <if test="type!=null and type.length() &gt; 0">AND TYPE like "%${type}%"</if>
             <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
@@ -53,6 +54,10 @@
             <if test="section!=null and section.length() &gt; 0">AND SECTION like "%${section}%"</if>
             <if test="tutor!=null and tutor.length() &gt; 0">AND TERTIARY_AUTHOR like "%${tutor}%"</if>
             <if test="authorAffiliation!=null and authorAffiliation.length() &gt; 0">AND AU_AFFILIATION like "%${authorAffiliation}%"</if>
+
+            <if test="selectType!=null and selectType=='1'.toString">AND TYPE = "Journal Article"</if>
+            <if test="selectType!=null and selectType=='2'.toString">AND TYPE = "Thesis"</if>
+            <if test="selectType!=null and selectType=='3'.toString">AND TYPE in ("Journal Article","Thesis")</if>
 
             <if test="yearFilter!=null and yearFilter.length() &gt; 0">AND YEAR = #{yearFilter,jdbcType=VARCHAR} </if>
             <if test="sourceFilter!=null and sourceFilter.length() &gt; 0">AND SOURCE = #{sourceFilter,jdbcType=VARCHAR} </if>
@@ -91,6 +96,10 @@
             <if test="section!=null and section.length() &gt; 0">AND SECTION like "%${section}%"</if>
             <if test="tutor!=null and tutor.length() &gt; 0">AND TERTIARY_AUTHOR like "%${tutor}%"</if>
 
+            <if test="selectType!=null and selectType=='1'.toString">AND TYPE = "Journal Article"</if>
+            <if test="selectType!=null and selectType=='2'.toString">AND TYPE = "Thesis"</if>
+            <if test="selectType!=null and selectType=='3'.toString">AND TYPE in ("Journal Article","Thesis")</if>
+
             <if test="startTime!=null and startTime!=''">
                 and cast(YEAR as DECIMAL)<![CDATA[>=]]> ${startTime}
             </if>
@@ -125,6 +134,9 @@
             <if test="section!=null and section.length() &gt; 0">AND SECTION like "%${section}%"</if>
             <if test="tutor!=null and tutor.length() &gt; 0">AND TERTIARY_AUTHOR like "%${tutor}%"</if>
 
+            <if test="selectType!=null and selectType=='1'.toString">AND TYPE = "Journal Article"</if>
+            <if test="selectType!=null and selectType=='2'.toString">AND TYPE = "Thesis"</if>
+            <if test="selectType!=null and selectType=='3'.toString">AND TYPE in ("Journal Article","Thesis")</if>
         </where>
     </select>
 

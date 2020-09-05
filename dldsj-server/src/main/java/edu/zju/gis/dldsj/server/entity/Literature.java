@@ -52,4 +52,6 @@ public class Literature {
     //排序所用属性
     private String orderField;
     private String orderType;
+
+
 }
