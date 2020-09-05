@@ -107,6 +107,7 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                             listAll.add(allRes);
                         }
                     }
+                    else listAll.add("");
                     break;
                 case "keywords":
                     allRes = literature.getKeywords();
@@ -118,6 +119,8 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                             }
                         } else listAll.add(allRes);
                     }
+                    else listAll.add("");
+
                     break;
                 case "affiliation":
                     allRes = literature.getAuthorAffiliation();
@@ -130,6 +133,7 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                         }
                     } else listAll.add(allRes);
                     }
+                    else listAll.add("");
                     break;
                 default:
                     return null;
@@ -158,12 +162,13 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                 }
             });
             //for
-
-            for (int i = 0; i < 10; i++) {
-                if (list2.get(i).getKey()!=" ") {
-                    map2.put(list2.get(i).getKey(),list2.get(i).getValue());
+            if (list2.size()!=0) {
+                for (int i = 0; i < 10; i++) {
+                    if (list2.get(i).getKey() != " ") {
+                        map2.put(list2.get(i).getKey(), list2.get(i).getValue());
+                    }
+                    if (i >= list2.size() - 1) break;
                 }
-                if(i>=list2.size()-1) break;
             }
         return map2;
     }
