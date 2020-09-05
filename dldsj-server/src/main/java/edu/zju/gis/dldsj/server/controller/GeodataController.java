@@ -84,7 +84,7 @@ public class GeodataController extends BaseController<Geodata, GeodataService,St
     }
 
     /**
-     * 根据输入的id，更新数据库中下载次数的字段
+     * 返回下载数量最多的五条数据
      */
     @RequestMapping(value = "/populardata", method = RequestMethod.GET)
     @ResponseBody

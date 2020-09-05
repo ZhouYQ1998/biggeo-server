@@ -6,10 +6,8 @@ import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.Lecture;
 import edu.zju.gis.dldsj.server.mapper.LectureMapper;
 import edu.zju.gis.dldsj.server.service.LectureService;
-import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 /**
  * @author Jiarui
