@@ -103,8 +103,10 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                                 listAll.add(s);
                             }
                         }
+                        else {
+                            listAll.add(allRes);
+                        }
                     }
-                    else listAll.add(allRes);
                     break;
                 case "keywords":
                     allRes = literature.getKeywords();
