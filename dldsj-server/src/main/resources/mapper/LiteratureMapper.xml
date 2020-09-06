@@ -7,6 +7,9 @@
         <result column="AUTHOR" jdbcType="VARCHAR" property="author"/>
         <result column="YEAR" jdbcType="VARCHAR" property="year"/>
         <result column="SOURCE" jdbcType="VARCHAR" property="source"/>
+        <result column="PUBLISHER" jdbcType="VARCHAR" property="publisher"/>
+        <result column="SECTION" jdbcType="VARCHAR" property="section"/>
+        <result column="TERTIARY_AUTHOR" jdbcType="VARCHAR" property="tutor"/>
         <result column="VOLUME" jdbcType="VARCHAR" property="volume"/>
         <result column="ISSUE" jdbcType="VARCHAR" property="issue"/>
         <result column="PAGES" jdbcType="VARCHAR" property="pages"/>
@@ -18,7 +21,7 @@
         <result column="URL" jdbcType="VARCHAR" property="url"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID, TITLE, AUTHOR, YEAR, KEYWORDS, TYPE ,SOURCE, VOLUME,ISSUE,PAGES,ABSTRACT,CATEGORY,AU_AFFILIATION,URL
+        ID, TITLE, AUTHOR, YEAR, KEYWORDS, TYPE ,PUBLISHER,SECTION,TERTIARY_AUTHOR,SOURCE, VOLUME,ISSUE,PAGES,ABSTRACT,CATEGORY,AU_AFFILIATION,URL
     </sql>
     <sql id="TABLE_NAME">
         tb_academic_achievements
@@ -30,6 +33,7 @@
         from <include refid="TABLE_NAME"/>
         where ID = #{id,jdbcType=VARCHAR}
     </select>
+
 
 
     <!--  查找功能  -->
@@ -45,6 +49,11 @@
             <if test="keywords!=null and keywords.length() &gt; 0">AND KEYWORDS like "%${keywords}%"</if>
             <if test="year!=null and year.length() &gt; 0">AND YEAR like "%${year}%"</if>
             <if test="classification!=null and classification.length() &gt; 0">AND CATEGORY like "%${classification}%"</if>
+            <if test="publisher!=null and publisher.length() &gt; 0">AND PUBLISHER like "%${publisher}%"</if>
+            <if test="section!=null and section.length() &gt; 0">AND SECTION like "%${section}%"</if>
+            <if test="tutor!=null and tutor.length() &gt; 0">AND TERTIARY_AUTHOR like "%${tutor}%"</if>
+            <if test="authorAffiliation!=null and authorAffiliation.length() &gt; 0">AND AU_AFFILIATION like "%${authorAffiliation}%"</if>
+
             <if test="yearFilter!=null and yearFilter.length() &gt; 0">AND YEAR = #{yearFilter,jdbcType=VARCHAR} </if>
             <if test="sourceFilter!=null and sourceFilter.length() &gt; 0">AND SOURCE = #{sourceFilter,jdbcType=VARCHAR} </if>
             <if test="authorAffiliationFilter!=null and authorAffiliationFilter.length() &gt; 0">AND AU_AFFILIATION = #{authorAffiliationFilter,jdbcType=VARCHAR} </if>
@@ -72,10 +81,15 @@
             <if test="keywords!=null and keywords.length() &gt; 0">AND KEYWORDS like "%${keywords}%"</if>
             <if test="year!=null and year.length() &gt; 0">AND YEAR like "%${year}%"</if>
             <if test="classification!=null and classification.length() &gt; 0">AND CATEGORY like "%${classification}%"</if>
+            <if test="authorAffiliation!=null and authorAffiliation.length() &gt; 0">AND AU_AFFILIATION like "%${authorAffiliation}%"</if>
+
             <if test="yearFilter!=null and yearFilter.length() &gt; 0">AND YEAR = #{yearFilter,jdbcType=VARCHAR} </if>
             <if test="sourceFilter!=null and sourceFilter.length() &gt; 0">AND SOURCE = #{sourceFilter,jdbcType=VARCHAR} </if>
             <if test="authorAffiliationFilter!=null and authorAffiliationFilter.length() &gt; 0">AND AU_AFFILIATION = #{authorAffiliationFilter,jdbcType=VARCHAR} </if>
             <if test="orderField!=null and orderType!=null"></if>
+            <if test="publisher!=null and publisher.length() &gt; 0">AND PUBLISHER like "%${publisher}%"</if>
+            <if test="section!=null and section.length() &gt; 0">AND SECTION like "%${section}%"</if>
+            <if test="tutor!=null and tutor.length() &gt; 0">AND TERTIARY_AUTHOR like "%${tutor}%"</if>
 
             <if test="startTime!=null and startTime!=''">
                 and cast(YEAR as DECIMAL)<![CDATA[>=]]> ${startTime}
@@ -101,10 +115,16 @@
             <if test="keywords!=null and keywords.length() &gt; 0">AND KEYWORDS like "%${keywords}%"</if>
             <if test="year!=null and year.length() &gt; 0">AND YEAR like "%${year}%"</if>
             <if test="classification!=null and classification.length() &gt; 0">AND CATEGORY like "%${classification}%"</if>
+            <if test="authorAffiliation!=null and authorAffiliation.length() &gt; 0">AND AU_AFFILIATION like "%${authorAffiliation}%"</if>
+
             <if test="yearFilter!=null and yearFilter.length() &gt; 0">AND YEAR = #{yearFilter,jdbcType=VARCHAR} </if>
             <if test="sourceFilter!=null and sourceFilter.length() &gt; 0">AND SOURCE = #{sourceFilter,jdbcType=VARCHAR} </if>
             <if test="authorAffiliationFilter!=null and authorAffiliationFilter.length() &gt; 0">AND AU_AFFILIATION = #{authorAffiliationFilter,jdbcType=VARCHAR} </if>
             <if test="orderField!=null and orderType!=null"></if>
+            <if test="publisher!=null and publisher.length() &gt; 0">AND PUBLISHER like "%${publisher}%"</if>
+            <if test="section!=null and section.length() &gt; 0">AND SECTION like "%${section}%"</if>
+            <if test="tutor!=null and tutor.length() &gt; 0">AND TERTIARY_AUTHOR like "%${tutor}%"</if>
+
         </where>
     </select>
 

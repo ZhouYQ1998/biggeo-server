@@ -5,6 +5,7 @@ import edu.zju.gis.dldsj.server.entity.Literature;
 import edu.zju.gis.dldsj.server.entity.searchPojo.LiteratureSearchPojo;
 import edu.zju.gis.dldsj.server.mapper.LiteratureMapper;
 import edu.zju.gis.dldsj.server.service.LiteratureService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,13 +15,14 @@ import java.util.*;
  * @date 2020/8/27
  */
 @Service
+@Slf4j
 public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Literature,String> implements LiteratureService {
 
     //根据输入字段名称，返回结果的唯一不同值与对应数量
     public Map<String,String> getDistinctField(LiteratureSearchPojo param) {
         //field为查找的字段名，SOURCE、YEAR、AU_AFFILIATION
         String field = param.getDistinctField();
-        System.out.println(field);
+        //System.out.println(field);
         List<Literature> list = new ArrayList<>();
         switch (field){
             case "SOURCE":
@@ -35,7 +37,7 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
             default:
                 list = null;
         }
-        System.out.println(list);
+        //System.out.println(list);
         List<String> res = new ArrayList<String>();
         //str为读取出来的唯一字段名称
         String str;
@@ -70,13 +72,13 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
     }
 
     //计算查询结果中出现次数最多的作者、关键词、机构
-    public List<String> getSumOfField(LiteratureSearchPojo param,String field){
+    public Map<String,Object> getSumOfField(LiteratureSearchPojo param,String field){
         //根据现有的条件查询的结果
         List<Literature> list= mapper.search(param);
         List<String> listAll = new ArrayList();
         String allRes;
         Map map = new HashMap();
-        List res = new ArrayList();
+        Map map2 = new LinkedHashMap();
 
         for (Literature literature :list) {
             //多个作者，用"; "分隔
@@ -139,10 +141,14 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                 }
             });
             //for
-            for (int i = 0; i < list2.size(); i++) {
-                res.add(list2.get(i).getKey() + " " + list2.get(i).getValue());
-            }
 
-        return res;
+            for (int i = 0; i < 10; i++) {
+                if (list2.get(i).getKey()!=" ") {
+                    map2.put(list2.get(i).getKey(),list2.get(i).getValue());
+                }
+                if(i>=list2.size()-1) break;
+            }
+        return map2;
     }
+
 }

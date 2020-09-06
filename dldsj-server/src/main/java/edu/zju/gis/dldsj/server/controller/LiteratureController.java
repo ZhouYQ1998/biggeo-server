@@ -42,7 +42,7 @@ public class LiteratureController extends BaseController<Literature, LiteratureS
     @RequestMapping(value = "/name", method = RequestMethod.POST)
     @ResponseBody
     public Result getname(@RequestBody LiteratureSearchPojo param,String field) {
-        List<String> res = service.getSumOfField(param,field);
+        Map<String,Object> res = service.getSumOfField(param,field);
         return Result.success().setBody(res);
     }
 
