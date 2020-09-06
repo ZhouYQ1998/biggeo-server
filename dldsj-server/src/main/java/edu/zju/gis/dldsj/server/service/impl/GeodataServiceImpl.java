@@ -75,4 +75,14 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper,Geodata,St
         return map;
     }
 
+    //下载数量+1
+    public void downloadTimesPlus(String id) {
+        mapper.downloadTimesPlus(id);
+    }
+
+    //统计下载量最高的5条数据
+    public List<Geodata> getPopularData(){
+    return mapper.getPopularData();
+    }
+
 }

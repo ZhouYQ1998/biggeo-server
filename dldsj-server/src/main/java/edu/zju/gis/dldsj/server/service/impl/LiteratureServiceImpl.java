@@ -35,6 +35,7 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                 list = mapper.getDistinctField(param);
                 break;
             default:
+                System.out.println("default");
                 list = null;
         }
         //System.out.println(list);
@@ -46,26 +47,35 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
 
         for (Literature literature : list){
             String count;
-            switch (field) {
-                case "SOURCE":
-                    str = literature.getSource();
-                    param.setSourceDistinct(str);
-                    count = mapper.getCountOfField(param);
-                    map.put(str,count);
-                    break;
-                case "YEAR":
-                    str = literature.getYear();
-                    param.setYearDistinct(str);
-                    count = mapper.getCountOfField(param);
-                    map.put(str,count);
-                    break;
-                case "AU_AFFILIATION":
-                    str = literature.getAuthorAffiliation();
-                    param.setAuthorAffiliationFilterDistinct(str);
-                    count = mapper.getCountOfField(param);
-                    map.put(str,count);
-                default:
-                    str = "xxx";
+            if (literature!=null) {
+                switch (field) {
+                    case "SOURCE":
+                        System.out.println(literature);
+                        if (literature.getSource() != null) {
+                            str = literature.getSource();
+                            param.setSourceDistinct(str);
+                            count = mapper.getCountOfField(param);
+                            map.put(str, count);
+                        }
+                        break;
+                    case "YEAR":
+                        if (literature.getYear() != null) {
+                            str = literature.getYear();
+                            param.setYearDistinct(str);
+                            count = mapper.getCountOfField(param);
+                            map.put(str, count);
+                        }
+                        break;
+                    case "AU_AFFILIATION":
+                        if (literature.getAuthorAffiliation() != null) {
+                            str = literature.getAuthorAffiliation();
+                            param.setAuthorAffiliationFilterDistinct(str);
+                            count = mapper.getCountOfField(param);
+                            map.put(str, count);
+                        }
+                    default:
+                        str = "xxx";
+                }
             }
         }
         return map;
@@ -86,33 +96,44 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
             switch (field) {
                 case "author":
                     allRes = literature.getAuthor();
-                    if (allRes.contains(";")) {
-                        String[] singleAuthors = allRes.split("; ");
-                        for (String s : singleAuthors) {
-                            listAll.add(s);
+                    if (allRes != null) {
+                        if (allRes.contains(";")) {
+                            String[] singleAuthors = allRes.split("; ");
+                            for (String s : singleAuthors) {
+                                listAll.add(s);
+                            }
+                        }
+                        else {
+                            listAll.add(allRes);
                         }
                     }
-                    else listAll.add(allRes);
+                    else listAll.add("");
                     break;
                 case "keywords":
                     allRes = literature.getKeywords();
-                    if (allRes.contains(";")) {
-                        String[] singleKeywords = allRes.split("; ");
-                    for (String s : singleKeywords) {
-                        listAll.add(s);
-                        }
+                    if (allRes != null) {
+                        if (allRes.contains(";")) {
+                            String[] singleKeywords = allRes.split("; ");
+                            for (String s : singleKeywords) {
+                                listAll.add(s);
+                            }
+                        } else listAll.add(allRes);
                     }
-                    else listAll.add(allRes);
+                    else listAll.add("");
+
                     break;
                 case "affiliation":
                     allRes = literature.getAuthorAffiliation();
-                    if (allRes.contains(";")) {
-                        String[] singleAffiliation = allRes.split("; ");
-                    for (String s : singleAffiliation) {
-                        listAll.add(s);
+                    System.out.println(allRes);
+                    if (allRes != null){
+                        if (allRes.contains(";")) {
+                            String[] singleAffiliation = allRes.split("; ");
+                            for (String s : singleAffiliation) {
+                            listAll.add(s);
                         }
+                    } else listAll.add(allRes);
                     }
-                    else listAll.add(allRes);
+                    else listAll.add("");
                     break;
                 default:
                     return null;
@@ -141,12 +162,13 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                 }
             });
             //for
-
-            for (int i = 0; i < 10; i++) {
-                if (list2.get(i).getKey()!=" ") {
-                    map2.put(list2.get(i).getKey(),list2.get(i).getValue());
+            if (list2.size()!=0) {
+                for (int i = 0; i < 10; i++) {
+                    if (list2.get(i).getKey() != " ") {
+                        map2.put(list2.get(i).getKey(), list2.get(i).getValue());
+                    }
+                    if (i >= list2.size() - 1) break;
                 }
-                if(i>=list2.size()-1) break;
             }
         return map2;
     }

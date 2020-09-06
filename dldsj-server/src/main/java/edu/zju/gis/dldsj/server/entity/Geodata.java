@@ -43,4 +43,7 @@ public class Geodata {
     private String orderField;
     private String orderType;
 
+    //下载次数
+    private int downloadTimes;
+
 }

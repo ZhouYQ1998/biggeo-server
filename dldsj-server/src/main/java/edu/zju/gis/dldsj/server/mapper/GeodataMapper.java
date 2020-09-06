@@ -26,5 +26,10 @@ public interface GeodataMapper extends BaseMapper<Geodata,String> {
     //计算该字段共有多少条数据
     String getCountOfField(String field,String field2);
 
+    //下载次数+1
+    void downloadTimesPlus(String id);
+    //下载量最多的5条数据
+    List<Geodata> getPopularData();
+
 
 }
