@@ -1,8 +1,6 @@
 package edu.zju.gis.dldsj.server.controller;
 
-
 import edu.zju.gis.dldsj.server.base.BaseController;
-import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.entity.Literature;
 import edu.zju.gis.dldsj.server.entity.searchPojo.LiteratureSearchPojo;
@@ -11,7 +9,6 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,13 +33,13 @@ public class LiteratureController extends BaseController<Literature, LiteratureS
     }
 
     /**
-     * distinct 根据输入字段名称，返回结果的唯一不同值与对应数量
+     * 根据输入字段名称，统计结果中作者、关键词、机构出现频次
      * @param param
      */
     @RequestMapping(value = "/name", method = RequestMethod.POST)
     @ResponseBody
     public Result getname(@RequestBody LiteratureSearchPojo param,String field) {
-        List<String> res = service.getSumOfField(param,field);
+        Map<String,Object> res = service.getSumOfField(param,field);
         return Result.success().setBody(res);
     }
 

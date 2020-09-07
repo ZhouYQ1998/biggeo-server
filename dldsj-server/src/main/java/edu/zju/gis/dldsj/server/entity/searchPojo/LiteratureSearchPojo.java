@@ -17,6 +17,9 @@ public class LiteratureSearchPojo extends BaseFilter<String> {
     private String author;
     private String year;
     private String type;
+    private String publisher;
+    private String section;
+    private String tutor;
     private String source;
     private String keywords;
     private String abstractInfo;
@@ -42,4 +45,7 @@ public class LiteratureSearchPojo extends BaseFilter<String> {
     //排序所用属性
     private String orderField;
     private String orderType;
+
+    //类型选择
+    private String selectType;
 }

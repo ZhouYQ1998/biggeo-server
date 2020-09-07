@@ -5,6 +5,7 @@ import edu.zju.gis.dldsj.server.entity.Literature;
 import edu.zju.gis.dldsj.server.entity.searchPojo.LiteratureSearchPojo;
 import edu.zju.gis.dldsj.server.mapper.LiteratureMapper;
 import edu.zju.gis.dldsj.server.service.LiteratureService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,13 +15,14 @@ import java.util.*;
  * @date 2020/8/27
  */
 @Service
+@Slf4j
 public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Literature,String> implements LiteratureService {
 
     //根据输入字段名称，返回结果的唯一不同值与对应数量
     public Map<String,String> getDistinctField(LiteratureSearchPojo param) {
         //field为查找的字段名，SOURCE、YEAR、AU_AFFILIATION
         String field = param.getDistinctField();
-        System.out.println(field);
+        //System.out.println(field);
         List<Literature> list = new ArrayList<>();
         switch (field){
             case "SOURCE":
@@ -33,9 +35,10 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                 list = mapper.getDistinctField(param);
                 break;
             default:
+                System.out.println("default");
                 list = null;
         }
-        System.out.println(list);
+        //System.out.println(list);
         List<String> res = new ArrayList<String>();
         //str为读取出来的唯一字段名称
         String str;
@@ -44,39 +47,48 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
 
         for (Literature literature : list){
             String count;
-            switch (field) {
-                case "SOURCE":
-                    str = literature.getSource();
-                    param.setSourceDistinct(str);
-                    count = mapper.getCountOfField(param);
-                    map.put(str,count);
-                    break;
-                case "YEAR":
-                    str = literature.getYear();
-                    param.setYearDistinct(str);
-                    count = mapper.getCountOfField(param);
-                    map.put(str,count);
-                    break;
-                case "AU_AFFILIATION":
-                    str = literature.getAuthorAffiliation();
-                    param.setAuthorAffiliationFilterDistinct(str);
-                    count = mapper.getCountOfField(param);
-                    map.put(str,count);
-                default:
-                    str = "xxx";
+            if (literature!=null) {
+                switch (field) {
+                    case "SOURCE":
+                        System.out.println(literature);
+                        if (literature.getSource() != null) {
+                            str = literature.getSource();
+                            param.setSourceDistinct(str);
+                            count = mapper.getCountOfField(param);
+                            map.put(str, count);
+                        }
+                        break;
+                    case "YEAR":
+                        if (literature.getYear() != null) {
+                            str = literature.getYear();
+                            param.setYearDistinct(str);
+                            count = mapper.getCountOfField(param);
+                            map.put(str, count);
+                        }
+                        break;
+                    case "AU_AFFILIATION":
+                        if (literature.getAuthorAffiliation() != null) {
+                            str = literature.getAuthorAffiliation();
+                            param.setAuthorAffiliationFilterDistinct(str);
+                            count = mapper.getCountOfField(param);
+                            map.put(str, count);
+                        }
+                    default:
+                        str = "xxx";
+                }
             }
         }
         return map;
     }
 
     //计算查询结果中出现次数最多的作者、关键词、机构
-    public List<String> getSumOfField(LiteratureSearchPojo param,String field){
+    public Map<String,Object> getSumOfField(LiteratureSearchPojo param,String field){
         //根据现有的条件查询的结果
         List<Literature> list= mapper.search(param);
         List<String> listAll = new ArrayList();
         String allRes;
         Map map = new HashMap();
-        List res = new ArrayList();
+        Map map2 = new LinkedHashMap();
 
         for (Literature literature :list) {
             //多个作者，用"; "分隔
@@ -84,33 +96,44 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
             switch (field) {
                 case "author":
                     allRes = literature.getAuthor();
-                    if (allRes.contains(";")) {
-                        String[] singleAuthors = allRes.split("; ");
-                        for (String s : singleAuthors) {
-                            listAll.add(s);
+                    if (allRes != null) {
+                        if (allRes.contains(";")) {
+                            String[] singleAuthors = allRes.split("; ");
+                            for (String s : singleAuthors) {
+                                listAll.add(s);
+                            }
+                        }
+                        else {
+                            listAll.add(allRes);
                         }
                     }
-                    else listAll.add(allRes);
+                    else listAll.add("");
                     break;
                 case "keywords":
                     allRes = literature.getKeywords();
-                    if (allRes.contains(";")) {
-                        String[] singleKeywords = allRes.split("; ");
-                    for (String s : singleKeywords) {
-                        listAll.add(s);
-                        }
+                    if (allRes != null) {
+                        if (allRes.contains(";")) {
+                            String[] singleKeywords = allRes.split("; ");
+                            for (String s : singleKeywords) {
+                                listAll.add(s);
+                            }
+                        } else listAll.add(allRes);
                     }
-                    else listAll.add(allRes);
+                    else listAll.add("");
+
                     break;
                 case "affiliation":
                     allRes = literature.getAuthorAffiliation();
-                    if (allRes.contains(";")) {
-                        String[] singleAffiliation = allRes.split("; ");
-                    for (String s : singleAffiliation) {
-                        listAll.add(s);
+                    System.out.println(allRes);
+                    if (allRes != null){
+                        if (allRes.contains(";")) {
+                            String[] singleAffiliation = allRes.split("; ");
+                            for (String s : singleAffiliation) {
+                            listAll.add(s);
                         }
+                    } else listAll.add(allRes);
                     }
-                    else listAll.add(allRes);
+                    else listAll.add("");
                     break;
                 default:
                     return null;
@@ -139,10 +162,15 @@ public class LiteratureServiceImpl extends BaseServiceImpl<LiteratureMapper, Lit
                 }
             });
             //for
-            for (int i = 0; i < list2.size(); i++) {
-                res.add(list2.get(i).getKey() + " " + list2.get(i).getValue());
+            if (list2.size()!=0) {
+                for (int i = 0; i < 10; i++) {
+                    if (list2.get(i).getKey() != " ") {
+                        map2.put(list2.get(i).getKey(), list2.get(i).getValue());
+                    }
+                    if (i >= list2.size() - 1) break;
+                }
             }
-
-        return res;
+        return map2;
     }
+
 }

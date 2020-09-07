@@ -19,10 +19,9 @@
         <result column="FORMAT" jdbcType="VARCHAR" property="format"/>
         <result column="TYPE_1" jdbcType="VARCHAR" property="filterType1"/>
         <result column="RAM" jdbcType="VARCHAR" property="ram"/>
-
     </resultMap>
     <sql id="Base_Column_List">
-        ID, TITLE, UPLOADER, RE_TIME, TYPE_1, TYPE_2,TAGS, SOURCE, ABSTRACT,REFERENCE,PIC ,PATH, OLD_FILENAME,NEW_FILENAME,FORMAT,RAM
+        ID, TITLE, UPLOADER, RE_TIME, TYPE_1, TYPE_2,TAGS, SOURCE, ABSTRACT,REFERENCE,PIC ,PATH, OLD_FILENAME,NEW_FILENAME,FORMAT,RAM,DOWNLOAD_TIMES
     </sql>
     <sql id="TABLE_NAME">
         tb_geographic_data
@@ -88,6 +87,24 @@
         FROM <include refid="TABLE_NAME"/>
         WHERE ${arg0} = '${arg1}'
     </select>
+
+    <!-- 下载次数递增 -->
+    <update id="downloadTimesPlus" parameterType="String">
+        UPDATE <include refid="TABLE_NAME"/>
+        SET DOWNLOAD_TIMES=DOWNLOAD_TIMES+1
+        WHERE ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 获取下载量最多的五条数据 -->
+    <select id="getPopularData" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="TABLE_NAME"/>
+        order by DOWNLOAD_TIMES desc
+        limit 5
+    </select>
+
+
 
 
 </mapper>

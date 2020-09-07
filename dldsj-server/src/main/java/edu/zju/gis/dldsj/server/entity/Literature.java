@@ -21,6 +21,9 @@ public class Literature {
     private String year;
     private String type;
     private String source;
+    private String publisher;
+    private String section;
+    private String tutor;
     private String volume;
     private String issue;
     private String pages;
@@ -49,4 +52,6 @@ public class Literature {
     //排序所用属性
     private String orderField;
     private String orderType;
+
+
 }
