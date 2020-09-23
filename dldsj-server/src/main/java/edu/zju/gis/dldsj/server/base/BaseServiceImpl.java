@@ -2,7 +2,6 @@ package edu.zju.gis.dldsj.server.base;
 
 import com.github.pagehelper.PageHelper;
 import edu.zju.gis.dldsj.server.common.Page;
-import edu.zju.gis.dldsj.server.exception.DaoException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,28 +11,44 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * @author Hu
  * Service基类，实现了数据的CRUD
- *
  * @param <Mapper>
  * @param <T>
  * @param <ID>
- * @author Hu
+ * @update zyq 2020/09/23
  */
 public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T , ID extends Serializable> implements BaseService<T, ID> {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
 
     /**
-     * 由子类注入mapper
+     * 注入mapper
      */
     @Autowired
     public Mapper mapper;
 
     /**
-     * 通过主键查询实体
-     *
-     * @param pk
-     * @return T
+     * 插入实体
+     * @param t T
+     */
+    @Override
+    public int insert(T t) {
+        return mapper.insert(t);
+    }
+
+    /**
+     * 删除实体
+     * @param id ID
+     */
+    @Override
+    public void delete(ID id) {
+        mapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 查询实体
+     * @param pk ID
      */
     @Override
     public T select(ID pk) {
@@ -41,54 +56,17 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T , ID e
     }
 
     /**
-     * 通过参数查询实体
-     *
-     * @param params
-     * @return
-     */
-    public Page<T> search(BaseFilter<ID> params, Page page) {
-        PageHelper.startPage(page.getPageNo(), page.getPageSize());
-        return new Page<>(mapper.search(params));
-    }
-
-    /**
-     * 插入实体
-     *
-     * @param t
-     */
-    @Override
-    public int insert(T t) {
-        return mapper.insert(t);
-    }
-
-
-    /**
      * 更新实体
-     *
-     * @param t
+     * @param t T
      */
     @Override
     public void update(T t) {
-        verifyRows(mapper.updateByPrimaryKeySelective(t), 1, "数据库更新失败");
+        mapper.updateByPrimaryKey(t);
     }
-
 
     /**
-     * 通过主键删除实体
-     *
-     * @param id
-     * @return T
+     * 判断实体是否已经存在
      */
-    @Override
-    public void delete(ID id) {
-        mapper.deleteByPrimaryKey(id);
-    }
-
-    public int delete(List<ID> ids) {
-        return mapper.deleteBatch(ids);
-    }
-
-
     @Override
     public boolean isExist(ID id) {
         T t = select(id);
@@ -98,23 +76,16 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T , ID e
         return true;
     }
 
+    /**
+     * 根据查询条件获取列表
+     */
+    public Page<T> search(BaseFilter<ID> params, Page<T> page) {
+        PageHelper.startPage(page.getPageNo(), page.getPageSize());
+        return new Page<>(mapper.search(params));
+    }
+
     @Override
     public List<T> getByPage(int offset, int size) {
         return mapper.selectByPage(offset, size);
-    }
-
-    /**
-     * 验证更新数据库记录条数
-     *
-     * @param updateRows
-     * @param rows
-     * @param message
-     */
-    protected void verifyRows(int updateRows, int rows, String message) {
-        if (updateRows != rows) {
-            DaoException e = new DaoException(message);
-            logger.error("need update is {}, but real update rows is {}.", rows, updateRows, e);
-//            throw e;
-        }
     }
 }
