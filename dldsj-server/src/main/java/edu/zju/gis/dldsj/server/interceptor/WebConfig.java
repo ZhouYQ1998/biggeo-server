@@ -41,9 +41,6 @@ public class WebConfig implements WebMvcConfigurer {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
             HttpSession session = request.getSession();
-            //手动添加用户信息，便于调试。
-            session.setAttribute(SESSION_KEY, "ubt");
-            session.setAttribute("userId", "1");
             if (session.getAttribute("userId") != null) {
                 return true;
             } else {

@@ -68,7 +68,12 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
         Result<T> result = new Result<>();
         try {
             T t = service.select(id);
-            result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("查询成功");
+            if(t != null){
+                result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("查询成功");
+            }
+            else{
+                result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("查询失败：无结果");
+            }
         } catch (RuntimeException e) {
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
         }
