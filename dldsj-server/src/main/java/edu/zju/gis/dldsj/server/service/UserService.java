@@ -3,20 +3,15 @@ package edu.zju.gis.dldsj.server.service;
 import edu.zju.gis.dldsj.server.base.BaseService;
 import edu.zju.gis.dldsj.server.entity.User;
 
-import java.util.List;
-
 /**
- * @author yanlo yanlong_lee@qq.com
- * @version 1.0 2018/08/09
+ * @author zyq 2020/09/23
  */
 public interface UserService extends BaseService<User, String> {
-    User getByName(String name);
 
-    List<User> getByRoleId(String roleId, int offset, int size);
+    int insert(User user);
 
-    void deleteByRoleId(String roleId);
+    void deleteByName(String name);
 
-    boolean ifUserNameExist(String userName);
-
+    User selectByName(String name);
 
 }
