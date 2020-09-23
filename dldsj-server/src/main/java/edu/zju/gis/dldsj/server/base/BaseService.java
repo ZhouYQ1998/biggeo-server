@@ -6,25 +6,26 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * @author Hu
  * Service接口基类
+ * @update zyq 2020/09/23
  */
 public interface BaseService<T , ID extends Serializable> {
 
     /**
-     * 根据查询条件获取列表
-     * @return
-     */
-    Page<T> search(BaseFilter<ID> params, Page page);
-
-    /**
-     * 通过主键查询实体
-     */
-    T select(ID pk);
-
-    /**
-     * 插入/更新实体
+     * 插入实体
      */
     int insert(T t);
+
+    /**
+     * 删除实体
+     */
+    void delete(ID id);
+
+    /**
+     * 查询实体
+     */
+    T select(ID pk);
 
     /**
      * 更新实体
@@ -32,14 +33,14 @@ public interface BaseService<T , ID extends Serializable> {
     void update(T t);
 
     /**
-     * 通过主键删除实体
-     */
-    void delete(ID id);
-
-    /**
      * 判断实体是否已经存在
      */
     boolean isExist(ID id);
+
+    /**
+     * 根据查询条件获取列表
+     */
+    Page<T> search(BaseFilter<ID> params, Page<T> page);
 
     List<T> getByPage(int offset, int size);
 
