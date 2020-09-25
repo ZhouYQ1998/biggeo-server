@@ -3,15 +3,19 @@ package edu.zju.gis.dldsj.server.base;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
+import edu.zju.gis.dldsj.server.entity.Batch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Hu 2019/04/29
- * 实现Controller的基础CURD方法
  * @update zyq 2020/09/23
+ * 实现Controller的基础CURD方法
+ * 实现Controller的基础批量CURD方法
  **/
 public abstract class BaseController<T , Service extends BaseService<T, ID>, ID extends Serializable, Search extends BaseFilter<ID>> {
 
@@ -40,19 +44,86 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
     }
 
     /**
+     * 插入实体（批量）
+     * @param t List
+     * @return Result
+     */
+    @RequestMapping(value = "/batchinsert", method = RequestMethod.PUT)
+    @ResponseBody
+    public Result<List<Batch<T>>> batchInsert(@RequestBody List<T> t) {
+        Result<List<Batch<T>>> result = new Result<>();
+        List<Batch<T>> batchList = new ArrayList<>();
+        int successNum = 0;
+        for(int i = 0; i < t.size(); i++){
+            T tempT = t.get(i);
+            Batch<T> batch = new Batch<>();
+            batch.setT(tempT);
+            try{
+                service.insert(tempT);
+                batch.setMessage("插入成功");
+                successNum++;
+            }catch(RuntimeException e){
+                batch.setMessage("插入失败：" + e.getMessage());
+            }
+            batchList.add(batch);
+        }
+        if(successNum != 0){
+            result.setCode(CodeConstants.SUCCESS).setBody(batchList).setMessage("插入成功：" + successNum + "/" + batchList.size());
+        }
+        else{
+            result.setCode(CodeConstants.VALIDATE_ERROR).setBody(batchList).setMessage("插入失败" );
+        }
+        return result;
+    }
+
+    /**
      * 删除实体
      * @param id ID
      * @return Result
      */
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Result<T> delete(@PathVariable ID id) {
-        Result<T> result = new Result<>();
+    public Result<ID> delete(@PathVariable ID id) {
+        Result<ID> result = new Result<>();
         try {
             service.delete(id);
-            result.setCode(CodeConstants.SUCCESS).setMessage("删除成功");
+            result.setCode(CodeConstants.SUCCESS).setBody(id).setMessage("删除成功");
         } catch (RuntimeException e) {
-            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("删除失败：" + e.getMessage());
+            result.setCode(CodeConstants.SERVICE_ERROR).setBody(id).setMessage("删除失败：" + e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 删除实体（批量）
+     * @param ids String
+     * @return Result
+     */
+    @RequestMapping(value = "/batchdelete/{ids}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Result<List<Batch<ID>>> batchDelete(@PathVariable String ids) {
+        String[] idArray = ids.split(",");
+        Result<List<Batch<ID>>> result = new Result<>();
+        List<Batch<ID>> batchList = new ArrayList<>();
+        int successNum = 0;
+        for(int i = 0; i < idArray.length; i++){
+            ID id = (ID)idArray[i];
+            Batch<ID> batch = new Batch<>();
+            batch.setT(id);
+            try {
+                service.delete(id);
+                batch.setMessage("删除成功");
+                successNum++;
+            } catch (RuntimeException e) {
+                batch.setMessage("删除失败：" + e.getMessage());
+            }
+            batchList.add(batch);
+        }
+        if(successNum != 0){
+            result.setCode(CodeConstants.SUCCESS).setBody(batchList).setMessage("删除成功：" + successNum + "/" + batchList.size());
+        }
+        else{
+            result.setCode(CodeConstants.VALIDATE_ERROR).setBody(batchList).setMessage("删除失败" );
         }
         return result;
     }
@@ -81,6 +152,45 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
     }
 
     /**
+     * 查询实体（批量）
+     * @param ids String
+     * @return Result
+     */
+    @RequestMapping(value = "/batchselect/{ids}", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<List<Batch<T>>> batchSelect(@PathVariable String ids) {
+        String[] idArray = ids.split(",");
+        Result<List<Batch<T>>> result = new Result<>();
+        List<Batch<T>> batchList = new ArrayList<>();
+        int successNum = 0;
+        for(int i = 0; i < idArray.length; i++){
+            ID id = (ID)idArray[i];
+            Batch<T> batch = new Batch<>();
+            try{
+                T t = service.select(id);
+                if(t != null){
+                    batch.setT(t);
+                    batch.setMessage("查询成功");
+                    successNum++;
+                }
+                else{
+                    batch.setMessage("查询失败：无结果");
+                }
+            }catch(RuntimeException e){
+                batch.setMessage("查询失败：" + e.getMessage());
+            }
+            batchList.add(batch);
+        }
+        if(successNum != 0){
+            result.setCode(CodeConstants.SUCCESS).setBody(batchList).setMessage("查询成功：" + successNum + "/" + batchList.size());
+        }
+        else{
+            result.setCode(CodeConstants.VALIDATE_ERROR).setBody(batchList).setMessage("查询失败" );
+        }
+        return result;
+    }
+
+    /**
      * 更新实例
      * @param t T
      * @return Result
@@ -94,6 +204,39 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
             result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("更新成功");
         } catch (RuntimeException e) {
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("更新失败：" + e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 更新实例（批量）
+     * @param t List
+     * @return Result
+     */
+    @RequestMapping(value = "/batchupdate", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<List<Batch<T>>> batchUpdate(@RequestBody List<T> t) {
+        Result<List<Batch<T>>> result = new Result<>();
+        List<Batch<T>> batchList = new ArrayList<>();
+        int successNum = 0;
+        for(int i = 0; i < t.size(); i++){
+            T tempT = t.get(i);
+            Batch<T> batch = new Batch<>();
+            batch.setT(tempT);
+            try{
+                service.update(tempT);
+                batch.setMessage("更新成功");
+                successNum++;
+            }catch(RuntimeException e){
+                batch.setMessage("更新失败：" + e.getMessage());
+            }
+            batchList.add(batch);
+        }
+        if(successNum != 0){
+            result.setCode(CodeConstants.SUCCESS).setBody(batchList).setMessage("更新成功：" + successNum + "/" + batchList.size());
+        }
+        else{
+            result.setCode(CodeConstants.VALIDATE_ERROR).setBody(batchList).setMessage("更新失败" );
         }
         return result;
     }

@@ -19,14 +19,20 @@
 | URL                       | FUNCTION | METHOD | PARAM                               | RESULT              | REMARK              |
 | ------------------------- | -------- | ------ | ----------------------------------- | ------------------- | ------------------- |
 | /user/insert              | 插入用户 | PUT    | name,password,role[,phone,email]    | {code,body,message} | phone,email为可选值 |
-| /user/delete/{id}         | 删除用户 | DELETE |                                     | {code,message}      |                     |
-| /user/deletebyname/{name} | 删除用户 | DELETE |                                     | {code,message}      |                     |
+| /user/batchinsert         | 批量插入 | PUT    | [User[,User...]]                    | {code,body,message} |                     |
+| /user/delete/{id}         | 删除用户 | DELETE |                                     | {code,body,message} | body值为id          |
+| /user/deletebyname/{name} | 删除用户 | DELETE |                                     | {code,body,message} | body值为name        |
+| /user//batchdelete/{ids}  | 批量删除 | DELETE |                                     | {code,body,message} |                     |
 | /user/select/{id}         | 查询用户 | GET    |                                     | {code,body,message} |                     |
 | /user/selectbyname/{name} | 查询用户 | GET    |                                     | {code,body,message} |                     |
+| /user/batchseletct/{ids}  | 批量查询 | GET    |                                     | {code,body,message} |                     |
 | /user/update              | 更新用户 | POST   | id[,name,password,role,phone,email] | {code,body,message} | id为必要值          |
+| /user/batchupdate         | 批量更新 | POST   | [User[,User...]]                    | {code,body,message} |                     |
 | /user/login               | 用户登录 | POST   | name,password                       | {code,body,message} |                     |
 | /user/loginstatus         | 登录状态 | GET    |                                     | {code,body,message} |                     |
 | /user/logout              | 用户注销 | POST   |                                     | {code,body,message} | body值为id          |
+
+- 批量操作返回值的body值包括“t”（实体）和“message”（实体操作结果），下同
 
 ## 2 tb_geographic_data
 
@@ -153,3 +159,18 @@
 
 
 # Resut code
+
+| Code                       | Constants | Description         |
+| -------------------------- | --------- | ------------------- |
+| SUCCESS                    | 200       | 成功                |
+| SYSTEM_ERROR               | 9000      | 未知系统错误        |
+| VALIDATE_ERROR             | 9001      | 参数验证错误        |
+| SERVICE_ERROR              | 9002      | 业务逻辑验证错误    |
+| CACHE_ERROR                | 9003      | 缓存访问错误        |
+| DAO_ERROR                  | 9004      | 数据访问错误        |
+| USERNAME_OR_PASSWORD_ERROR | 1001      | 用户名或密码错误    |
+| USER_NOT_EXIST             | 1002      | 用户不存在          |
+| SSO_TOKEN_ERROR            | 2001      | TOKEN未授权或已过期 |
+| SSO_PERMISSION_ERROR       | 2002      | 没有访问权限        |
+| QUEUE_ERROR                | 8001      | 队列溢出错误        |
+

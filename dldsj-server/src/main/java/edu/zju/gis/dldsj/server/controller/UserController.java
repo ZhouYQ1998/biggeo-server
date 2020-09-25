@@ -32,11 +32,11 @@ public class UserController extends BaseController<User, UserService, String, Ba
      */
     @RequestMapping(value = "/deletebyname/{name}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Result<User> deleteUserByName(@PathVariable String name) {
-        Result<User> result = new Result<>();
+    public Result<String> deleteUserByName(@PathVariable String name) {
+        Result<String> result = new Result<>();
         try {
             userService.deleteByName(name);
-            result.setCode(CodeConstants.SUCCESS).setMessage("删除成功");
+            result.setCode(CodeConstants.SUCCESS).setBody(name).setMessage("删除成功");
         } catch (RuntimeException e) {
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("删除失败：" + e.getMessage());
         }
