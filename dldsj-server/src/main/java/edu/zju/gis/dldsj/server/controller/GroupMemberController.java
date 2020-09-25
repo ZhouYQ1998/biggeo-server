@@ -3,6 +3,7 @@ package edu.zju.gis.dldsj.server.controller;
 import edu.zju.gis.dldsj.server.base.BaseController;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
+import edu.zju.gis.dldsj.server.constant.CodeConstants;
 import edu.zju.gis.dldsj.server.entity.GroupMember;
 import edu.zju.gis.dldsj.server.entity.searchPojo.GroupMemberSearchPojo;
 import edu.zju.gis.dldsj.server.service.GroupMemberService;
@@ -14,33 +15,54 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * @author Jiarui
- * @date 2020/8/31
+ * @author Jiarui 2020/08/31
+ * @update zyq 2020/09/25
  */
 @Controller
 @RequestMapping("/member")
 @Slf4j
-public class GroupMemberController extends BaseController<GroupMember, GroupMemberService,String, GroupMemberSearchPojo> {
+public class GroupMemberController extends BaseController<GroupMember, GroupMemberService, String, GroupMemberSearchPojo> {
 
     /**
-     * 显示所有成员
-     * @param page
+     * 查询所有开发者
+     * @param page Page
      */
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/showall", method = RequestMethod.GET)
     @ResponseBody
-    public Result showAllMembers(Page page) {
-        return Result.success().setBody(service.showAllMembers(page));
+    public Result<Page<GroupMember>> showAllMembers(Page<GroupMember> page) {
+        return new Result<Page<GroupMember>>().setCode(CodeConstants.SUCCESS).setBody(service.showAllMembers(page));
     }
 
     /**
-     * 按照group显示成员
-     * @param group
-     * @param page
+     * 查询指导老师
+     * @param page Page
      */
-    @RequestMapping(value = "/group", method = RequestMethod.GET)
+    @RequestMapping(value = "/showteachers", method = RequestMethod.GET)
     @ResponseBody
-    public Result showByGroup(@RequestParam String group,Page page) {
-        return Result.success().setBody(service.showByGroup(group,page));
+    public Result<Page<GroupMember>> showTeachers(Page<GroupMember> page) {
+        return new Result<Page<GroupMember>>().setCode(CodeConstants.SUCCESS).setBody(service.showTeachers(page));
+    }
+
+    /**
+     * 查询开发者（通过版本）
+     * @param page Page
+     * @param version String
+     */
+    @RequestMapping(value = "/showbyversion", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<Page<GroupMember>> showTeachers(@RequestParam String version, Page<GroupMember> page) {
+        return new Result<Page<GroupMember>>().setCode(CodeConstants.SUCCESS).setBody(service.showByVersion(version, page));
+    }
+
+    /**
+     * 查询开发者（通过版本和组号）
+     * @param team String
+     * @param page Page
+     */
+    @RequestMapping(value = "/showbyteam", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<Page<GroupMember>> showByTeam(@RequestParam String version, @RequestParam String team, Page<GroupMember> page) {
+        return new Result<Page<GroupMember>>().setCode(CodeConstants.SUCCESS).setBody(service.showByTeam(version, team, page));
     }
 
 }

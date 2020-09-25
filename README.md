@@ -16,21 +16,21 @@
 
 ### 1.2 URL
 
-| URL                       | FUNCTION | METHOD | PARAM                               | RESULT              | REMARK              |
-| ------------------------- | -------- | ------ | ----------------------------------- | ------------------- | ------------------- |
-| /user/insert              | 插入用户 | PUT    | name,password,role[,phone,email]    | {code,body,message} | phone,email为可选值 |
-| /user/batchinsert         | 批量插入 | PUT    | [User[,User...]]                    | {code,body,message} |                     |
-| /user/delete/{id}         | 删除用户 | DELETE |                                     | {code,body,message} | body值为id          |
-| /user/deletebyname/{name} | 删除用户 | DELETE |                                     | {code,body,message} | body值为name        |
-| /user//batchdelete/{ids}  | 批量删除 | DELETE |                                     | {code,body,message} | 逗号","分隔         |
-| /user/select/{id}         | 查询用户 | GET    |                                     | {code,body,message} |                     |
-| /user/selectbyname/{name} | 查询用户 | GET    |                                     | {code,body,message} |                     |
-| /user/batchseletct/{ids}  | 批量查询 | GET    |                                     | {code,body,message} | 逗号","分隔         |
-| /user/update              | 更新用户 | POST   | id[,name,password,role,phone,email] | {code,body,message} | id为必要值          |
-| /user/batchupdate         | 批量更新 | POST   | [User[,User...]]                    | {code,body,message} |                     |
-| /user/login               | 用户登录 | POST   | name,password                       | {code,body,message} |                     |
-| /user/loginstatus         | 登录状态 | GET    |                                     | {code,body,message} |                     |
-| /user/logout              | 用户注销 | POST   |                                     | {code,body,message} | body值为id          |
+| URL                       | FUNCTION | METHOD | PARAM                                    | RESULT              | REMARK              |
+| ------------------------- | -------- | ------ | ---------------------------------------- | ------------------- | ------------------- |
+| /user/insert              | 插入用户 | PUT    | name,password,role[,phone,email,icon]    | {code,body,message} | phone,email为可选值 |
+| /user/batchinsert         | 批量插入 | PUT    | [User[,User...]]                         | {code,body,message} |                     |
+| /user/delete/{id}         | 删除用户 | DELETE |                                          | {code,body,message} | body值为id          |
+| /user/deletebyname/{name} | 删除用户 | DELETE |                                          | {code,body,message} | body值为name        |
+| /user//batchdelete/{ids}  | 批量删除 | DELETE |                                          | {code,body,message} | 逗号","分隔         |
+| /user/select/{id}         | 查询用户 | GET    |                                          | {code,body,message} |                     |
+| /user/selectbyname/{name} | 查询用户 | GET    |                                          | {code,body,message} |                     |
+| /user/batchseletct/{ids}  | 批量查询 | GET    |                                          | {code,body,message} | 逗号","分隔         |
+| /user/update              | 更新用户 | POST   | id[,name,password,role,phone,email,icon] | {code,body,message} | id为必要值          |
+| /user/batchupdate         | 批量更新 | POST   | [User[,User...]]                         | {code,body,message} |                     |
+| /user/login               | 用户登录 | POST   | name,password                            | {code,body,message} |                     |
+| /user/loginstatus         | 登录状态 | GET    |                                          | {code,body,message} |                     |
+| /user/logout              | 用户注销 | POST   |                                          | {code,body,message} | body值为id          |
 
 - 批量操作返回值的body值包括“t”（实体）和“message”（实体操作结果），下同
 
@@ -128,7 +128,7 @@
 | ID          | 唯一身份编号 | Int    | Not NUll, Unique, Auto Create |
 | NAME        | 名称         | String | Not NUll, Unique              |
 | COMPANY     | 公司         | String | Not NUll, Unique              |
-| REGION      | 地区         | String | Not NUll, "CN" or "Other"     |
+| REGION      | 地区         | String | Not NUll, "CN" or "other"     |
 | SERVER      | 提供的服务   | String |                               |
 | LIMITED     | 使用限制     | String |                               |
 | FEATURE     | 特点         | String |                               |
@@ -150,13 +150,20 @@
 | NAME    | 姓名         | String | Not NUll                                       |
 | VERSION | 开发版本     | String | "V1.0" or "V2.0"                               |
 | TEAM    | 小组编号     | String |                                                |
-| ROLE    | 角色         | String | Not Null, "Instructor" or "Leader" or "Member" |
+| ROLE    | 角色         | String | Not Null, "instructor" or "leader" or "member" |
 | EMAIL   | 邮箱         | String |                                                |
 | PHOTO   | 照片         | String |                                                |
 
 ### 8.2 URL
 
+| URL                   | FUNCTION       | METHOD | PARAM                         | RESULT      | REMARK |
+| --------------------- | -------------- | ------ | ----------------------------- | ----------- | ------ |
+| /member/showall       | 查询所有开发者 | GET    | [PageNo,PageSize]             | {code,body} |        |
+| /member/showteachers  | 查询指导老师   | GET    | [PageNo,PageSize]             | {code,body} |        |
+| /member/showbyversion | 查询开发者     | GET    | version,[PageNo,PageSize]     | {code,body} |        |
+| /member/showbyteam    | 查询开发者     | GET    | version,team[PageNo,PageSize] | {code,body} |        |
 
+- PageNo默认为1，PageSize默认为20
 
 # Resut code
 

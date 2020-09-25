@@ -5,18 +5,18 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * @author Jiarui
- * @date 2020/8/31
+ * @author Jiarui 2020/08/31
+ * @update zyq 2020/09/25
  */
-
 @Getter
 @Setter
 @ToString(callSuper = true)
 public class GroupMember {
-    private String id;
+    private int id;
     private String name;
-    private String group;
-    private String workContent;
-    private String photo;
+    private String version;
+    private String team;
+    private String role;
     private String email;
+    private String photo;
 }
