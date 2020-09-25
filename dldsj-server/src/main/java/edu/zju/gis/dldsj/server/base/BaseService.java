@@ -20,7 +20,7 @@ public interface BaseService<T , ID extends Serializable> {
     /**
      * 删除实体
      */
-    void delete(ID id);
+    int delete(ID id);
 
     /**
      * 查询实体
@@ -30,7 +30,7 @@ public interface BaseService<T , ID extends Serializable> {
     /**
      * 更新实体
      */
-    void update(T t);
+    int update(T t);
 
     /**
      * 判断实体是否已经存在

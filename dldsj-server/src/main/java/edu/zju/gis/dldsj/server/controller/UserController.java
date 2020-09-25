@@ -35,8 +35,13 @@ public class UserController extends BaseController<User, UserService, String, Ba
     public Result<String> deleteUserByName(@PathVariable String name) {
         Result<String> result = new Result<>();
         try {
-            userService.deleteByName(name);
-            result.setCode(CodeConstants.SUCCESS).setBody(name).setMessage("删除成功");
+            int num = userService.deleteByName(name);
+            if(num == 1){
+                result.setCode(CodeConstants.SUCCESS).setBody(name).setMessage("删除成功");
+            }
+            else{
+                result.setCode(CodeConstants.USER_NOT_EXIST).setBody(name).setMessage("删除失败：用户不存在");
+            }
         } catch (RuntimeException e) {
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("删除失败：" + e.getMessage());
         }

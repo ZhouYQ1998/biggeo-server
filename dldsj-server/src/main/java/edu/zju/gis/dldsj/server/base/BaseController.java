@@ -35,8 +35,13 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
     public Result<T> insert(@RequestBody T t) {
         Result<T> result = new Result<>();
         try{
-            service.insert(t);
-            result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("插入成功");
+            int num = service.insert(t);
+            if(num == 1){
+                result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("插入成功");
+            }
+            else{
+                result.setCode(CodeConstants.VALIDATE_ERROR).setBody(t).setMessage("插入失败");
+            }
         }catch(RuntimeException e){
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("插入失败：" + e.getMessage());
         }
@@ -59,9 +64,14 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
             Batch<T> batch = new Batch<>();
             batch.setT(tempT);
             try{
-                service.insert(tempT);
-                batch.setMessage("插入成功");
-                successNum++;
+                int num = service.insert(tempT);
+                if(num == 1){
+                    batch.setMessage("插入成功");
+                }
+                else{
+                    batch.setMessage("插入失败");
+                }
+                successNum += num;
             }catch(RuntimeException e){
                 batch.setMessage("插入失败：" + e.getMessage());
             }
@@ -86,8 +96,13 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
     public Result<ID> delete(@PathVariable ID id) {
         Result<ID> result = new Result<>();
         try {
-            service.delete(id);
-            result.setCode(CodeConstants.SUCCESS).setBody(id).setMessage("删除成功");
+            int num = service.delete(id);
+            if(num == 1){
+                result.setCode(CodeConstants.SUCCESS).setBody(id).setMessage("删除成功");
+            }
+            else{
+                result.setCode(CodeConstants.USER_NOT_EXIST).setBody(id).setMessage("删除失败：用户不存在");
+            }
         } catch (RuntimeException e) {
             result.setCode(CodeConstants.SERVICE_ERROR).setBody(id).setMessage("删除失败：" + e.getMessage());
         }
@@ -111,9 +126,14 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
             Batch<ID> batch = new Batch<>();
             batch.setT(id);
             try {
-                service.delete(id);
-                batch.setMessage("删除成功");
-                successNum++;
+                int num = service.delete(id);
+                if(num == 1){
+                    batch.setMessage("删除成功");
+                }
+                else{
+                    batch.setMessage("删除失败：用户不存在");
+                }
+                successNum += num;
             } catch (RuntimeException e) {
                 batch.setMessage("删除失败：" + e.getMessage());
             }
@@ -143,7 +163,7 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
                 result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("查询成功");
             }
             else{
-                result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("查询失败：无结果");
+                result.setCode(CodeConstants.USER_NOT_EXIST).setMessage("查询失败：用户不存在");
             }
         } catch (RuntimeException e) {
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
@@ -174,7 +194,7 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
                     successNum++;
                 }
                 else{
-                    batch.setMessage("查询失败：无结果");
+                    batch.setMessage("查询失败：用户不存在");
                 }
             }catch(RuntimeException e){
                 batch.setMessage("查询失败：" + e.getMessage());
@@ -200,8 +220,13 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
     public Result<T> update(@RequestBody T t) {
         Result<T> result = new Result<>();
         try {
-            service.update(t);
-            result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("更新成功");
+            int num = service.update(t);
+            if(num == 1){
+                result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("更新成功");
+            }
+            else{
+                result.setCode(CodeConstants.USER_NOT_EXIST).setBody(t).setMessage("更新失败：用户不存在");
+            }
         } catch (RuntimeException e) {
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("更新失败：" + e.getMessage());
         }
@@ -224,9 +249,14 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
             Batch<T> batch = new Batch<>();
             batch.setT(tempT);
             try{
-                service.update(tempT);
-                batch.setMessage("更新成功");
-                successNum++;
+                int num = service.update(tempT);
+                if(num == 1){
+                    batch.setMessage("更新成功");
+                }
+                else{
+                    batch.setMessage("更新失败：用户不存在");
+                }
+                successNum += num;
             }catch(RuntimeException e){
                 batch.setMessage("更新失败：" + e.getMessage());
             }
