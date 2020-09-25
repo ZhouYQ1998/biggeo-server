@@ -17,11 +17,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User, String> i
     private UserMapper userMapper;
 
     @Override
-    public int insert(User user) {
-        return userMapper.insert(user);
-    }
-
-    @Override
     public void deleteByName(String name){
         userMapper.deleteByName(name);
     }

@@ -26,29 +26,6 @@ public class UserController extends BaseController<User, UserService, String, Ba
     private UserService userService;
 
     /***
-     * 插入用户
-     * @param user User
-     * @return result
-     */
-    @RequestMapping(value = "/insert", method = RequestMethod.PUT)
-    @ResponseBody
-    @Override
-    public Result<User> insert(@RequestBody User user){
-        Result<User> result = new Result<>();
-        try {
-            // 设置随机ID
-            String id = UUID.randomUUID().toString();
-            user.setId(id);
-            // 执行插入
-            userService.insert(user);
-            result.setCode(CodeConstants.SUCCESS).setBody(user).setMessage("插入成功");
-        } catch (RuntimeException e) {
-            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("插入失败：" + e.getMessage());
-        }
-        return result;
-    }
-
-    /***
      * 删除用户（通过NAME，非主键）
      * @param name String
      * @return result

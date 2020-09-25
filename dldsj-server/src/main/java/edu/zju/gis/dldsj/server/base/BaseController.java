@@ -36,7 +36,7 @@ public abstract class BaseController<T , Service extends BaseService<T, ID>, ID 
         }catch(RuntimeException e){
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("插入失败：" + e.getMessage());
         }
-        return Result.success();
+        return result;
     }
 
     /**

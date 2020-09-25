@@ -8,8 +8,6 @@ import edu.zju.gis.dldsj.server.entity.User;
  */
 public interface UserService extends BaseService<User, String> {
 
-    int insert(User user);
-
     void deleteByName(String name);
 
     User selectByName(String name);
