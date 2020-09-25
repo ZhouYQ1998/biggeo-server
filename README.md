@@ -1,6 +1,8 @@
-# 1 tb_user
+# Database
 
-## 1.1 Table
+## 1 tb_user
+
+### 1.1 Table
 
 | Column   | Description  | Type   | Remark                           |
 | -------- | ------------ | ------ | -------------------------------- |
@@ -12,7 +14,7 @@
 | ICON     | 头像         | String |                                  |
 | ROLE     | 用户角色     | String | Not Null, "Manager" or "Visitor" |
 
-## 1.2 URL
+### 1.2 URL
 
 | URL                       | FUNCTION | METHOD | PARAM                               | RESULT              | REMARK              |
 | ------------------------- | -------- | ------ | ----------------------------------- | ------------------- | ------------------- |
@@ -26,9 +28,19 @@
 | /user/loginstatus         | 登录状态 | GET    |                                     | {code,body,message} |                     |
 | /user/logout              | 用户注销 | POST   |                                     | {code,body,message} | body值为id          |
 
-# 2 tb_student_paper
+## 2 tb_geographic_data
 
-## 2.1 Table
+### 2.1 Table
+
+
+
+### 2.2 URL
+
+
+
+## 3 tb_student_paper
+
+### 3.1 Table
 
 | Column          | Description   | Type   | Remark                                       |
 | --------------- | ------------- | ------ | -------------------------------------------- |
@@ -44,9 +56,13 @@
 | ABSTRACT        | 摘要          | String |                                              |
 | URL             | 链接          | String | Unique                                       |
 
-# 3 tb_academic_paper
+### 3.2 URL
 
-## 3.1 Table
+
+
+## 4 tb_academic_paper
+
+### 4.1 Table
 
 | Column             | Description   | Type   | Remark                              |
 | ------------------ | ------------- | ------ | ----------------------------------- |
@@ -67,9 +83,23 @@
 | ISSU               | ISSU          | String |                                     |
 | URL                | 链接          | String | Unique                              |
 
-# 4 tb_online_tools
+### 4.2 URL
 
-## 4.1 Table
+
+
+## 5 tb_lectures
+
+### 5.1 Table
+
+
+
+### 5.2 URL
+
+
+
+## 6 tb_online_tools
+
+### 6.1 Table
 
 | Column   | Description  | Type   | Remark                        |
 | -------- | ------------ | ------ | ----------------------------- |
@@ -79,9 +109,13 @@
 | PICTURE  | 图片         | String |                               |
 | URL      | 链接         | String | Unique                        |
 
-# 5 tb_map_servers
+### 6.2 URL
 
-## 5.1 Table
+
+
+## 7 tb_map_servers
+
+### 7.1 Table
 
 | Column      | Description  | Type   | Remark                        |
 | ----------- | ------------ | ------ | ----------------------------- |
@@ -96,3 +130,26 @@
 | DESCRIPTION | 描述         | String |                               |
 | URL         | 链接         | String | Unique                        |
 
+### 7.2 URL
+
+
+
+## 8 tb_group_member
+
+### 8.1 Table
+
+| Column  | Description  | Type   | Remark                                         |
+| ------- | ------------ | ------ | ---------------------------------------------- |
+| ID      | 唯一身份编号 | Int    | Not NUll, Unique                               |
+| NAME    | 姓名         | String | Not NUll                                       |
+| VERSION | 开发版本     | String | "V1.0" or "V2.0"                               |
+| TEAM    | 小组编号     | String |                                                |
+| ROLE    | 角色         | String | Not Null, "Instructor" or "Leader" or "Member" |
+| EMAIL   | 邮箱         | String |                                                |
+| PHOTO   | 照片         | String |                                                |
+
+### 8.2 URL
+
+
+
+# Resut code
