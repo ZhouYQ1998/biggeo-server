@@ -82,7 +82,7 @@
                 EMAIL = #{email,jdbcType=VARCHAR},
             </if>
             <if test="icon != null">
-                ROLE = #{icon,jdbcType=VARCHAR},
+                ICON = #{icon,jdbcType=VARCHAR},
             </if>
             <if test="role != null">
                 ROLE = #{role,jdbcType=VARCHAR}
