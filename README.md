@@ -38,6 +38,26 @@
 
 ### 2.1 Table
 
+| Column       | Description  | Type  | Remark                       |
+| ------------ | ------------ | ----- | ---------------------------- |
+| ID           | 唯一身份编号 | Int   | Not Nullt,Unique,Auto Create |
+| TITLE        | 标题         | Sring | Not Null                     |
+| UPLOADED     | 上传者       | Sring |                              |
+| RE_TIME      | 时间         | Date  |                              |
+| TYPE_1       | 类型一       | Sring | Not Null                     |
+| TYPE_2       | 类型二       | Sring |                              |
+| KEYWORDS     | 关键词       | Sring | Not Null                     |
+| SOURCE       | 资源         | Sring |                              |
+| ABSTRACT     | 摘要         | Sring |                              |
+| REFRENCE     | 参考文献     | Sring |                              |
+| PICTURE      | 图片         | Sring |                              |
+| OLD_FILENAME | 中文名称     | Sring |                              |
+| NEW_FILENAME | 英文名称     | Sring |                              |
+| FORMAT       | 数据格式     | Sring |                              |
+| URL          | 链接         | Sring |                              |
+| RAM          | 数据大小     | Sring |                              |
+| DOWNLOAD_TIM | 下载数量     | Int   |                              |
+
 
 
 ### 2.2 URL
@@ -50,17 +70,17 @@
 
 | Column          | Description   | Type   | Remark                                       |
 | --------------- | ------------- | ------ | -------------------------------------------- |
-| ID              | 唯一身份编号  | Int    | Not NUll, Unique, Auto Create                |
-| TITLE           | 标题          | String | Not NUll, Unique                             |
-| ENGLISH_TITLE   | 标题（英文）  | String | Not NUll, Unique                             |
-| AUTHOR          | 作者          | String | Not NUll                                     |
+| ID              | 唯一身份编号  | Int    | Not Null, Unique, Auto Create                |
+| TITLE           | 标题          | String | Not Null, Unique                             |
+| ENGLISH_TITLE   | 标题（英文）  | String | Not Null, Unique                             |
+| AUTHOR          | 作者          | String | Not Null                                     |
 | PUBLISHER       | 所在单位/学校 | String |                                              |
 | TERTIARY_AUTHOR | 指导老师      | String |                                              |
 | YEAR            | 发表年份      | String |                                              |
 | TYPE            | 文章类型      | String | Not NUll, "bachelor" or "master" or "doctor" |
 | KEYWORDS        | 关键词        | String |                                              |
 | ABSTRACT        | 摘要          | String |                                              |
-| URL             | 链接          | String | Unique                                       |
+| URL             | 链接          | String |                                              |
 
 ### 3.2 URL
 
@@ -72,11 +92,11 @@
 
 | Column             | Description   | Type   | Remark                              |
 | ------------------ | ------------- | ------ | ----------------------------------- |
-| ID                 | 唯一身份编号  | Int    | Not NUll, Unique, Auto Create       |
-| TITLE              | 标题          | String | Not NUll, Unique                    |
-| ENGLISH_TITLE      | 标题（英文）  | String | Not NUll, Unique                    |
+| ID                 | 唯一身份编号  | Int    | Not Null, Unique, Auto Create       |
+| TITLE              | 标题          | String | Not Null, Unique                    |
+| ENGLISH_TITLE      | 标题（英文）  | String | Not Null, Unique                    |
 | TYPE               | 文章类型      | String | Not Null, "conference" or "journal" |
-| AUTHOR             | 作者          | String | Not NUll                            |
+| AUTHOR             | 作者          | String | Not Null                            |
 | AUTHOR_AFFILIATION | 所在单位/学校 | String |                                     |
 | YEAR               | 发表年份      | String |                                     |
 | SOURCE_NAME        | 期刊名称      | String |                                     |
@@ -85,9 +105,9 @@
 | PAGES              | 期刊页数      | String |                                     |
 | KEYWORDS           | 关键词        | String |                                     |
 | ABSTRACT           | 摘要          | String |                                     |
-| DOI                | DOI           | String | Unique                              |
+| DOI                | DOI           | String |                                     |
 | ISSU               | ISSU          | String |                                     |
-| URL                | 链接          | String | Unique                              |
+| URL                | 链接          | String | Not Null,Unique                     |
 
 ### 4.2 URL
 
@@ -97,7 +117,14 @@
 
 ### 5.1 Table
 
-
+| Column  | Description  | Type  | Remark                      |
+| ------- | ------------ | ----- | --------------------------- |
+| ID      | 唯一身份编号 | Int   | Not Null,Unique,Auto Create |
+| NAME    | 姓名         | Sring | Not Null                    |
+| SPEAKER | 演讲者       | Sring |                             |
+| PLACE   | 地点         | Sring |                             |
+| TIME    | 时间         | Sring |                             |
+| URL     | 链接         | Sring |                             |
 
 ### 5.2 URL
 
@@ -109,11 +136,11 @@
 
 | Column   | Description  | Type   | Remark                        |
 | -------- | ------------ | ------ | ----------------------------- |
-| ID       | 唯一身份编号 | Int    | Not NUll, Unique, Auto Create |
-| NAME     | 名称         | String | Not NUll, Unique              |
+| ID       | 唯一身份编号 | Int    | Not Null, Unique, Auto Create |
+| NAME     | 名称         | String | Not Null, Unique              |
 | ABSTRACT | 介绍         | String |                               |
 | PICTURE  | 图片         | String |                               |
-| URL      | 链接         | String | Unique                        |
+| URL      | 链接         | String | Not Null,Unique               |
 
 ### 6.2 URL
 
@@ -125,16 +152,16 @@
 
 | Column      | Description  | Type   | Remark                        |
 | ----------- | ------------ | ------ | ----------------------------- |
-| ID          | 唯一身份编号 | Int    | Not NUll, Unique, Auto Create |
-| NAME        | 名称         | String | Not NUll, Unique              |
-| COMPANY     | 公司         | String | Not NUll, Unique              |
-| REGION      | 地区         | String | Not NUll, "CN" or "other"     |
+| ID          | 唯一身份编号 | Int    | Not Null, Unique, Auto Create |
+| NAME        | 名称         | String | Not Null, Unique              |
+| COMPANY     | 公司         | String | Not Null, Unique              |
+| REGION      | 地区         | String | Not Null, "CN" or "other"     |
 | SERVER      | 提供的服务   | String |                               |
 | LIMITED     | 使用限制     | String |                               |
 | FEATURE     | 特点         | String |                               |
 | PICTURE     | 图片         | String |                               |
 | DESCRIPTION | 描述         | String |                               |
-| URL         | 链接         | String | Unique                        |
+| URL         | 链接         | String | Not Null,Unique               |
 
 ### 7.2 URL
 
@@ -152,8 +179,8 @@
 | TEAM    | 小组编号     | String |                                                |
 | ROLE    | 角色         | String | Not Null, "instructor" or "leader" or "member" |
 | EMAIL   | 邮箱         | String |                                                |
-| PHOTO   | 照片         | String |                                                |
-
+| PHOTO   | 照片         | String |
+                                           |
 ### 8.2 URL
 
 | URL                   | FUNCTION       | METHOD | PARAM                         | RESULT      | REMARK |
