@@ -1,5 +1,6 @@
 package edu.zju.gis.dldsj.server.entity;
 
+import edu.zju.gis.dldsj.server.base.Base;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,8 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class GroupMember {
-    private int id;
+public class GroupMember extends Base<Integer> {
     private String name;
     private String version;
     private String team;

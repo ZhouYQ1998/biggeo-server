@@ -17,24 +17,19 @@ import java.util.List;
 @Service
 public class GroupMemberServiceImpl extends BaseServiceImpl<GroupMemberMapper, GroupMember,String> implements GroupMemberService {
 
-    public Page<GroupMember> showAllMembers(Page<GroupMember> page){
+    public Page<GroupMember> selectTeachers(Page<GroupMember> page){
         PageHelper.startPage(page.getPageNo(), page.getPageSize());
-        return new Page<>(mapper.showAllMembers());
+        return new Page<>(mapper.selectTeachers());
     }
 
-    public Page<GroupMember> showTeachers(Page<GroupMember> page){
+    public Page<GroupMember> selectByVersion(String version,Page<GroupMember> page){
         PageHelper.startPage(page.getPageNo(), page.getPageSize());
-        return new Page<>(mapper.showTeachers());
+        return new Page<>(mapper.selectByVersion(version));
     }
 
-    public Page<GroupMember> showByVersion(String version,Page<GroupMember> page){
+    public Page<GroupMember> selectByTeam(String version, String team,Page<GroupMember> page){
         PageHelper.startPage(page.getPageNo(), page.getPageSize());
-        return new Page<>(mapper.showByVersion(version));
-    }
-
-    public Page<GroupMember> showByTeam(String version, String team,Page<GroupMember> page){
-        PageHelper.startPage(page.getPageNo(), page.getPageSize());
-        return new Page<>(mapper.showByTeam(version, team));
+        return new Page<>(mapper.selectByTeam(version, team));
     }
 
 }

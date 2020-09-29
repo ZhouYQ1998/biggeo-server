@@ -1,5 +1,6 @@
 package edu.zju.gis.dldsj.server.entity;
 
+import edu.zju.gis.dldsj.server.base.Base;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,8 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class Lecture {
-    private String id;
+public class Lecture extends Base<String> {
     private String name;
     private String speaker;
     private String time;

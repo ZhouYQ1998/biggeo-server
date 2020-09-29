@@ -44,8 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
             if (session.getAttribute("userId") != null) {
                 return true;
             } else {
-                Result<String> result =
-                        new Result<String>(CodeConstants.VALIDATE_ERROR, "用户登陆状态已过期，请重新登陆。");
+                Result<String> result = new Result<String>(CodeConstants.VALIDATE_ERROR, "用户登陆状态已过期，请重新登陆。");
                 result.setBody("");
                 response.setContentType("application/json;charset=utf-8");
                 response.getWriter().write(result.toString());

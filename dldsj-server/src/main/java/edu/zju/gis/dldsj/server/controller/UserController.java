@@ -33,19 +33,7 @@ public class UserController extends BaseController<User, UserService, String, Ba
     @RequestMapping(value = "/deletebyname/{name}", method = RequestMethod.DELETE)
     @ResponseBody
     public Result<String> deleteUserByName(@PathVariable String name) {
-        Result<String> result = new Result<>();
-        try {
-            int num = userService.deleteByName(name);
-            if(num == 1){
-                result.setCode(CodeConstants.SUCCESS).setBody(name).setMessage("删除成功");
-            }
-            else{
-                result.setCode(CodeConstants.USER_NOT_EXIST).setBody(name).setMessage("删除失败：用户不存在");
-            }
-        } catch (RuntimeException e) {
-            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("删除失败：" + e.getMessage());
-        }
-        return result;
+        return userService.deleteByName(name);
     }
 
     /***
@@ -56,19 +44,7 @@ public class UserController extends BaseController<User, UserService, String, Ba
     @RequestMapping(value = "/selectbyname/{name}", method = RequestMethod.GET)
     @ResponseBody
     public Result<User> selectUserByName(@PathVariable String name) {
-        Result<User> result = new Result<>();
-        try {
-            User user = userService.selectByName(name);
-            if(user != null){
-                result.setCode(CodeConstants.SUCCESS).setBody(user).setMessage("查询成功");
-            }
-            else{
-                result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("查询失败：无结果");
-            }
-        } catch (RuntimeException e) {
-            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
-        }
-        return result;
+        return userService.selectByName(name);
     }
 
     /***
@@ -80,7 +56,7 @@ public class UserController extends BaseController<User, UserService, String, Ba
     @ResponseBody
     public Result<User> login(@RequestBody User requestUser, HttpSession session){
         Result<User> result = new Result<>();
-        User user = userService.selectByName(requestUser.getName());
+        User user = userService.selectByName(requestUser.getName()).getBody();
         if(user == null){
             result.setCode(CodeConstants.USER_NOT_EXIST).setMessage("登录失败：用户不存在");
             return result;
@@ -114,7 +90,7 @@ public class UserController extends BaseController<User, UserService, String, Ba
             result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("用户未登录");
             return result;
         }
-        User user = userService.select(userId);
+        User user = userService.select(userId).getBody();
         result.setCode(CodeConstants.SUCCESS).setBody(user).setMessage("用户已登录");
         return result;
     }

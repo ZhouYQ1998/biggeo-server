@@ -1,5 +1,6 @@
 package edu.zju.gis.dldsj.server.entity;
 
+import edu.zju.gis.dldsj.server.base.Base;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,8 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class Literature {
-    private String id;
+public class Literature extends Base<String> {
     private String title;
     private String author;
     private String year;

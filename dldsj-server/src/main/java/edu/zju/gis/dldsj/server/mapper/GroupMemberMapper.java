@@ -2,7 +2,6 @@ package edu.zju.gis.dldsj.server.mapper;
 
 import edu.zju.gis.dldsj.server.base.BaseMapper;
 import edu.zju.gis.dldsj.server.entity.GroupMember;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,11 +12,9 @@ import java.util.List;
  */
 public interface GroupMemberMapper extends BaseMapper<GroupMember,String> {
 
-    List<GroupMember> showAllMembers();
+    List<GroupMember> selectTeachers();
 
-    List<GroupMember> showTeachers();
+    List<GroupMember> selectByVersion(String version);
 
-    List<GroupMember> showByVersion(String version);
-
-    List<GroupMember> showByTeam(@Param("version") String version, @Param("team") String team);
+    List<GroupMember> selectByTeam(@Param("version") String version, @Param("team") String team);
 }

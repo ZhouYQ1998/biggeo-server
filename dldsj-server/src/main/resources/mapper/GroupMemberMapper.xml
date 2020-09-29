@@ -16,28 +16,27 @@
     <sql id="TABLE_NAME">
         tb_group_member
     </sql>
-    <select id="showAllMembers" resultMap="BaseResultMap">
+    <select id="allSelect" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from <include refid="TABLE_NAME"/>
     </select>
-    <select id="showTeachers" resultMap="BaseResultMap">
+    <select id="selectTeachers" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from <include refid="TABLE_NAME"/>
         where ROLE = 'instructor'
     </select>
-    <select id="showByVersion" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectByVersion" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from <include refid="TABLE_NAME"/>
         where VERSION = #{version, jdbcType=VARCHAR} or ROLE = 'instructor'
     </select>
-    <select id="showByTeam" resultMap="BaseResultMap">
+    <select id="selectByTeam" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from <include refid="TABLE_NAME"/>
         where VERSION = #{version, jdbcType=VARCHAR} and TEAM = #{team, jdbcType=VARCHAR}
     </select>
-
 </mapper>

@@ -1,5 +1,6 @@
 package edu.zju.gis.dldsj.server.entity;
 
+import edu.zju.gis.dldsj.server.base.Base;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,8 +13,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class RotationFigure {
-    private Integer id;
+public class RotationFigure extends Base<Integer> {
     private String imgPath;
     private String pagePath;
     private Date saveTime;
