@@ -21,7 +21,7 @@ public interface BaseMapper<T , ID extends Serializable> {
     /**
      * 删除实体
      */
-    void deleteByPrimaryKey(ID pk);
+    int deleteByPrimaryKey(ID pk);
 
     /**
      * 查询实体
@@ -31,7 +31,7 @@ public interface BaseMapper<T , ID extends Serializable> {
     /**
      * 更新实体
      */
-    void updateByPrimaryKey(T t);
+    int updateByPrimaryKey(T t);
 
     /**
      * 根据参数查询对象

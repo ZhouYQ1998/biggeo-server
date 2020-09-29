@@ -7,10 +7,17 @@ import edu.zju.gis.dldsj.server.entity.GroupMember;
 import java.util.List;
 
 /**
- * @author Jiarui
- * @date 2020/8/31
+ * @author Jiarui 2020/08/31
+ * @update zyq 2020/09/25
  */
 public interface GroupMemberService extends BaseService<GroupMember,String> {
-    Page<GroupMember> showAllMembers(Page page);
-    Page<GroupMember> showByGroup(String group,Page page);
+
+    Page<GroupMember> showAllMembers(Page<GroupMember> page);
+
+    Page<GroupMember> showTeachers(Page<GroupMember> page);
+
+    Page<GroupMember> showByVersion(String version, Page<GroupMember> page);
+
+    Page<GroupMember> showByTeam(String version, String team, Page<GroupMember> page);
+
 }

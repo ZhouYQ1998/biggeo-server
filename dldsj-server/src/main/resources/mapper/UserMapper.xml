@@ -7,6 +7,7 @@
         <result column="PASSWORD" jdbcType="VARCHAR" property="password"/>
         <result column="PHONE" jdbcType="VARCHAR" property="phone"/>
         <result column="EMAIL" jdbcType="VARCHAR" property="email"/>
+        <result column="ICON" jdbcType="VARCHAR" property="icon"/>
         <result column="ROLE" jdbcType="VARCHAR" property="role"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -15,7 +16,6 @@
     <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.User">
         insert into tb_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            ID,
             NAME,
             PASSWORD,
             ROLE,
@@ -23,11 +23,13 @@
                 PHONE,
             </if>
             <if test="email != null">
-                EMAIL
+                EMAIL,
+            </if>
+            <if test="icon != null">
+                ICON
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{id,jdbcType=VARCHAR},
             #{name,jdbcType=VARCHAR},
             #{password,jdbcType=VARCHAR},
             #{role,jdbcType=VARCHAR},
@@ -35,7 +37,10 @@
                 #{phone,jdbcType=VARCHAR},
             </if>
             <if test="email != null">
-                #{email,jdbcType=VARCHAR}
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR}
             </if>
         </trim>
     </insert>
@@ -76,8 +81,11 @@
             <if test="email != null">
                 EMAIL = #{email,jdbcType=VARCHAR},
             </if>
+            <if test="icon != null">
+                ICON = #{icon,jdbcType=VARCHAR},
+            </if>
             <if test="role != null">
-                ROLE = #{role,jdbcType=VARCHAR},
+                ROLE = #{role,jdbcType=VARCHAR}
             </if>
         </set>
         where ID = #{id,jdbcType=VARCHAR}

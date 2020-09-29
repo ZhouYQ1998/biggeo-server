@@ -8,9 +8,7 @@ import edu.zju.gis.dldsj.server.entity.User;
  */
 public interface UserMapper extends BaseMapper<User, String> {
 
-    int insert(User record);
-
-    void deleteByName(String name);
+    int deleteByName(String name);
 
     User selectByName(String name);
 

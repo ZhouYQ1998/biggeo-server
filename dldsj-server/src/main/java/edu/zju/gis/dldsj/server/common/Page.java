@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * 分页查询结果
  * 二次封装PageHelper库中的Page
- *
  * @param <T>
  */
 @Getter
@@ -67,7 +66,7 @@ public class Page<T> {
 
     public Page(List<T> list) {
         if (list instanceof com.github.pagehelper.Page) {
-            com.github.pagehelper.Page page = (com.github.pagehelper.Page) list;
+            com.github.pagehelper.Page<T> page = (com.github.pagehelper.Page<T>) list;
             this.totalCount = page.getTotal();
             this.totalPage = page.getPages();
             this.pageNo = page.getPageNum();

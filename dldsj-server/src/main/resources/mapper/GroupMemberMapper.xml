@@ -4,30 +4,40 @@
     <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.GroupMember">
         <id column="ID" jdbcType="VARCHAR" property="id"/>
         <result column="NAME" jdbcType="VARCHAR" property="name"/>
-        <result column="TEAM" jdbcType="VARCHAR" property="group"/>
+        <result column="VERSION" jdbcType="VARCHAR" property="version"/>
+        <result column="TEAM" jdbcType="VARCHAR" property="team"/>
+        <result column="ROLE" jdbcType="VARCHAR" property="role"/>
         <result column="EMAIL" jdbcType="VARCHAR" property="email"/>
-        <result column="WORK" jdbcType="VARCHAR" property="workContent"/>
         <result column="PHOTO" jdbcType="VARCHAR" property="photo"/>
-
     </resultMap>
     <sql id="Base_Column_List">
-        ID, NAME, TEAM, EMAIL, WORK, PHOTO
+        ID, NAME, VERSION, TEAM, ROLE, EMAIL, PHOTO
     </sql>
     <sql id="TABLE_NAME">
-        tb_groupmember
+        tb_group_member
     </sql>
-
     <select id="showAllMembers" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from <include refid="TABLE_NAME"/>
     </select>
-
-    <select id="showByGroup" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="showTeachers" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from <include refid="TABLE_NAME"/>
-        where TEAM = #{group,jdbcType=VARCHAR}
+        where ROLE = 'instructor'
+    </select>
+    <select id="showByVersion" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where VERSION = #{version, jdbcType=VARCHAR} or ROLE = 'instructor'
+    </select>
+    <select id="showByTeam" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where VERSION = #{version, jdbcType=VARCHAR} and TEAM = #{team, jdbcType=VARCHAR}
     </select>
 
 </mapper>

@@ -42,8 +42,8 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T , ID e
      * @param id ID
      */
     @Override
-    public void delete(ID id) {
-        mapper.deleteByPrimaryKey(id);
+    public int delete(ID id) {
+        return mapper.deleteByPrimaryKey(id);
     }
 
     /**
@@ -60,8 +60,8 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T , ID e
      * @param t T
      */
     @Override
-    public void update(T t) {
-        mapper.updateByPrimaryKey(t);
+    public int update(T t) {
+        return mapper.updateByPrimaryKey(t);
     }
 
     /**

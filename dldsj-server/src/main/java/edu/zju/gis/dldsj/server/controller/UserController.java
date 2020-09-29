@@ -26,40 +26,22 @@ public class UserController extends BaseController<User, UserService, String, Ba
     private UserService userService;
 
     /***
-     * 插入用户
-     * @param user User
-     * @return result
-     */
-    @RequestMapping(value = "/insert", method = RequestMethod.PUT)
-    @ResponseBody
-    @Override
-    public Result<User> insert(@RequestBody User user){
-        Result<User> result = new Result<>();
-        try {
-            // 设置随机ID
-            String id = UUID.randomUUID().toString();
-            user.setId(id);
-            // 执行插入
-            userService.insert(user);
-            result.setCode(CodeConstants.SUCCESS).setBody(user).setMessage("插入成功");
-        } catch (RuntimeException e) {
-            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("插入失败：" + e.getMessage());
-        }
-        return result;
-    }
-
-    /***
      * 删除用户（通过NAME，非主键）
      * @param name String
      * @return result
      */
     @RequestMapping(value = "/deletebyname/{name}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Result<User> deleteUserByName(@PathVariable String name) {
-        Result<User> result = new Result<>();
+    public Result<String> deleteUserByName(@PathVariable String name) {
+        Result<String> result = new Result<>();
         try {
-            userService.deleteByName(name);
-            result.setCode(CodeConstants.SUCCESS).setMessage("删除成功");
+            int num = userService.deleteByName(name);
+            if(num == 1){
+                result.setCode(CodeConstants.SUCCESS).setBody(name).setMessage("删除成功");
+            }
+            else{
+                result.setCode(CodeConstants.USER_NOT_EXIST).setBody(name).setMessage("删除失败：用户不存在");
+            }
         } catch (RuntimeException e) {
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("删除失败：" + e.getMessage());
         }
