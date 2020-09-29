@@ -24,23 +24,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class GroupMemberController extends BaseController<GroupMember, GroupMemberService, String, GroupMemberSearchPojo> {
 
     /**
-     * 查询所有开发者
-     * @param page Page
-     */
-    @RequestMapping(value = "/showall", method = RequestMethod.GET)
-    @ResponseBody
-    public Result<Page<GroupMember>> showAllMembers(Page<GroupMember> page) {
-        return new Result<Page<GroupMember>>().setCode(CodeConstants.SUCCESS).setBody(service.showAllMembers(page));
-    }
-
-    /**
      * 查询指导老师
      * @param page Page
      */
-    @RequestMapping(value = "/showteachers", method = RequestMethod.GET)
+    @RequestMapping(value = "/selectteachers", method = RequestMethod.GET)
     @ResponseBody
-    public Result<Page<GroupMember>> showTeachers(Page<GroupMember> page) {
-        return new Result<Page<GroupMember>>().setCode(CodeConstants.SUCCESS).setBody(service.showTeachers(page));
+    public Result<Page<GroupMember>> selectTeachers(Page<GroupMember> page) {
+        return new Result<Page<GroupMember>>().setCode(CodeConstants.SUCCESS).setBody(service.selectTeachers(page));
     }
 
     /**
@@ -48,10 +38,10 @@ public class GroupMemberController extends BaseController<GroupMember, GroupMemb
      * @param page Page
      * @param version String
      */
-    @RequestMapping(value = "/showbyversion", method = RequestMethod.GET)
+    @RequestMapping(value = "/selectbyversion", method = RequestMethod.GET)
     @ResponseBody
-    public Result<Page<GroupMember>> showTeachers(@RequestParam String version, Page<GroupMember> page) {
-        return new Result<Page<GroupMember>>().setCode(CodeConstants.SUCCESS).setBody(service.showByVersion(version, page));
+    public Result<Page<GroupMember>> selectTeachers(@RequestParam String version, Page<GroupMember> page) {
+        return new Result<Page<GroupMember>>().setCode(CodeConstants.SUCCESS).setBody(service.selectByVersion(version, page));
     }
 
     /**
@@ -59,10 +49,10 @@ public class GroupMemberController extends BaseController<GroupMember, GroupMemb
      * @param team String
      * @param page Page
      */
-    @RequestMapping(value = "/showbyteam", method = RequestMethod.GET)
+    @RequestMapping(value = "/selectbyteam", method = RequestMethod.GET)
     @ResponseBody
-    public Result<Page<GroupMember>> showByTeam(@RequestParam String version, @RequestParam String team, Page<GroupMember> page) {
-        return new Result<Page<GroupMember>>().setCode(CodeConstants.SUCCESS).setBody(service.showByTeam(version, team, page));
+    public Result<Page<GroupMember>> selectByTeam(@RequestParam String version, @RequestParam String team, Page<GroupMember> page) {
+        return new Result<Page<GroupMember>>().setCode(CodeConstants.SUCCESS).setBody(service.selectByTeam(version, team, page));
     }
 
 }

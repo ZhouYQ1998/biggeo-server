@@ -1,6 +1,7 @@
 package edu.zju.gis.dldsj.server.service;
 
 import edu.zju.gis.dldsj.server.base.BaseService;
+import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.entity.User;
 
 /**
@@ -8,8 +9,8 @@ import edu.zju.gis.dldsj.server.entity.User;
  */
 public interface UserService extends BaseService<User, String> {
 
-    int deleteByName(String name);
+    Result<String> deleteByName(String name);
 
-    User selectByName(String name);
+    Result<User> selectByName(String name);
 
 }

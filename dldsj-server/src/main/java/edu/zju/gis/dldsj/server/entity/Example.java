@@ -1,5 +1,6 @@
 package edu.zju.gis.dldsj.server.entity;
 
+import edu.zju.gis.dldsj.server.base.Base;
 import edu.zju.gis.dldsj.server.base.BaseFilter;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class Example extends BaseFilter<String> {
+public class Example extends Base<String> {
   private String name;
   private Integer age;
   private Date time;

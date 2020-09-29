@@ -1,6 +1,8 @@
 package edu.zju.gis.dldsj.server.base;
 
 import edu.zju.gis.dldsj.server.common.Page;
+import edu.zju.gis.dldsj.server.common.Result;
+import edu.zju.gis.dldsj.server.entity.Batch;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,38 +12,56 @@ import java.util.List;
  * Service接口基类
  * @update zyq 2020/09/23
  */
-public interface BaseService<T , ID extends Serializable> {
+public interface BaseService<T extends Base, ID extends Serializable> {
 
     /**
      * 插入实体
      */
-    int insert(T t);
+    Result<T> insert(T t);
+
+    /**
+     * 插入实体（批量）
+     */
+    Result<List<Batch<T>>> batchInsert(List<T> t);
 
     /**
      * 删除实体
      */
-    int delete(ID id);
+    Result<ID> delete(ID id);
+
+    /**
+     * 删除实体（批量）
+     */
+    Result<String> batchDelete(String ids);
 
     /**
      * 查询实体
      */
-    T select(ID pk);
+    Result<T> select(ID id);
+
+    /**
+     * 查询实体（批量）
+     */
+    Result<Page<T>> batchSelect(String ids, Page<T> page);
+
+    /**
+     * 查询实体（所有）
+     */
+    Result<Page<T>> allSelect(Page<T> page);
 
     /**
      * 更新实体
      */
-    int update(T t);
+    Result<T> update(T t);
 
     /**
-     * 判断实体是否已经存在
+     * 更新实体（批量）
      */
-    boolean isExist(ID id);
+    Result<List<Batch<T>>> batchUpdate(List<T> t);
 
     /**
-     * 根据查询条件获取列表
+     *
      */
-    Page<T> search(BaseFilter<ID> params, Page<T> page);
-
     List<T> getByPage(int offset, int size);
 
 }

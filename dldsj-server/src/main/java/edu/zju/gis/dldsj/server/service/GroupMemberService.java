@@ -12,12 +12,10 @@ import java.util.List;
  */
 public interface GroupMemberService extends BaseService<GroupMember,String> {
 
-    Page<GroupMember> showAllMembers(Page<GroupMember> page);
+    Page<GroupMember> selectTeachers(Page<GroupMember> page);
 
-    Page<GroupMember> showTeachers(Page<GroupMember> page);
+    Page<GroupMember> selectByVersion(String version, Page<GroupMember> page);
 
-    Page<GroupMember> showByVersion(String version, Page<GroupMember> page);
-
-    Page<GroupMember> showByTeam(String version, String team, Page<GroupMember> page);
+    Page<GroupMember> selectByTeam(String version, String team, Page<GroupMember> page);
 
 }

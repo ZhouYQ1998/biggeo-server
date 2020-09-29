@@ -11,7 +11,7 @@ import java.util.List;
  * dao接口基类
  * @update zyq 2020/09/23
  */
-public interface BaseMapper<T , ID extends Serializable> {
+public interface BaseMapper<T extends Base, ID extends Serializable> {
 
     /**
      * 插入实体
@@ -21,12 +21,27 @@ public interface BaseMapper<T , ID extends Serializable> {
     /**
      * 删除实体
      */
-    int deleteByPrimaryKey(ID pk);
+    int deleteByPrimaryKey(ID id);
+
+    /**
+     * 删除实体（批量）
+     */
+    int batchDelete(List<ID> ids);
 
     /**
      * 查询实体
      */
-    T selectByPrimaryKey(ID pk);
+    T selectByPrimaryKey(ID id);
+
+    /**
+     * 查询实体（批量）
+     */
+    List<T> batchSelect(List<ID> ids);
+
+    /**
+     * 查询实体（所有）
+     */
+    List<T> allSelect();
 
     /**
      * 更新实体
@@ -38,5 +53,8 @@ public interface BaseMapper<T , ID extends Serializable> {
      */
     List<T> search(BaseFilter<ID> params);
 
+    /**
+     *
+     */
     List<T> selectByPage(@Param("offset") int offset, @Param("size") int size);
 }
