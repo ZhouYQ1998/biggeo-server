@@ -45,27 +45,27 @@
 
 ### 2.1 Table
 
-| Column                   | Description  | Type   | Remark                                   |
-| ------------------------ | ------------ | ------ | ---------------------------------------- |
-| ID                       | 主键（编号） | String | Not Null, Unique, Auto Create            |
-| TITLE                    | 标题         | String | Not Null                                 |
-| UPLOADED                 | 作者         | String |                                          |
-|                          | 上传用户     |        | Not Null, "manager" or "userId/userName" |
-|                          | 下载权限     |        |                                          |
-| RE_TIME                  | 时间         | Date   |                                          |
-| TYPE_1                   | 类型一       | String | Not Null                                 |
-| TYPE_2                   | 类型二       | String |                                          |
-| KEYWORDS                 | 关键词       | String | Not Null                                 |
-| **（删除该字段）**SOURCE | 资源         | String |                                          |
-| ABSTRACT                 | 摘要         | String |                                          |
-| REFRENCE                 | 参考文献     | String |                                          |
-| PICTURE                  | 图片         | String |                                          |
-| OLD_FILENAME             | 中文名称     | String |                                          |
-| NEW_FILENAME             | 英文名称     | String |                                          |
-| FORMAT                   | 数据格式     | String |                                          |
-| PATH                     | 路径         | String |                                          |
-| RAM                      | 数据大小     | String |                                          |
-| DOWNLOAD_TIM             | 下载数量     | Int    |                                          |
+| Column               | Description  | Type   | Remark                                   |
+| -------------------- | ------------ | ------ | ---------------------------------------- |
+| ID                   | 主键（编号） | String | Not Null, Unique, Auto Create            |
+| TITLE                | 标题         | String | Not Null                                 |
+| UPLOADED             | 作者         | String |                                          |
+|                      | 上传用户     |        | Not Null, "manager" or "userId/userName" |
+|                      | 下载权限     |        |                                          |
+| RE_TIME              | 时间         | Date   |                                          |
+| TYPE_1               | 类型一       | String | Not Null                                 |
+| TYPE_2               | 类型二       | String |                                          |
+| KEYWORDS             | 关键词       | String | Not Null                                 |
+| **（已删除）**SOURCE | 资源         | String |                                          |
+| ABSTRACT             | 摘要         | String |                                          |
+| REFRENCE             | 参考文献     | String |                                          |
+| PICTURE              | 图片         | String |                                          |
+| OLD_FILENAME         | 中文名称     | String |                                          |
+| NEW_FILENAME         | 英文名称     | String |                                          |
+| FORMAT               | 数据格式     | String |                                          |
+| PATH                 | 路径         | String |                                          |
+| RAM                  | 数据大小     | String |                                          |
+| DOWNLOAD_TIM         | 下载数量     | Int    |                                          |
 
 ### 2.2 URL
 
@@ -89,7 +89,7 @@
 | PUBLISHER       | 所在单位/学校 | String |                                              |
 | TERTIARY_AUTHOR | 指导老师      | String |                                              |
 | YEAR            | 发表年份      | String |                                              |
-| TYPE            | 文章类型      | String | Not NUll, "bachelor" or "master" or "doctor" |
+| TYPE            | 文章类型      | String | Not Null, "bachelor" or "master" or "doctor" |
 | KEYWORDS        | 关键词        | String |                                              |
 | ABSTRACT        | 摘要          | String |                                              |
 | URL             | 链接          | String |                                              |
@@ -117,7 +117,7 @@
 | PAGES              | 期刊页数      | String |                                     |
 | KEYWORDS           | 关键词        | String |                                     |
 | ABSTRACT           | 摘要          | String |                                     |
-| DOI                | DOI           | String |                                     |
+| DOI                | DOI           | String | Unique                              |
 | ISSU               | ISSU          | String |                                     |
 | URL                | 链接          | String | Not Null,Unique                     |
 
@@ -129,14 +129,14 @@
 
 ### 5.1 Table
 
-| Column  | Description  | Type   | Remark                      |
-| ------- | ------------ | ------ | --------------------------- |
-| ID      | 主键（编号） | String | Not Null,Unique,Auto Create |
-| NAME    | 姓名         | String | Not Null                    |
-| SPEAKER | 演讲者       | String |                             |
-| PLACE   | 地点         | String |                             |
-| TIME    | 时间         | String |                             |
-| URL     | 链接         | String |                             |
+| Column  | Description  | Type   | Remark                        |
+| ------- | ------------ | ------ | ----------------------------- |
+| ID      | 主键（编号） | String | Not Null, Unique, Auto Create |
+| NAME    | 姓名         | String | Not Null                      |
+| SPEAKER | 演讲者       | String |                               |
+| PLACE   | 地点         | String |                               |
+| TIME    | 时间         | String |                               |
+| URL     | 链接         | String |                               |
 
 ### 5.2 URL
 
@@ -170,7 +170,6 @@
 | REGION      | 地区         | String | Not Null, "CN" or "other"     |
 | SERVER      | 提供的服务   | String |                               |
 | LIMITED     | 使用限制     | String |                               |
-| FEATURE     | 特点         | String |                               |
 | PICTURE     | 图片         | String |                               |
 | DESCRIPTION | 描述         | String |                               |
 | URL         | 链接         | String | Not Null,Unique               |
@@ -185,8 +184,8 @@
 
 | Column  | Description  | Type   | Remark                                         |
 | ------- | ------------ | ------ | ---------------------------------------------- |
-| ID      | 主键（编号） | Int    | Not NUll, Unique                               |
-| NAME    | 姓名         | String | Not NUll                                       |
+| ID      | 主键（编号） | Int    | Not Null, Unique, Auto Create                  |
+| NAME    | 姓名         | String | Not Null                                       |
 | VERSION | 开发版本     | String | "V1.0" or "V2.0"                               |
 | TEAM    | 小组编号     | String |                                                |
 | ROLE    | 角色         | String | Not Null, "instructor" or "leader" or "member" |
