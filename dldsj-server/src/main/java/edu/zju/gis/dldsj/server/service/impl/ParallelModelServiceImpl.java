@@ -23,11 +23,16 @@ import java.util.stream.Collectors;
  * @version 1.0 2018/08/01
  */
 @Service
-public class ParallelModelServiceImpl extends BaseServiceImpl<ParallelModelMapper, ParallelModelWithBLOBs, String> implements ParallelModelService {
+public class ParallelModelServiceImpl  implements ParallelModelService {
 
 
     @Override
     public List<ParallelModel> getByIdList(Collection<String> idList) {
+        return null;
+    }
+
+    @Override
+    public String getCmd(String artifactId, String jobName, List<String> params, List<String> envSetting) {
         return null;
     }
 

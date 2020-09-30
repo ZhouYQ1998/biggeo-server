@@ -13,5 +13,5 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class GroupMemberSearchPojo extends BaseFilter<String> {
+public class GroupMemberSearchPojo extends BaseFilter<Integer> {
 }

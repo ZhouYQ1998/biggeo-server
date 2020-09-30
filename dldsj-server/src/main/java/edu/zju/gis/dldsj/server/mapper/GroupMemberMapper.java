@@ -10,7 +10,7 @@ import java.util.List;
  * @author Jiarui 2020/08/31
  * @update zyq 2020/09/25
  */
-public interface GroupMemberMapper extends BaseMapper<GroupMember,String> {
+public interface GroupMemberMapper extends BaseMapper<GroupMember, Integer> {
 
     List<GroupMember> selectTeachers();
 

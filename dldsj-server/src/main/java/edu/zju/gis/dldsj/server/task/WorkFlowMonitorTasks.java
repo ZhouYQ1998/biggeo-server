@@ -35,10 +35,10 @@ public class WorkFlowMonitorTasks implements Runnable {
             while (workFlowRun.getStatus().equals("running")) {
                 List<WorkFlowJob> jobs = this.workFlowService.getJobsByRun(runId);
                 for (WorkFlowJob job : jobs) {
-                    AirflowTaskInstance instance = this.workFlowService.airflow_getInstance(runId, job.getJobid(), executionDate);
+                    AirflowTaskInstance instance = this.workFlowService.airflow_getInstance(runId, job.getJobId(), executionDate);
                     if (instance != null) {
-                        job.setStarttime(instance.getStartDate());
-                        job.setEndtime(instance.getEndDate());
+                        job.setStartTime(instance.getStartDate());
+                        job.setEndTime(instance.getEndDate());
                         job.setStatus(instance.getState());
                         workFlowService.updateJob(job);
                     }
@@ -48,7 +48,7 @@ public class WorkFlowMonitorTasks implements Runnable {
                 Thread.sleep(setting.getMonitorInterval());
             }
             workFlowService.updateRun(workFlowRun);
-            log.info("工作流`{}`@`{}`监控已完成，最终状态为：{}", runId, workFlowRun.getEndtime(), workFlowRun.getStatus());
+            log.info("工作流`{}`@`{}`监控已完成，最终状态为：{}", runId, workFlowRun.getEndTime(), workFlowRun.getStatus());
 
         } catch (Exception e) {
             log.error("工作流`" + runId + "`监控失败", e);

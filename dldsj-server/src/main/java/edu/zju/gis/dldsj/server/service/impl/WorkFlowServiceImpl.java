@@ -50,7 +50,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     public int deleteRunById(String runId) {
         List<WorkFlowJob> jobs = this.workFlowJobMapper.selectByRunId(runId);
         for (WorkFlowJob job : jobs) {
-            this.workFlowJobMapper.deleteByPrimaryKey(job.getId());
+            this.workFlowJobMapper.deleteByPrimaryKey(job.getJobId());
         }
         return this.workFlowRunMapper.deleteByPrimaryKey(runId);
     }

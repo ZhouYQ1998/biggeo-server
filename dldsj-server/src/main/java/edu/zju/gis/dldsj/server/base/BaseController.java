@@ -15,7 +15,7 @@ import java.util.List;
  * 实现Controller的基础CURD方法
  * 实现Controller的基础批量CURD方法
  **/
-public abstract class BaseController<T extends Base, Service extends BaseService<T, ID>, ID extends Serializable, Search extends BaseFilter<ID>> {
+public abstract class BaseController<T extends Base<ID>, Service extends BaseService<T, ID>, ID extends Serializable, Search extends BaseFilter<ID>> {
 
     /**
      * 注入Service

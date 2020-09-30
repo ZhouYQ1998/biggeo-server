@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.WorkFlowJobMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowJob">
+        <id column="JOB_ID" property="jobId" jdbcType="VARCHAR"/>
+        <result column="RUN_ID" property="runId" jdbcType="VARCHAR"/>
+        <result column="JOB_ORDER" property="jobOrder" jdbcType="VARCHAR"/>
+        <result column="JOB_NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="MODEL" property="model" jdbcType="VARCHAR"/>
+        <result column="PARAMS" property="params" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        JOB_ID, RUN_ID, JOB_ORDER, JOB_NAME, MODEL, PARAMS, STATUS, START_TIME, END_TIME
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_workflow_job
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where JOB_ID = #{jobId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from <include refid="TABLE_NAME"/>
+    where JOB_ID = #{jobId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowJob">
+    insert into <include refid="TABLE_NAME"/>
+        <include refid="Base_Column_List"/>
+    values (#{jobId,jdbcType=VARCHAR}, #{runId,jdbcType=VARCHAR}, #{jobOrder,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+      #{model,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowJob">
+        insert into <include refid="TABLE_NAME"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="jobId != null">
+                JOB_ID,
+            </if>
+            <if test="runId != null">
+                RUN_ID,
+            </if>
+            <if test="jobOrder != null">
+                JOB_ORDER,
+            </if>
+            <if test="name != null">
+                JOB_NAME,
+            </if>
+            <if test="model != null">
+                MODEL,
+            </if>
+            <if test="params != null">
+                PARAMS,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="startTime != null">
+                START_TIME,
+            </if>
+            <if test="endTime != null">
+                END_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="jobId != null">
+                #{jobId,jdbcType=VARCHAR},
+            </if>
+            <if test="runId != null">
+                #{runid,jdbcType=VARCHAR},
+            </if>
+            <if test="jobOrder != null">
+                #{jobOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="model != null">
+                #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="params != null">
+                #{params,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowJob">
+        update <include refid="TABLE_NAME"/>
+        <set>
+            <if test="runId != null">
+                RUN_ID = #{runId,jdbcType=VARCHAR},
+            </if>
+            <if test="jobId != null">
+                JOB_ORDER = #{jobOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                JOB_NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="model != null">
+                MODEL = #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="params != null">
+                PARAMS = #{params,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                START_TIME = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                END_TIME = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where JOB_ID = #{jobId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowJob">
+    update <include refid="TABLE_NAME"/>
+    set runId = #{runid,jdbcType=VARCHAR},
+      jobid = #{jobid,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      params = #{params,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=TIMESTAMP},
+      endTime = #{endtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <select id="selectByRunId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+        <include refid="Base_Column_List"/>
+    from <include refid="TABLE_NAME"/>
+    where runId = #{runId,jdbcType=VARCHAR} ORDER BY startTime DESC
+  </select>
+</mapper>

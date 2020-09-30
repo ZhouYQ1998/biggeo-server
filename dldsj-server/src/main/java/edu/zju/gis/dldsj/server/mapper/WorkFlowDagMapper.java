@@ -6,7 +6,7 @@ import edu.zju.gis.dldsj.server.entity.workflow.WorkFlowDag;
 
 import java.util.List;
 
-public interface WorkFlowDagMapper extends BaseMapper<WorkFlowDag,String> {
+public interface WorkFlowDagMapper  {
     int deleteByPrimaryKey(String id);
 
     int insert(WorkFlowDag record);
