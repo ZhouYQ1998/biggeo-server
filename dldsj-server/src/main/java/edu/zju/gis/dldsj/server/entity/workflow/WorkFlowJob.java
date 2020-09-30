@@ -13,11 +13,11 @@ import java.util.Date;
 @Getter
 @Setter
 public class WorkFlowJob {
-    private String id;
+    private String jobId;
 
-    private String runid;
+    private String runId;
 
-    private String jobid;
+    private String jobOrder;
 
     private String name;
 
@@ -27,7 +27,7 @@ public class WorkFlowJob {
 
     private String status;
 
-    private Date starttime;
+    private Date startTime;
 
-    private Date endtime;
+    private Date endTime;
 }

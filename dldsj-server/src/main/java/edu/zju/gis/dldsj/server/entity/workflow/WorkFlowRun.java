@@ -17,11 +17,11 @@ public class WorkFlowRun {
 
     private String name;
 
-    private String userid;
+    private String userId;
 
     private String status;
 
-    private Date starttime;
+    private Date startTime;
 
-    private Date endtime;
+    private Date endTime;
 }

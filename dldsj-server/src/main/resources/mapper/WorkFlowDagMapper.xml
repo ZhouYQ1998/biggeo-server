@@ -22,7 +22,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
-        from tb_workflow_dag
+        from <include refid="TABLE_NAME"/>
         where DAG_ID = #{id,jdbcType=VARCHAR}
     </select>
 
