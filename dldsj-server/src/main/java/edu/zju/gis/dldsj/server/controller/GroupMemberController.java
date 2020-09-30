@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/member")
 @Slf4j
-public class GroupMemberController extends BaseController<GroupMember, GroupMemberService, String, GroupMemberSearchPojo> {
+public class GroupMemberController extends BaseController<GroupMember, GroupMemberService, Integer, GroupMemberSearchPojo> {
 
     /**
      * 查询指导老师

@@ -12,7 +12,7 @@ import java.util.List;
  * Service接口基类
  * @update zyq 2020/09/23
  */
-public interface BaseService<T extends Base, ID extends Serializable> {
+public interface BaseService<T extends Base<ID>, ID extends Serializable> {
 
     /**
      * 插入实体

@@ -15,7 +15,7 @@ import java.util.List;
  * @update zyq 2020/09/25
  */
 @Service
-public class GroupMemberServiceImpl extends BaseServiceImpl<GroupMemberMapper, GroupMember,String> implements GroupMemberService {
+public class GroupMemberServiceImpl extends BaseServiceImpl<GroupMemberMapper, GroupMember, Integer> implements GroupMemberService {
 
     public Page<GroupMember> selectTeachers(Page<GroupMember> page){
         PageHelper.startPage(page.getPageNo(), page.getPageSize());

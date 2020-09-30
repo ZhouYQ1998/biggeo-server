@@ -10,7 +10,7 @@ import java.util.List;
  * @author Jiarui 2020/08/31
  * @update zyq 2020/09/25
  */
-public interface GroupMemberService extends BaseService<GroupMember,String> {
+public interface GroupMemberService extends BaseService<GroupMember, Integer> {
 
     Page<GroupMember> selectTeachers(Page<GroupMember> page);
 

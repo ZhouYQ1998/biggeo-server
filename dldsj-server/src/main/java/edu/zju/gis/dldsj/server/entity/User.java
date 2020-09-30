@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class User extends Base {
+public class User extends Base<String> {
     private String name;
     private String password;
     private String phone;

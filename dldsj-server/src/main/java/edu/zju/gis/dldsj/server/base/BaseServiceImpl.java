@@ -25,7 +25,7 @@ import java.util.UUID;
  * @param <ID>
  * @update zyq 2020/09/23
  */
-public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extends Base, ID extends Serializable> implements BaseService<T, ID> {
+public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extends Base<ID>, ID extends Serializable> implements BaseService<T, ID> {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
 
@@ -43,7 +43,7 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
     public Result<T> insert(T t) {
         Result<T> result = new Result<>();
         try{
-            t.setId(UUID.randomUUID().toString());
+            t.setId((ID) UUID.randomUUID().toString());
             int num = mapper.insert(t);
             if(num == 1){
                 result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("插入成功");
@@ -68,7 +68,7 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
         int successNum = 0;
         for(int i = 0; i < t.size(); i++){
             T tempT = t.get(i);
-            tempT.setId(UUID.randomUUID().toString());
+            tempT.setId((ID)UUID.randomUUID().toString());
             Batch<T> batch = new Batch<>();
             batch.setT(tempT);
             try{
