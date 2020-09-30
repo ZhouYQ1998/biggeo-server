@@ -18,8 +18,50 @@ import java.util.List;
 @Getter
 @Setter
 public class CommonSetting {
-    private List<String> frontEndRegionList;
-    private String sessionMaxAge;
+
     //存储可视化部分工程json文件、数据json文件以及一些图片
     private String mapfileSavepath;
+
+    //原来工程中的设置
+    private String parallelFilePath;
+    private String jarPath;
+    private String xmlPath;
+    private String templatePath;
+    private String picPath;
+    private String metaPath;
+    private String nameNode;
+    private String username;
+    private String password;
+    private String javaHome;
+    private String hadoopHome;
+    private String sparkHome;
+    private String esHost;
+    private int esPort;
+    private String esName;
+    private String esIndex;
+    private String jobMonitor;
+    private int monitorInterval;
+    private int jobFailInterval;
+    private String jobResultPath;
+    private int initTaskPoolSize;
+    private int maxTaskPoolSize;
+    private int keepAliveSeconds;
+    //    private String airflowHome;
+    private String dagsFolder;
+    private List<String> frontEndRegionList;
+    private String sessionMaxAge;
+    private String userSpaceRootPath;
+    private String calculateDataNameSpace;
+    private String selfDataNameSpace;
+    private String systemPublicAccount;
+    private String rasterToolTempDir;
+    private String topic3ToolTempDir;
+    private String exportToolJarClass;
+    private String exportToolJarPath;
+    private String downloadTempDirectory;
+    private String importToolJarClass;
+    private String importToolJarPath;
+    private String airFlowHome;
+    private String airFlowDagsPath;
+
 }
