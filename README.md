@@ -21,22 +21,23 @@
 
 ### 1.2 URL
 
-| URL                       | FUNCTION | METHOD | PARAM                                    | RESULT              | REMARK              |
-| ------------------------- | -------- | ------ | ---------------------------------------- | ------------------- | ------------------- |
-| /user/insert              | 插入用户 | PUT    | name,password,role[,phone,email,icon]    | {code,body,message} | phone,email为可选值 |
-| /user/batchinsert         | 批量插入 | PUT    | [User[,User...]]                         | {code,body,message} |                     |
-| /user/delete/{id}         | 删除用户 | DELETE |                                          | {code,body,message} | body值为id          |
-| /user/deletebyname/{name} | 删除用户 | DELETE |                                          | {code,body,message} | body值为name        |
-| /user//batchdelete/{ids}  | 批量删除 | DELETE |                                          | {code,body,message} | 逗号","分隔         |
-| /user/select/{id}         | 查询用户 | GET    |                                          | {code,body,message} |                     |
-| /user/selectbyname/{name} | 查询用户 | GET    |                                          | {code,body,message} |                     |
-| /user/batchseletct/{ids}  | 批量查询 | GET    | [pageNo,pageSize]                        | ode,body,message}   | 逗号","分隔         |
-| /user/allselect           | 查询用户 | GET    | [pageNo,pageSize]                        | {code,body,message} | body为page          |
-| /user/update              | 更新用户 | POST   | id[,name,password,role,phone,email,icon] | {code,body,message} | id为必要值          |
-| /user/batchupdate         | 批量更新 | POST   | [User[,User...]]                         | {code,body,message} |                     |
-| /user/login               | 用户登录 | POST   | name,password                            | {code,body,message} |                     |
-| /user/loginstatus         | 登录状态 | GET    |                                          | {code,body,message} |                     |
-| /user/logout              | 用户注销 | POST   |                                          | {code,body,message} | body值为id          |
+| URL                       | FUNCTION   | METHOD | PARAM                                    | RESULT              | REMARK              |
+| ------------------------- | ---------- | ------ | ---------------------------------------- | ------------------- | ------------------- |
+| /user/insert              | 插入用户   | PUT    | name,password,role[,phone,email,icon]    | {code,body,message} | phone,email为可选值 |
+| /user/batchinsert         | 批量插入   | PUT    | [User[,User...]]                         | {code,body,message} |                     |
+| /user/delete/{id}         | 删除用户   | DELETE |                                          | {code,body,message} | body值为id          |
+| /user/deletebyname/{name} | 删除用户   | DELETE |                                          | {code,body,message} | body值为name        |
+| /user//batchdelete/{ids}  | 批量删除   | DELETE |                                          | {code,body,message} | 逗号","分隔         |
+| /user/select/{id}         | 查询用户   | GET    |                                          | {code,body,message} |                     |
+| /user/selectbyname/{name} | 查询用户   | GET    |                                          | {code,body,message} |                     |
+| /user/batchseletct/{ids}  | 批量查询   | GET    | [pageNo,pageSize]                        | ode,body,message}   | 逗号","分隔         |
+| /user/allselect           | 查询用户   | GET    | [pageNo,pageSize]                        | {code,body,message} | body为page          |
+| /user/update              | 更新用户   | POST   | id[,name,password,role,phone,email,icon] | {code,body,message} | id为必要值          |
+| /user/batchupdate         | 批量更新   | POST   | [User[,User...]]                         | {code,body,message} |                     |
+| /user/login               | 用户登录   | POST   | name,password                            | {code,body,message} |                     |
+| /user/loginstatus         | 登录状态   | GET    |                                          | {code,body,message} |                     |
+| /user/logout              | 用户注销   | POST   |                                          | {code,body,message} | body值为id          |
+| /user/check/{email}       | 发送验证码 | GET    |                                          | {code,body,message} | body值为code和email |
 
 - 插入和更新的批量操作返回值的body值包括“t”（实体）和“message”（实体操作结果），下同
 - PageNo默认为1，PageSize默认为20，下同
@@ -257,4 +258,4 @@
 # TODO
 
 - 用户访问统计数据
-- 忘记密码（发送邮件/验证码）
+- 数据下载
