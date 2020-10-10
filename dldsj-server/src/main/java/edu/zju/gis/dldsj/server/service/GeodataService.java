@@ -20,6 +20,8 @@ public interface GeodataService extends BaseService<Geodata,String> {
 
     Page<Geodata> selectBySource(String source, Page page);
 
+    Page<Geodata> selectByUserName(String userName, Page page);
+
     //根据输入字段名称，返回结果的唯一不同值与对应数量
     Map<String, String> getDistinctField(String field);
 

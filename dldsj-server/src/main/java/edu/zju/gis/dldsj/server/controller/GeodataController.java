@@ -61,6 +61,18 @@ public class GeodataController extends BaseController<Geodata, GeodataService,St
     }
 
     /**
+     * 按照userName来选取
+     *
+     * @param userName
+     * @param page
+     */
+    @RequestMapping(value = "/byuserName", method = RequestMethod.GET)
+    @ResponseBody
+    public Result getByUserName(@RequestParam String userName, Page page) {
+        return Result.success().setBody(service.selectByUserName(userName, page));
+    }
+
+    /**
      * distinct 根据输入字段名称，返回结果的唯一不同值与对应数量
      *
      * @param field

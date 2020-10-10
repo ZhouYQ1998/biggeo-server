@@ -6,7 +6,7 @@
         <result column="TITLE" jdbcType="VARCHAR" property="title"/>
         <result column="UPLOADER" jdbcType="VARCHAR" property="uploader"/>
         <result column="USERNAME" jdbcType="VARCHAR" property="userName"/>
-        <result column="downloadAuthority" jdbcType="BOOLEAN" property="downloadAuthority"/>
+        <result column="DOWNLOADAUTHORITY" jdbcType="BOOLEAN" property="downloadAuthority"/>
         <result column="RE_TIME" jdbcType="TIMESTAMP" property="time"/>
         <result column="TYPE_1" jdbcType="VARCHAR" property="type1"/>
         <result column="TYPE_2" jdbcType="VARCHAR" property="type2"/>
@@ -24,7 +24,7 @@
         <result column="DOWNLOAD_TIMES" jdbcType="INTEGER" property="downloadTimes"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID, TITLE, UPLOADER, USERNAME, downloadAuthority, RE_TIME, TYPE_1, TYPE_2, KEYWORDS,
+        ID, TITLE, UPLOADER, USERNAME, DOWNLOADAUTHORITY, RE_TIME, TYPE_1, TYPE_2, KEYWORDS,
         SOURCE, ABSTRACT, REFERENCE, PICTURE, OLD_FILENAME, NEW_FILENAME, FORMAT, PATH, RAM, DOWNLOAD_TIMES
     </sql>
     <sql id="TABLE_NAME">
@@ -36,10 +36,14 @@
         insert into
         <include refid="TABLE_NAME"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
             TITLE,
-            UPLOADER,
+            <if test="uploader != null">UPLOADER,</if>
+            USERNAME,
+            <if test="downloadAuthority != null">DOWNLOADAUTHORITY,</if>
+            <if test="time != null">RE_TIME,</if>
             TYPE_1,
-            TYPE_2,
+            <if test="type2 != null">TYPE_2,</if>
             <if test="keywords != null">KEYWORDS,</if>
             <if test="source != null">SOURCE,</if>
             <if test="abstractInfo != null">ABSTRACT,</if>
@@ -53,11 +57,15 @@
             <if test="downloadTimes != null">DOWNLOAD_TIMES,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=VARCHAR},
             #{title,jdbcType=VARCHAR},
-            #{uploader,jdbcType=VARCHAR},
+            <if test="uploader != null">#{uploader,jdbcType=VARCHAR},</if>
+            #{userName,jdbcType=VARCHAR},
+            <if test="downloadAuthority != null">#{downloadAuthority,jdbcType=BOOLEAN},</if>
+            <if test="time != null">#{time,jdbcType=TIMESTAMP},</if>
             #{type1,jdbcType=VARCHAR},
-            #{type2,jdbcType=VARCHAR},
-            <if test="keywords != null">#{KEYWORDS,jdbcType=VARCHAR},</if>
+            <if test="type2 != null">#{type2,jdbcType=VARCHAR},</if>
+            <if test="keywords != null">#{keywords,jdbcType=VARCHAR},</if>
             <if test="source != null">#{source,jdbcType=VARCHAR},</if>
             <if test="abstractInfo != null">#{abstractInfo,jdbcType=VARCHAR},</if>
             <if test="reference != null">#{reference,jdbcType=VARCHAR},</if>
@@ -67,17 +75,23 @@
             <if test="format != null">#{format,jdbcType=VARCHAR},</if>
             <if test="path != null">#{path,jdbcType=VARCHAR},</if>
             <if test="ram != null">#{ram,jdbcType=VARCHAR},</if>
-            <if test="downloadTimes != null">#{downloadTimes,jdbcType=VARCHAR},</if>
-
+            <if test="downloadTimes != null">#{downloadTimes,jdbcType=INTEGER},</if>
         </trim>
     </insert>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
         from
         <include refid="TABLE_NAME"/>
         where ID = #{id,jdbcType=VARCHAR}
-    </delete>
+    </select>
+    <select id="allSelect" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="TABLE_NAME"/>
+    </select>
 
     <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.Geodata">
         update
@@ -85,6 +99,9 @@
         <set>
             <if test="title != null">TITLE = #{title,jdbcType=VARCHAR},</if>
             <if test="uploader != null">UPLOADER = #{uploader,jdbcType=VARCHAR},</if>
+            <if test="userName != null">USERNAME = #{userName,jdbcType=VARCHAR},</if>
+            <if test="downloadAuthority != null">DOWNLOADAUTHORITY = #{downloadAuthority,jdbcType=BOOLEAN},</if>
+            <if test="time != null">RE_TIME = #{time,jdbcType=TIMESTAMP},</if>
             <if test="type1 != null">TYPE_1 = #{type1,jdbcType=VARCHAR},</if>
             <if test="type2 != null">TYPE_2 = #{type2,jdbcType=VARCHAR},</if>
             <if test="keywords != null">KEYWORDS = #{keywords,jdbcType=VARCHAR},</if>
@@ -102,14 +119,13 @@
         where ID = #{id,jdbcType=VARCHAR}
     </update>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
         from
         <include refid="TABLE_NAME"/>
         where ID = #{id,jdbcType=VARCHAR}
-    </select>
-
+    </delete>
+    <!-- CRUD end -->
 
     <!--  数据目录中的功能  -->
     <select id="selectByType1" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -128,6 +144,7 @@
         where TYPE_2 = #{type2,jdbcType=VARCHAR}
     </select>
 
+    <!-- 已经删除 -->
     <select id="selectBySource" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -136,8 +153,17 @@
         where SOURCE = #{source ,jdbcType=VARCHAR}
     </select>
 
+    <!-- 通过用户名选取 -->
+    <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where USERNAME = #{userName ,jdbcType=VARCHAR}
+    </select>
 
-    <!--  查找功能  -->
+
+    <!--  查找功能 search  -->
     <select id="search" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
