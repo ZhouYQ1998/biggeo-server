@@ -127,6 +127,7 @@
     </delete>
     <!-- CRUD end -->
 
+
     <!--  数据目录中的功能  -->
     <select id="selectByType1" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
