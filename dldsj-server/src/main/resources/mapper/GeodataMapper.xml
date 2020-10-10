@@ -185,6 +185,7 @@
         <if test="orderField!=null and orderType!=null">ORDER BY ${orderField} ${orderType}</if>
     </select>
 
+
     <!--  查询不重复的字段名  -->
     <select id="getDistinctField" parameterType="java.lang.String" resultMap="BaseResultMap" statementType="STATEMENT">
         SELECT DISTINCT
