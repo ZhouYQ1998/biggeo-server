@@ -5,54 +5,134 @@
         <result column="ID" jdbcType="VARCHAR" property="id"/>
         <result column="TITLE" jdbcType="VARCHAR" property="title"/>
         <result column="UPLOADER" jdbcType="VARCHAR" property="uploader"/>
+        <result column="USERNAME" jdbcType="VARCHAR" property="userName"/>
+        <result column="downloadAuthority" jdbcType="BOOLEAN" property="downloadAuthority"/>
         <result column="RE_TIME" jdbcType="TIMESTAMP" property="time"/>
         <result column="TYPE_1" jdbcType="VARCHAR" property="type1"/>
         <result column="TYPE_2" jdbcType="VARCHAR" property="type2"/>
-        <result column="TAGS" jdbcType="VARCHAR" property="tags"/>
+        <result column="KEYWORDS" jdbcType="VARCHAR" property="keywords"/>
         <result column="SOURCE" jdbcType="VARCHAR" property="source"/>
         <result column="ABSTRACT" jdbcType="VARCHAR" property="abstractInfo"/>
         <result column="REFERENCE" jdbcType="VARCHAR" property="reference"/>
-        <result column="PIC" jdbcType="VARCHAR" property="pic"/>
-        <result column="PATH" jdbcType="VARCHAR" property="path"/>
+        <result column="PICTURE" jdbcType="VARCHAR" property="picture"/>
         <result column="OLD_FILENAME" jdbcType="VARCHAR" property="oldName"/>
         <result column="NEW_FILENAME" jdbcType="VARCHAR" property="newName"/>
         <result column="FORMAT" jdbcType="VARCHAR" property="format"/>
         <result column="TYPE_1" jdbcType="VARCHAR" property="filterType1"/>
+        <result column="PATH" jdbcType="VARCHAR" property="path"/>
         <result column="RAM" jdbcType="VARCHAR" property="ram"/>
+        <result column="DOWNLOAD_TIMES" jdbcType="INTEGER" property="downloadTimes"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID, TITLE, UPLOADER, RE_TIME, TYPE_1, TYPE_2,TAGS, SOURCE, ABSTRACT,REFERENCE,PIC ,PATH, OLD_FILENAME,NEW_FILENAME,FORMAT,RAM,DOWNLOAD_TIMES
+        ID, TITLE, UPLOADER, USERNAME, downloadAuthority, RE_TIME, TYPE_1, TYPE_2, KEYWORDS,
+        SOURCE, ABSTRACT, REFERENCE, PICTURE, OLD_FILENAME, NEW_FILENAME, FORMAT, PATH, RAM, DOWNLOAD_TIMES
     </sql>
     <sql id="TABLE_NAME">
         tb_geographic_data
     </sql>
 
+    <!-- CRUD -->
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.Geodata">
+        insert into
+        <include refid="TABLE_NAME"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            TITLE,
+            UPLOADER,
+            TYPE_1,
+            TYPE_2,
+            <if test="keywords != null">KEYWORDS,</if>
+            <if test="source != null">SOURCE,</if>
+            <if test="abstractInfo != null">ABSTRACT,</if>
+            <if test="reference != null">REFERENCE,</if>
+            <if test="picture != null">PICTURE,</if>
+            <if test="oldName != null">OLD_FILENAME,</if>
+            <if test="newName != null">NEW_FILENAME,</if>
+            <if test="format != null">FORMAT,</if>
+            <if test="path != null">PATH,</if>
+            <if test="ram != null">RAM,</if>
+            <if test="downloadTimes != null">DOWNLOAD_TIMES,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{title,jdbcType=VARCHAR},
+            #{uploader,jdbcType=VARCHAR},
+            #{type1,jdbcType=VARCHAR},
+            #{type2,jdbcType=VARCHAR},
+            <if test="keywords != null">#{KEYWORDS,jdbcType=VARCHAR},</if>
+            <if test="source != null">#{source,jdbcType=VARCHAR},</if>
+            <if test="abstractInfo != null">#{abstractInfo,jdbcType=VARCHAR},</if>
+            <if test="reference != null">#{reference,jdbcType=VARCHAR},</if>
+            <if test="picture != null">#{picture,jdbcType=VARCHAR},</if>
+            <if test="oldName != null">#{oldName,jdbcType=VARCHAR},</if>
+            <if test="newName != null">#{newName,jdbcType=VARCHAR},</if>
+            <if test="format != null">#{format,jdbcType=VARCHAR},</if>
+            <if test="path != null">#{path,jdbcType=VARCHAR},</if>
+            <if test="ram != null">#{ram,jdbcType=VARCHAR},</if>
+            <if test="downloadTimes != null">#{downloadTimes,jdbcType=VARCHAR},</if>
+
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from
+        <include refid="TABLE_NAME"/>
+        where ID = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.Geodata">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="title != null">TITLE = #{title,jdbcType=VARCHAR},</if>
+            <if test="uploader != null">UPLOADER = #{uploader,jdbcType=VARCHAR},</if>
+            <if test="type1 != null">TYPE_1 = #{type1,jdbcType=VARCHAR},</if>
+            <if test="type2 != null">TYPE_2 = #{type2,jdbcType=VARCHAR},</if>
+            <if test="keywords != null">KEYWORDS = #{keywords,jdbcType=VARCHAR},</if>
+            <if test="source != null">SOURCE = #{source,jdbcType=VARCHAR},</if>
+            <if test="abstractInfo != null">ABSTRACT = #{abstractInfo,jdbcType=VARCHAR},</if>
+            <if test="reference != null">REFERENCE = #{reference,jdbcType=VARCHAR},</if>
+            <if test="picture != null">PICTURE = #{picture,jdbcType=VARCHAR},</if>
+            <if test="oldName != null">OLD_FILENAME = #{oldName,jdbcType=VARCHAR},</if>
+            <if test="newName != null">NEW_FILENAME = #{newName,jdbcType=VARCHAR},</if>
+            <if test="format != null">FORMAT = #{format,jdbcType=VARCHAR},</if>
+            <if test="path != null">PATH = #{path,jdbcType=VARCHAR},</if>
+            <if test="ram != null">RAM = #{ram,jdbcType=VARCHAR},</if>
+            <if test="downloadTimes != null">DOWNLOAD_TIMES = #{downloadTimes,jdbcType=VARCHAR},</if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from <include refid="TABLE_NAME"/>
+        from
+        <include refid="TABLE_NAME"/>
         where ID = #{id,jdbcType=VARCHAR}
     </select>
+
 
     <!--  数据目录中的功能  -->
     <select id="selectByType1" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from <include refid="TABLE_NAME"/>
+        from
+        <include refid="TABLE_NAME"/>
         where TYPE_1 = #{type1,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByType2" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from <include refid="TABLE_NAME"/>
+        from
+        <include refid="TABLE_NAME"/>
         where TYPE_2 = #{type2,jdbcType=VARCHAR}
     </select>
 
     <select id="selectBySource" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from <include refid="TABLE_NAME"/>
+        from
+        <include refid="TABLE_NAME"/>
         where SOURCE = #{source ,jdbcType=VARCHAR}
     </select>
 
@@ -61,16 +141,19 @@
     <select id="search" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM <include refid="TABLE_NAME"/>
+        FROM
+        <include refid="TABLE_NAME"/>
         <where>
             <if test="title!=null and title.length() &gt; 0">AND TITLE like "%${title}%"</if>
             <if test="uploader!=null and uploader.length() &gt; 0">AND UPLOADER like "%${uploader}%"</if>
-            <if test="tags!=null and tags.length() &gt; 0">AND TAGS like "%${tags}%"</if>
+            <if test="keywords!=null and keywords.length() &gt; 0">AND KEYWORDS like "%${keywords}%"</if>
             <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
             <if test="type1!=null and type1.length() &gt; 0">AND TYPE_1 like "%${type1}%"</if>
             <if test="type2!=null and type2.length() &gt; 0">AND TYPE_2 like "%${type2}%"</if>
-            <if test="filterType1!=null and filterType1.length() &gt; 0">AND TYPE_1 = #{filterType1 ,jdbcType=VARCHAR}</if>
-            <if test="filterType2!=null and filterType2.length() &gt; 0">AND TYPE_2 = #{filterType2 ,jdbcType=VARCHAR}</if>
+            <if test="filterType1!=null and filterType1.length() &gt; 0">AND TYPE_1 = #{filterType1 ,jdbcType=VARCHAR}
+            </if>
+            <if test="filterType2!=null and filterType2.length() &gt; 0">AND TYPE_2 = #{filterType2 ,jdbcType=VARCHAR}
+            </if>
         </where>
         <if test="orderField!=null and orderType!=null">ORDER BY ${orderField} ${orderType}</if>
     </select>
@@ -79,18 +162,21 @@
     <select id="getDistinctField" parameterType="java.lang.String" resultMap="BaseResultMap" statementType="STATEMENT">
         SELECT DISTINCT
         ${_parameter}
-        FROM <include refid="TABLE_NAME"/>
+        FROM
+        <include refid="TABLE_NAME"/>
     </select>
     <!--  根据某一字段名返回其个数  -->
     <select id="getCountOfField" parameterType="String" resultType="String" statementType="STATEMENT">
         SELECT COUNT(*)
-        FROM <include refid="TABLE_NAME"/>
+        FROM
+        <include refid="TABLE_NAME"/>
         WHERE ${arg0} = '${arg1}'
     </select>
 
     <!-- 下载次数递增 -->
     <update id="downloadTimesPlus" parameterType="String">
-        UPDATE <include refid="TABLE_NAME"/>
+        UPDATE
+        <include refid="TABLE_NAME"/>
         SET DOWNLOAD_TIMES=DOWNLOAD_TIMES+1
         WHERE ID = #{id,jdbcType=VARCHAR}
     </update>
@@ -99,12 +185,11 @@
     <select id="getPopularData" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM <include refid="TABLE_NAME"/>
+        FROM
+        <include refid="TABLE_NAME"/>
         order by DOWNLOAD_TIMES desc
         limit 5
     </select>
-
-
 
 
 </mapper>

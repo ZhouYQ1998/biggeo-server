@@ -46,36 +46,54 @@
 
 ### 2.1 Table
 
-| Column               | Description  | Type   | Remark                                   |
-| -------------------- | ------------ | ------ | ---------------------------------------- |
-| ID                   | 主键（编号） | String | Not Null, Unique, Auto Create            |
-| TITLE                | 标题         | String | Not Null                                 |
-| UPLOADED             | 作者         | String |                                          |
-|                      | 上传用户     |        | Not Null, "manager" or "userId/userName" |
-|                      | 下载权限     |        |                                          |
-| RE_TIME              | 时间         | Date   |                                          |
-| TYPE_1               | 类型一       | String | Not Null                                 |
-| TYPE_2               | 类型二       | String |                                          |
-| KEYWORDS             | 关键词       | String | Not Null                                 |
-| **（已删除）**SOURCE | 资源         | String |                                          |
-| ABSTRACT             | 摘要         | String |                                          |
-| REFRENCE             | 参考文献     | String |                                          |
-| PICTURE              | 图片         | String |                                          |
-| OLD_FILENAME         | 中文名称     | String |                                          |
-| NEW_FILENAME         | 英文名称     | String |                                          |
-| FORMAT               | 数据格式     | String |                                          |
-| PATH                 | 路径         | String |                                          |
-| RAM                  | 数据大小     | String |                                          |
-| DOWNLOAD_TIM         | 下载数量     | Int    |                                          |
+| Column               | Description  | Type    | Remark                                   |
+| -------------------- | ------------ | ------- | ---------------------------------------- |
+| ID                   | 主键（编号） | String  | Not Null, Unique, Auto Create            |
+| TITLE                | 标题         | String  | Not Null                                 |
+| UPLOADED             | 作者         | String  |                                          |
+| userName             | 上传用户     | String  | Not Null, "manager" or "userId/userName" |
+| downloadAuthority    | 下载权限     | Boolean | Default true                             |
+| RE_TIME              | 时间         | Date    |                                          |
+| TYPE_1               | 类型一       | String  | Not Null                                 |
+| TYPE_2               | 类型二       | String  |                                          |
+| KEYWORDS             | 关键词       | String  | Not Null                                 |
+| **（已删除）**SOURCE | 资源         | String  |                                          |
+| ABSTRACT             | 摘要         | String  |                                          |
+| REFRENCE             | 参考文献     | String  |                                          |
+| PICTURE              | 图片         | String  |                                          |
+| OLD_FILENAME         | 中文名称     | String  |                                          |
+| NEW_FILENAME         | 英文名称     | String  |                                          |
+| FORMAT               | 数据格式     | String  |                                          |
+| PATH                 | 路径         | String  |                                          |
+| RAM                  | 数据大小     | String  |                                          |
+| DOWNLOAD_TIM         | 下载数量     | Int     |                                          |
 
 ### 2.2 URL
 
 - 基础：增删改查及批量操作
+
 - 查询个人数据（通过user_id/通过user_name）
 
 - 查询最高下载量的论文（5）
 
 - HDFS：所有地理数据存储
+
+| URL                         | FUNCTION                       | METHOD | PARAM                                                        | RESULT              | REMARK |
+| --------------------------- | ------------------------------ | ------ | ------------------------------------------------------------ | ------------------- | ------ |
+| /geodata/insert             | 插入用户                       | PUT    | title,uploader,type1,type2[,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |        |
+| /geodata/batchinsert        | 批量插入                       | PUT    | [Geodata[,Geodata...]]                                       | {code,body,message} |        |
+| /geodata/delete/{id}        | 删除用户                       | DELETE | id                                                           | {code,body,message} |        |
+| /geodata//batchdelete/{ids} | 批量删除                       | DELETE | ids,ids,ids                                                  | {code,body,message} |        |
+| /geodata/select/{id}        | 查询用户                       | GET    | id                                                           | {code,body,message} |        |
+| /geodata/batchseletct/{ids} | 批量查询                       | GET    |                                                              | {code,body,message} |        |
+| /geodata/update             | 更新用户                       | POST   | id[,title,uploader,type1,type2,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |        |
+| /geodata/batchupdate        | 批量更新                       | POST   | [Geodata[,Geodata...]]                                       | {code,body,message} |        |
+| /geodata/getByType1         | 按照一级目录分类               | GET    | String type, Page page                                       | {code,body,message} |        |
+| /geodata/getByType2         | 按照二级目录分类               | GET    | String type, Page page                                       | {code,body,message} |        |
+| /geodata/bysource           | 按照source分类                 | GET    | String source, Page page                                     | {code,body,message} |        |
+| /geodata/dis                | 返回结果的唯一不同值与对应数量 | GET    | String field, Page page                                      | {code,body,message} |        |
+| /geodata/downloadplus       | 更新数据库中下载次数           | GET    | String id                                                    | {code,body,message} |        |
+| /geodata/populardata        | 返回下载数量最多的五条数据     | GET    |                                                              |                     |        |
 
 ## 3 tb_student_paper
 
