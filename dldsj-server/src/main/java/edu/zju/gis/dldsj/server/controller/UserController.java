@@ -134,6 +134,21 @@ public class UserController extends BaseController<User, UserService, String, Ba
     @RequestMapping(value = "/check/{email}", method = RequestMethod.GET)
     @ResponseBody
     public Result<Map<String, String>> check(@PathVariable String email) {
+        return sendEmail(email);
+    }
+
+    /**
+     * 发送验证码（通过NAME，非主键）
+     * @param name String
+     * @return result Result
+     */
+    @RequestMapping(value = "/checkbyname/{name}", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<Map<String, String>> checkByName(@PathVariable String name) {
+        return sendEmail(userService.selectByName(name).getBody().getEmail());
+    }
+
+    public Result<Map<String, String>> sendEmail(String email){
         Result<Map<String, String>> result = new Result<>();
 
         Map<String, String> map = new HashMap<>();
@@ -162,7 +177,7 @@ public class UserController extends BaseController<User, UserService, String, Ba
             };
 
             Session session = Session.getInstance(props, auth);
-            session.setDebug(true);
+            // session.setDebug(true); // 开启Debug模式
 
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(EmailConstants.EmailAccount, "地学大数据教学平台", "UTF-8"));
@@ -184,4 +199,5 @@ public class UserController extends BaseController<User, UserService, String, Ba
 
         return result;
     }
+
 }
