@@ -8,6 +8,8 @@ import java.util.List;
 /**
  * @author Jiarui
  * @date 2020/8/26
+ * @author: zjh
+ * @date: 20201012
  */
 public interface GeodataMapper extends BaseMapper<Geodata, String> {
 

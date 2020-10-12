@@ -32,7 +32,7 @@ public interface BaseService<T extends Base<ID>, ID extends Serializable> {
     /**
      * 删除实体（批量）
      */
-    Result<String> batchDelete(String ids);
+    Result<List<Batch<T>>> batchDelete(String ids);
 
     /**
      * 查询实体

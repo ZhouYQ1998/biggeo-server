@@ -84,7 +84,7 @@
 | /geodata/insert                 | 插入用户                       | PUT    | title,uploader,type1,type2[,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |        |
 | /geodata/batchinsert            | 批量插入                       | PUT    | [Geodata[,Geodata...]]                                       | {code,body,message} |        |
 | /geodata/delete/{id}            | 删除用户                       | DELETE | id                                                           | {code,body,message} |        |
-| **/geodata//batchdelete/{ids}** | 批量删除                       | DELETE | ids,ids,ids                                                  | {code,body,message} |        |
+| /geodata//batchdelete/{ids}     | 批量删除                       | DELETE | ids,ids,ids                                                  | {code,body,message} |        |
 | /geodata/select/{id}            | 查询用户                       | GET    | id                                                           | {code,body,message} |        |
 | **/geodata/batchseletct/{ids}** | 批量查询                       | GET    |                                                              | {code,body,message} |        |
 | /geodata/allselect              | 全部查询                       | GET    |                                                              |                     |        |

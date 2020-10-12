@@ -120,24 +120,40 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
      * @param ids String
      */
     @Override
-    public Result<String> batchDelete(String ids) {
-        Result<String> result = new Result<>();
-        try{
-            List<ID> idList = new ArrayList<>();
-            for(int i=0; i<Arrays.asList(ids.split(",")).size(); i++){
-                idList.add((ID)Arrays.asList(ids.split(",")).get(i));
-            }
-            // modified 同
-            int successNum = mapper.batchDelete(idList);
-            if(successNum != 0){
-                result.setCode(CodeConstants.SUCCESS).setMessage("删除成功：" + successNum + "/" + idList.size());
-            }
-            else{
-                result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("删除失败：实体不存在");
-            }
-        }catch (RuntimeException e){
-            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("删除失败：" + e.getMessage());
+    public Result<List<Batch<T>>> batchDelete(String ids) {
+        Result<List<Batch<T>>> result = new Result<>();
+        List<Batch<T>> batchList = new ArrayList<>();
+
+        List<ID> idList = new ArrayList<>();
+        for (int i = 0; i < Arrays.asList(ids.split(",")).size(); i++) {
+            idList.add((ID) Arrays.asList(ids.split(",")).get(i));
         }
+
+        int successNum = 0;
+        Batch<T> batch = null;
+        for (int i = 0; i < idList.size(); i++) {
+            try {
+                batch = new Batch<>();
+                int num = mapper.deleteByPrimaryKey(idList.get(i));
+                if (num == 1) {
+                    batch.setMessage("删除成功");
+                } else {
+                    batch.setMessage("删除失败");
+                }
+                successNum += num;
+            } catch (RuntimeException e) {
+                batch.setMessage("删除失败：" + e.getMessage());
+            }
+
+            batchList.add(batch);
+        }
+
+        if (successNum != 0) {
+            result.setCode(CodeConstants.SUCCESS).setBody(batchList).setMessage("删除成功：" + successNum + "/" + idList.size());
+        } else {
+            result.setCode(CodeConstants.VALIDATE_ERROR).setBody(batchList).setMessage("删除失败：实体不存在");
+        }
+
         return result;
     }
 

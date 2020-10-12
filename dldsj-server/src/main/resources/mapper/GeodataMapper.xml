@@ -79,19 +79,12 @@
         </trim>
     </insert>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
         from
         <include refid="TABLE_NAME"/>
         where ID = #{id,jdbcType=VARCHAR}
-    </select>
-    <select id="allSelect" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from
-        <include refid="TABLE_NAME"/>
-    </select>
+    </delete>
 
     <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.Geodata">
         update
@@ -119,12 +112,27 @@
         where ID = #{id,jdbcType=VARCHAR}
     </update>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
         from
         <include refid="TABLE_NAME"/>
         where ID = #{id,jdbcType=VARCHAR}
-    </delete>
+    </select>
+    <select id="batchSelect" parameterType="java.util.List" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from <include refid="TABLE_NAME"></include>
+        where ID in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+    <select id="allSelect" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="TABLE_NAME"/>
+    </select>
     <!-- CRUD end -->
 
 
@@ -177,8 +185,10 @@
             <if test="source!=null and source.length() &gt; 0">AND SOURCE like "%${source}%"</if>
             <if test="type1!=null and type1.length() &gt; 0">AND TYPE_1 like "%${type1}%"</if>
             <if test="type2!=null and type2.length() &gt; 0">AND TYPE_2 like "%${type2}%"</if>
-            <if test="filterType1!=null and filterType1.length() &gt; 0">AND TYPE_1 = #{filterType1 ,jdbcType=VARCHAR}</if>
-            <if test="filterType2!=null and filterType2.length() &gt; 0">AND TYPE_2 = #{filterType2 ,jdbcType=VARCHAR}</if>
+            <if test="filterType1!=null and filterType1.length() &gt; 0">AND TYPE_1 = #{filterType1 ,jdbcType=VARCHAR}
+            </if>
+            <if test="filterType2!=null and filterType2.length() &gt; 0">AND TYPE_2 = #{filterType2 ,jdbcType=VARCHAR}
+            </if>
         </where>
         <if test="orderField!=null and orderType!=null">ORDER BY ${orderField} ${orderType}</if>
     </select>

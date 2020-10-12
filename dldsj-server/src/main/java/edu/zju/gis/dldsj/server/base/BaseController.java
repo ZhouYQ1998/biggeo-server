@@ -63,7 +63,7 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
      */
     @RequestMapping(value = "/batchdelete/{ids}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Result<String> batchDelete(@PathVariable String ids) {
+    public Result<List<Batch<T>>> batchDelete(@PathVariable String ids) {
         return service.batchDelete(ids);
     }
 

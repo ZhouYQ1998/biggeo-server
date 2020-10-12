@@ -19,6 +19,8 @@ import java.util.Map;
 /**
  * @author Jiarui
  * @date 2020/8/26
+ * @author: zjh
+ * @date: 20201012
  */
 @Service
 public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, String> implements GeodataService {
