@@ -23,5 +23,6 @@ public class User extends Base<String> {
     private String field;
     private String purpose;
     private String role;
+    private int signCount;
 }
 

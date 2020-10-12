@@ -14,9 +14,10 @@
         <result column="FIELD" jdbcType="VARCHAR" property="field"/>
         <result column="PURPOSE" jdbcType="VARCHAR" property="purpose"/>
         <result column="ROLE" jdbcType="VARCHAR" property="role"/>
+        <result column="SIGN_COUNT" jdbcType="INTEGER" property="signCount"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID, NAME, PASSWORD, PHONE, EMAIL, ICON, COUNTRY, INSTITUTE, INSTITUTETYPE, FIELD, PURPOSE, ROLE
+        ID, NAME, PASSWORD, PHONE, EMAIL, ICON, COUNTRY, INSTITUTE, INSTITUTETYPE, FIELD, PURPOSE, ROLE, SIGN_COUNT
     </sql>
     <sql id="TABLE_NAME">
         tb_user
@@ -159,4 +160,22 @@
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>
+    <update id="addSign" parameterType="java.lang.String">
+        update <include refid="TABLE_NAME"/>
+        <set>
+            SIGN_COUNT = SIGN_COUNT + 1
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="selectAllSign" resultType="java.lang.Integer">
+        select
+        sum(SIGN_COUNT)
+        from <include refid="TABLE_NAME"/>
+    </select>
+    <select id="selectByCountry" resultType="java.util.Map">
+        select
+        COUNTRY as country, sum(SIGN_COUNT) as `count`
+        from <include refid="TABLE_NAME"/>
+        group by COUNTRY
+    </select>
 </mapper>

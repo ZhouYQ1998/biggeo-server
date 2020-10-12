@@ -18,6 +18,7 @@
 | FIELD         | 专业领域     | String |                                  |
 | PURPOSE       | 用途         | String |                                  |
 | ROLE          | 用户角色     | String | Not Null, "manager" or "visitor" |
+| SIGN_COUNT    | 用户访问量   | Int    | Default 0                        |
 
 ### 1.2 URL
 
@@ -39,6 +40,7 @@
 | /user/logout              | 用户注销   | POST   |                                          | {code,body,message} | body值为id          |
 | /user/check/{email}       | 发送验证码 | GET    |                                          | {code,body,message} | body值为code和email |
 | /user/checkbyname/{name}  | 发送验证码 | GET    |                                          | {code,body,message} |                     |
+| /user/statistic           | 统计访问量 | GET    |                                          | {code,body,message} |                     |
 
 - 插入和更新的批量操作返回值的body值包括“t”（实体）和“message”（实体操作结果），下同
 - PageNo默认为1，PageSize默认为20，下同
@@ -318,5 +320,4 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 # TODO
 
-- 用户访问统计数据：总登录次数、国家登录次数
 - 数据下载：/home/dxdsj_platform/xxx
