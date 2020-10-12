@@ -14,6 +14,9 @@ spring:
     url: jdbc:mysql://10.79.231.81:3306/eduPlatform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
     username: group1
     password: zjugis_group1
+#    url: jdbc:mysql://localhost:3306/eduPlatform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+#    username: root
+#    password: mysql
   servlet:
     multipart:
       max-file-size: 200MB

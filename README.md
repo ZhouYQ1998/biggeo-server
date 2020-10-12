@@ -47,36 +47,96 @@
 
 ### 2.1 Table
 
-| Column               | Description  | Type   | Remark                                   |
-| -------------------- | ------------ | ------ | ---------------------------------------- |
-| ID                   | 主键（编号） | String | Not Null, Unique, Auto Create            |
-| TITLE                | 标题         | String | Not Null                                 |
-| UPLOADED             | 作者         | String |                                          |
-|                      | 上传用户     |        | Not Null, "manager" or "userId/userName" |
-|                      | 下载权限     |        |                                          |
-| RE_TIME              | 时间         | Date   |                                          |
-| TYPE_1               | 类型一       | String | Not Null                                 |
-| TYPE_2               | 类型二       | String |                                          |
-| KEYWORDS             | 关键词       | String | Not Null                                 |
-| **（已删除）**SOURCE | 资源         | String |                                          |
-| ABSTRACT             | 摘要         | String |                                          |
-| REFRENCE             | 参考文献     | String |                                          |
-| PICTURE              | 图片         | String |                                          |
-| OLD_FILENAME         | 中文名称     | String |                                          |
-| NEW_FILENAME         | 英文名称     | String |                                          |
-| FORMAT               | 数据格式     | String |                                          |
-| PATH                 | 路径         | String |                                          |
-| RAM                  | 数据大小     | String |                                          |
-| DOWNLOAD_TIM         | 下载数量     | Int    |                                          |
+| Column               | Description  | Type    | Remark                                     |
+| -------------------- | ------------ | ------- | ------------------------------------------ |
+| ID                   | 主键（编号） | String  | Not Null, Unique, Auto Create，primary key |
+| TITLE                | 标题         | String  | Not Null                                   |
+| UPLOADED             | 作者         | String  |                                            |
+| userName             | 上传用户     | String  | Not Null, "manager" or "userId/userName"   |
+| downloadAuthority    | 下载权限     | Boolean | Default true                               |
+| TIME                 | 时间         | Date    |                                            |
+| TYPE_1               | 类型一       | String  | Not Null                                   |
+| TYPE_2               | 类型二       | String  |                                            |
+| KEYWORDS             | 关键词       | String  | Not Null                                   |
+| **（已删除）**SOURCE | 资源         | String  |                                            |
+| ABSTRACT             | 摘要         | String  |                                            |
+| REFRENCE             | 参考文献     | String  |                                            |
+| PICTURE              | 图片         | String  |                                            |
+| OLD_FILENAME         | 中文名称     | String  |                                            |
+| NEW_FILENAME         | 英文名称     | String  |                                            |
+| FORMAT               | 数据格式     | String  |                                            |
+| PATH                 | 路径         | String  |                                            |
+| RAM                  | 数据大小     | String  |                                            |
+| DOWNLOAD_TIM         | 下载数量     | Int     |                                            |
 
 ### 2.2 URL
 
 - 基础：增删改查及批量操作
+
 - 查询个人数据（通过user_id/通过user_name）
 
 - 查询最高下载量的论文（5）
 
-- HDFS：所有地理数据存储
+- **HDFS：所有地理数据存储**
+
+| URL                             | FUNCTION                       | METHOD | PARAM                                                        | RESULT              | REMARK |
+| ------------------------------- | ------------------------------ | ------ | ------------------------------------------------------------ | ------------------- | ------ |
+| /geodata/insert                 | 插入用户                       | PUT    | title,uploader,type1,type2[,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |        |
+| /geodata/batchinsert            | 批量插入                       | PUT    | [Geodata[,Geodata...]]                                       | {code,body,message} |        |
+| /geodata/delete/{id}            | 删除用户                       | DELETE | id                                                           | {code,body,message} |        |
+| **/geodata//batchdelete/{ids}** | 批量删除                       | DELETE | ids,ids,ids                                                  | {code,body,message} |        |
+| /geodata/select/{id}            | 查询用户                       | GET    | id                                                           | {code,body,message} |        |
+| **/geodata/batchseletct/{ids}** | 批量查询                       | GET    |                                                              | {code,body,message} |        |
+| /geodata/allselect              | 全部查询                       | GET    |                                                              |                     |        |
+| /geodata/byuserName             | 名字查询                       | GET    | String userName                                              |                     |        |
+| /geodata/update                 | 更新用户                       | POST   | id[,title,uploader,type1,type2,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |        |
+| /geodata/batchupdate            | 批量更新                       | POST   | [Geodata[,Geodata...]]                                       | {code,body,message} |        |
+| /geodata/bytype1                | 按照一级目录分类               | GET    | String type, Page page                                       | {code,body,message} |        |
+| /geodata/bytype2                | 按照二级目录分类               | GET    | String type, Page page                                       | {code,body,message} |        |
+| /geodata/dis                    | 返回结果的唯一不同值与对应数量 | GET    | String field, Page page                                      | {code,body,message} |        |
+| /geodata/downloadplus           | 更新数据库中下载次数           | GET    | String id                                                    | {code,body,message} |        |
+| /geodata/populardata            | 返回下载数量最多的五条数据     | GET    |                                                              |                     |        |
+
+
+
+### 2.3 建库语句
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for tb_geographic_data
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_geographic_data`;
+CREATE TABLE `tb_geographic_data`  (
+  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `TITLE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `UPLOADER` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `userName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `downloadAuthority` tinyint(1) NULL DEFAULT 1,
+  `RE_TIME` date NULL DEFAULT NULL,
+  `TYPE_1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `TYPE_2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `KEYWORDS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `SOURCE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `ABSTRACT` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `REFERENCE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PICTURE` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `OLD_FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `NEW_FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `FORMAT` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PATH` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RAM` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DOWNLOAD_TIMES` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tb_geographic_data
+-- ----------------------------
+INSERT INTO `tb_geographic_data` VALUES ('367', '南极冰架年崩解数据集（2005-2019）', '戚梦真,刘岩,程晓*,冯启阳,惠凤鸣,陈卓奇', 'zjh', 1, '2020-07-01', '土地资源类数据', '地形、地貌、土壤数据', '南极,冰架,崩解,遥感', NULL, '崩解是南极冰架物质平衡的核心过程之一，也是精细监测冰架变化的重要物理量。作者运用2005-2019年每年8月初的多源遥感数据，提取了2005年8月至2019年8月14年间南极冰架发生的所有面积在1 km²以上的年崩解事件，计算了它们的面积、厚度、崩解量与崩解周期等，得到南极冰架年崩解数据集（2005-2019）。该数据集包括14个年度的南极冰架崩解分布数据，包括冰架崩解年份区间、崩解区长度、面积、平均厚度、崩解量、崩解周期和崩解类型等信息。该数据集以.shp格式存储，由112个数据文件组成，数据总量为10.2 MB（压缩为1个文件，3.23 MB）。', '戚梦真,刘岩,程晓*,冯启阳,惠凤鸣,陈卓奇.南极冰架年崩解数据集（2005-2019）[DB/J].全球变化数据仓储,2020.DOI:10.3974/geodb.2020.04.09.V1.', 'http://www.geodoi.ac.cn/Upload/1516/Image/Suo_202072817619637315527798764105.jpg;http://www.geodoi.ac.cn/Upload/1516/Image/Suo_202072817620637315527807884627.jpg', '南极冰架年崩解数据集（2005-2019）', 'IcebergCalvingAntarctic_2005-2019', '.shp', '10.79.231.81:/data/images/geodata/LandResource/Topography&Soil/IcebergCalvingAntarctic_2005-2019.rar', '3.23 MB', 4);
+
+SET FOREIGN_KEY_CHECKS = 1;
 
 ## 3 tb_student_paper
 

@@ -16,23 +16,26 @@ import java.util.Date;
 @Setter
 @ToString(callSuper = true)
 public class Geodata extends Base<String> {
+    private String ID;
     private String title;
     private String uploader;
+    private String userName;
+    private Boolean downloadAuthority;
     private Date time;
     private String type1;
     private String type2;
-    private String tags;
+    private String keywords;
     private String source;
     private String abstractInfo;
     private String reference;
 
     //缩略图
-    private String pic;
+    private String picture;
     //存放路径
-    private String path;
     private String newName;
     private String oldName;
     private String format;
+    private String path;
     private String ram;
 
     //以下为第二步筛选用到的条件

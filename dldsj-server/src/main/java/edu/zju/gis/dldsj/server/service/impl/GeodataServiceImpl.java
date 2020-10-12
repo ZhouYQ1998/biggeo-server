@@ -21,38 +21,43 @@ import java.util.Map;
  * @date 2020/8/26
  */
 @Service
-public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper,Geodata,String> implements GeodataService {
+public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, String> implements GeodataService {
 
     //数据目录功能，根据type、uploader或source等目录字段，返回数据(单选)
-    public Page<Geodata> selectByType1(String type,Page page) {
-        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+    public Page<Geodata> selectByType1(String type, Page page) {
+        PageHelper.startPage(page.getPageNo(), page.getPageSize());
         return new Page<>(mapper.selectByType1(type));
     }
 
-    public Page<Geodata> selectByType2(String type,Page page) {
-        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+    public Page<Geodata> selectByType2(String type, Page page) {
+        PageHelper.startPage(page.getPageNo(), page.getPageSize());
         return new Page<>(mapper.selectByType2(type));
     }
 
-    public Page<Geodata> selectByUploader(String uploader,Page page) {
-        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+    public Page<Geodata> selectByUploader(String uploader, Page page) {
+        PageHelper.startPage(page.getPageNo(), page.getPageSize());
         return new Page<>(mapper.selectByUploader(uploader));
     }
 
-    public Page<Geodata> selectBySource(String source,Page page) {
-        PageHelper.startPage(page.getPageNo(),page.getPageSize());
+    public Page<Geodata> selectBySource(String source, Page page) {
+        PageHelper.startPage(page.getPageNo(), page.getPageSize());
         return new Page<>(mapper.selectBySource(source));
     }
 
+    @Override
+    public Page<Geodata> selectByUserName(String userName, Page page) {
+        PageHelper.startPage(page.getPageNo(), page.getPageSize());
+        return new Page<>(mapper.selectByUserName(userName));
+    }
+
     //根据输入字段名称，返回结果的唯一不同值与对应数量
-    public Map<String,String> getDistinctField(String field) {
+    public Map<String, String> getDistinctField(String field) {
         //field为查找的字段名，如TYPE、UPLOADER等
         List<Geodata> list = mapper.getDistinctField(field);
-        List<String> res = new ArrayList<String>();
         //str为读取出来的唯一字段名称
         String str;
         //用来存储最后结果，样式如TIF 2
-        Map<String,String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<String, String>();
         for (Geodata s : list) {
             switch (field) {
                 case "TYPE_1":
@@ -67,10 +72,8 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper,Geodata,St
                     str = "xxx";
             }
             String count;
-            count = mapper.getCountOfField(field,str);
-            //System.out.println(str);
-            //System.out.println(count);
-            map.put(str,count);
+            count = mapper.getCountOfField(field, str);
+            map.put(str, count);
         }
         return map;
     }
@@ -81,8 +84,8 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper,Geodata,St
     }
 
     //统计下载量最高的5条数据
-    public List<Geodata> getPopularData(){
-    return mapper.getPopularData();
+    public List<Geodata> getPopularData() {
+        return mapper.getPopularData();
     }
 
 }
