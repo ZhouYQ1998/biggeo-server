@@ -240,6 +240,42 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 - 基础：增删改查及批量操作
 
+### 7.3 建库语句
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for tb_map_servers
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_map_servers`;
+CREATE TABLE `tb_map_servers`  (
+  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '唯一身份编号',
+  `NAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
+  `COMPANY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '公司',
+  `REGION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '地区',
+  `SERVERS` varchar(2222) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '提供的服务',
+  `LIMITED` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '使用限制',
+  `PICTURE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片',
+  `DESCRIBES` varchar(2222) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
+  `URL` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '链接',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `name`(`NAME`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tb_map_servers
+-- ----------------------------
+INSERT INTO `tb_map_servers` VALUES ('1', '腾讯', 'TECENT', '中国', 'API/SDK', NULL, NULL, NULL, 'LBS.QQ.COM');
+INSERT INTO `tb_map_servers` VALUES ('10', '百度10', 'null', 'null', 'API/SDK', NULL, NULL, NULL, 'LBS.BAIDU.COM3');
+INSERT INTO `tb_map_servers` VALUES ('2', '百度', 'BAIDU', '中国', 'API/SDK', NULL, NULL, NULL, 'LBS.BAIDU.COM');
+INSERT INTO `tb_map_servers` VALUES ('3', '高德', 'ALI', '中国', 'API/SDK', NULL, NULL, NULL, 'LBS.GAODE.COM');
+INSERT INTO `tb_map_servers` VALUES ('4', '百度qwd9', 'nukjll', 'njgull', 'API/SDKqwjghd', NULL, NULL, NULL, 'LBS.BAIDU.COjgM3');
+INSERT INTO `tb_map_servers` VALUES ('8', '百度8', 'BAIDU2', '中国', NULL, NULL, NULL, NULL, 'LBS.BAIDU.COM3');
+INSERT INTO `tb_map_servers` VALUES ('9', '百度9', 'null', 'null', 'API/SDK', NULL, NULL, NULL, 'LBS.BAIDU.COM3');
+
+SET FOREIGN_KEY_CHECKS = 1;
+
 ## 8 tb_group_member
 
 ### 8.1 Table

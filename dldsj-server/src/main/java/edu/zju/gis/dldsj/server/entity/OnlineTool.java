@@ -13,13 +13,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class MapService extends Base<String> {
+public class OnlineTool extends Base<String> {
     private String NAME;
-    private String COMPANY;
-    private String REGION;
-    private String SERVERS;
-    private String LIMITED;
+    private String ABSTRACTS;
     private String PICTURE;
-    private String DESCRIBES;
     private String URL;
 }
