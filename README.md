@@ -79,23 +79,23 @@
 
 - **HDFS：所有地理数据存储**
 
-| URL                             | FUNCTION                       | METHOD | PARAM                                                        | RESULT              | REMARK |
-| ------------------------------- | ------------------------------ | ------ | ------------------------------------------------------------ | ------------------- | ------ |
-| /geodata/insert                 | 插入用户                       | PUT    | title,uploader,type1,type2[,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |        |
-| /geodata/batchinsert            | 批量插入                       | PUT    | [Geodata[,Geodata...]]                                       | {code,body,message} |        |
-| /geodata/delete/{id}            | 删除用户                       | DELETE | id                                                           | {code,body,message} |        |
-| /geodata//batchdelete/{ids}     | 批量删除                       | DELETE | ids,ids,ids                                                  | {code,body,message} |        |
-| /geodata/select/{id}            | 查询用户                       | GET    | id                                                           | {code,body,message} |        |
-| **/geodata/batchseletct/{ids}** | 批量查询                       | GET    |                                                              | {code,body,message} |        |
-| /geodata/allselect              | 全部查询                       | GET    |                                                              |                     |        |
-| /geodata/byuserName             | 名字查询                       | GET    | String userName                                              |                     |        |
-| /geodata/update                 | 更新用户                       | POST   | id[,title,uploader,type1,type2,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |        |
-| /geodata/batchupdate            | 批量更新                       | POST   | [Geodata[,Geodata...]]                                       | {code,body,message} |        |
-| /geodata/bytype1                | 按照一级目录分类               | GET    | String type, Page page                                       | {code,body,message} |        |
-| /geodata/bytype2                | 按照二级目录分类               | GET    | String type, Page page                                       | {code,body,message} |        |
-| /geodata/dis                    | 返回结果的唯一不同值与对应数量 | GET    | String field, Page page                                      | {code,body,message} |        |
-| /geodata/downloadplus           | 更新数据库中下载次数           | GET    | String id                                                    | {code,body,message} |        |
-| /geodata/populardata            | 返回下载数量最多的五条数据     | GET    |                                                              |                     |        |
+| URL                         | FUNCTION                       | METHOD | PARAM                                                        | RESULT              | REMARK |
+| --------------------------- | ------------------------------ | ------ | ------------------------------------------------------------ | ------------------- | ------ |
+| /geodata/insert             | 插入用户                       | PUT    | title,uploader,type1,type2[,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |        |
+| /geodata/batchinsert        | 批量插入                       | PUT    | [Geodata[,Geodata...]]                                       | {code,body,message} |        |
+| /geodata/delete/{id}        | 删除用户                       | DELETE | id                                                           | {code,body,message} |        |
+| /geodata//batchdelete/{ids} | 批量删除                       | DELETE | ids,ids,ids                                                  | {code,body,message} |        |
+| /geodata/select/{id}        | 查询用户                       | GET    | id                                                           | {code,body,message} |        |
+| /geodata/batchseletct/{ids} | 批量查询                       | GET    |                                                              | {code,body,message} |        |
+| /geodata/allselect          | 全部查询                       | GET    |                                                              |                     |        |
+| /geodata/byuserName         | 名字查询                       | GET    | String userName                                              |                     |        |
+| /geodata/update             | 更新用户                       | POST   | id[,title,uploader,type1,type2,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |        |
+| /geodata/batchupdate        | 批量更新                       | POST   | [Geodata[,Geodata...]]                                       | {code,body,message} |        |
+| /geodata/bytype1            | 按照一级目录分类               | GET    | String type, Page page                                       | {code,body,message} |        |
+| /geodata/bytype2            | 按照二级目录分类               | GET    | String type, Page page                                       | {code,body,message} |        |
+| /geodata/dis                | 返回结果的唯一不同值与对应数量 | GET    | String field, Page page                                      | {code,body,message} |        |
+| /geodata/downloadplus       | 更新数据库中下载次数           | GET    | String id                                                    | {code,body,message} |        |
+| /geodata/populardata        | 返回下载数量最多的五条数据     | GET    |                                                              |                     |        |
 
 
 
@@ -228,13 +228,13 @@ SET FOREIGN_KEY_CHECKS = 1;
 | ----------- | ------------ | ------ | ----------------------------- |
 | ID          | 主键（编号） | String | Not Null, Unique, Auto Create |
 | NAME        | 名称         | String | Not Null, Unique              |
-| COMPANY     | 公司         | String | Not Null, Unique              |
+| COMPANY     | 公司         | String | Not Null                      |
 | REGION      | 地区         | String | Not Null, "CN" or "other"     |
 | SERVER      | 提供的服务   | String |                               |
 | LIMITED     | 使用限制     | String |                               |
 | PICTURE     | 图片         | String |                               |
 | DESCRIPTION | 描述         | String |                               |
-| URL         | 链接         | String | Not Null,Unique               |
+| URL         | 链接         | String | Not Null                      |
 
 ### 7.2 URL
 

@@ -29,6 +29,11 @@ public interface BaseMapper<T extends Base, ID extends Serializable> {
     int batchDelete(List<ID> ids);
 
     /**
+     * 更新实体
+     */
+    int updateByPrimaryKey(T t);
+
+    /**
      * 查询实体
      */
     T selectByPrimaryKey(ID id);
@@ -42,11 +47,6 @@ public interface BaseMapper<T extends Base, ID extends Serializable> {
      * 查询实体（所有）
      */
     List<T> allSelect();
-
-    /**
-     * 更新实体
-     */
-    int updateByPrimaryKey(T t);
 
     /**
      * 根据参数查询对象

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.MapServiceMapper">
+    <sql id="Base_Column_List">
+        ID, NAME, COMPANY, REGION, SERVERS, LIMITED, PICTURE, DESCRIBES, URL
+    </sql>
+
+    <sql id="TABLE_NAME">
+        tb_map_servers
+    </sql>
+
+    <!-- CRUD -->
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.MapService">
+        insert into <include refid="TABLE_NAME"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            NAME,
+            COMPANY,
+            REGION,
+            SERVERS,
+            LIMITED,
+            PICTURE,
+            DESCRIBES,
+            URL
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{ID, jdbcType=VARCHAR},
+            #{NAME, jdbcType=VARCHAR},
+            #{COMPANY, jdbcType=VARCHAR},
+            #{REGION, jdbcType=VARCHAR},
+            #{SERVERS, jdbcType=VARCHAR},
+            #{LIMITED, jdbcType=VARCHAR},
+            #{PICTURE, jdbcType=VARCHAR},
+            #{DESCRIBES, jdbcType=VARCHAR},
+            #{URL, jdbcType=VARCHAR},
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from <include refid="TABLE_NAME"/>
+        where ID = #{id, jdbcType=VARCHAR}
+    </delete>
+    
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.MapService">
+        update <include refid="TABLE_NAME"/>
+        <set>
+            <if test="NAME != null">NAME = #{NAME, jdbcType=VARCHAR},</if>
+            <if test="COMPANY != null">COMPANY = #{COMPANY, jdbcType=VARCHAR},</if>
+            <if test="REGION != null">REGION = #{REGION, jdbcType=VARCHAR},</if>
+            <if test="SERVERS != null">SERVERS = #{SERVERS, jdbcType=VARCHAR},</if>
+            <if test="LIMITED != null">LIMITED = #{LIMITED, jdbcType=VARCHAR},</if>
+            <if test="PICTURE != null">PICTURE =  #{PICTURE, jdbcType=VARCHAR},</if>
+            <if test="DESCRIBES != null">DESCRIBES = #{DESCRIBES, jdbcType=VARCHAR},</if>
+            <if test="URL != null">URL = #{URL, jdbcType=VARCHAR},</if>
+        </set>
+        where ID = #{ID, jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="edu.zju.gis.dldsj.server.entity.MapService">
+        select <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where ID = #{id, jdbcType=VARCHAR}
+    </select>
+    <select id="batchSelect" parameterType="java.util.List" resultType="edu.zju.gis.dldsj.server.entity.MapService">
+        select <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where ID in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item, jdbcType=VARCHAR}
+        </foreach>
+    </select>
+    <select id="allSelect" parameterType="java.lang.String" resultType="edu.zju.gis.dldsj.server.entity.MapService">
+        select <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+    </select>
+    <!-- CRUD end -->
+
+
+</mapper>

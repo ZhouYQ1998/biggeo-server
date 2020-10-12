@@ -235,7 +235,7 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
                 result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("更新成功");
             }
             else{
-                result.setCode(CodeConstants.USER_NOT_EXIST).setBody(t).setMessage("更新失败：用户不存在");
+                result.setCode(CodeConstants.USER_NOT_EXIST).setBody(t).setMessage("更新失败");
             }
         } catch (RuntimeException e) {
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("更新失败：" + e.getMessage());

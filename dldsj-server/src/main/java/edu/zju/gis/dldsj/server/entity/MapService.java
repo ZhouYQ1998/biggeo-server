@@ -18,9 +18,9 @@ public class MapService extends Base<String> {
     private String NAME;
     private String COMPANY;
     private String REGION;
-    private String SERVER;
+    private String SERVERS;
     private String LIMITED;
     private String PICTURE;
-    private String DESCRIBE;
+    private String DESCRIBES;
     private String URL;
 }
