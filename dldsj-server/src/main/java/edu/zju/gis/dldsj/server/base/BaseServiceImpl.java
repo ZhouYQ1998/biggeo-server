@@ -127,7 +127,7 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
             for(int i=0; i<Arrays.asList(ids.split(",")).size(); i++){
                 idList.add((ID)Arrays.asList(ids.split(",")).get(i));
             }
-            // modified for
+            // modified 同
             int successNum = mapper.batchDelete(idList);
             if(successNum != 0){
                 result.setCode(CodeConstants.SUCCESS).setMessage("删除成功：" + successNum + "/" + idList.size());
