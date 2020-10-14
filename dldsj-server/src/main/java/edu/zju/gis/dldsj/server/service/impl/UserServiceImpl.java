@@ -9,6 +9,9 @@ import edu.zju.gis.dldsj.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author zyq 2020/09/23
  */
@@ -50,6 +53,21 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User, String> i
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
         }
         return result;
+    }
+
+    @Override
+    public int addSign(String id){
+        return userMapper.addSign(id);
+    }
+
+    @Override
+    public int selectAllSign(){
+        return userMapper.selectAllSign();
+    }
+
+    @Override
+    public List<Map<String, String>> selectByCountry(){
+        return userMapper.selectByCountry();
     }
 
 }
