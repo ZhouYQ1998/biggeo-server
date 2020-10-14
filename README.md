@@ -216,7 +216,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 | NAME     | 名称         | String | Not Null, Unique              |
 | ABSTRACT | 介绍         | String |                               |
 | PICTURE  | 图片         | String |                               |
-| URL      | 链接         | String | Not Null,Unique               |
+| URL      | 链接         | String | Not Null                      |
 
 ### 6.2 URL
 
