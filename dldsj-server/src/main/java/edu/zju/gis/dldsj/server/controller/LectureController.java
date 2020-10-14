@@ -2,10 +2,10 @@ package edu.zju.gis.dldsj.server.controller;
 
 import com.github.pagehelper.PageHelper;
 import edu.zju.gis.dldsj.server.base.BaseController;
+import edu.zju.gis.dldsj.server.base.BaseFilter;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.entity.Lecture;
-import edu.zju.gis.dldsj.server.entity.searchPojo.LectureSearchPojo;
 import edu.zju.gis.dldsj.server.service.LectureService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Log4j
 @Controller
 @RequestMapping("/lecture")
-public class LectureController extends BaseController<Lecture, LectureService, String, LectureSearchPojo> {
+public class LectureController extends BaseController<Lecture, LectureService, String, BaseFilter<String>> {
 
     /**
      * 排序函数

@@ -1,11 +1,11 @@
 package edu.zju.gis.dldsj.server.controller;
 
 import edu.zju.gis.dldsj.server.base.BaseController;
+import edu.zju.gis.dldsj.server.base.BaseFilter;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
 import edu.zju.gis.dldsj.server.entity.GroupMember;
-import edu.zju.gis.dldsj.server.entity.searchPojo.GroupMemberSearchPojo;
 import edu.zju.gis.dldsj.server.service.GroupMemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/member")
 @Slf4j
-public class GroupMemberController extends BaseController<GroupMember, GroupMemberService, Integer, GroupMemberSearchPojo> {
+public class GroupMemberController extends BaseController<GroupMember, GroupMemberService, Integer, BaseFilter<Integer>> {
 
     /**
      * 查询指导老师
