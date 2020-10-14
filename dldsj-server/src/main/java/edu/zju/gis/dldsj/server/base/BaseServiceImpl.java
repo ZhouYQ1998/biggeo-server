@@ -1,7 +1,6 @@
 package edu.zju.gis.dldsj.server.base;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.autoconfigure.PageHelperProperties;
 import edu.zju.gis.dldsj.server.common.Page;
 
 import edu.zju.gis.dldsj.server.common.Result;
@@ -138,7 +137,7 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
                 if (num == 1) {
                     batch.setMessage("删除成功");
                 } else {
-                    batch.setMessage("删除失败");
+                    batch.setMessage("删除失败：实体不存在");
                 }
                 successNum += num;
             } catch (RuntimeException e) {

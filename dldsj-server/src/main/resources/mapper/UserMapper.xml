@@ -87,14 +87,6 @@
         from <include refid="TABLE_NAME"/>
         where NAME = #{name,jdbcType=VARCHAR}
     </delete>
-    <delete id="batchDelete" parameterType="java.util.List" >
-        delete
-        from <include refid="TABLE_NAME"/>
-        where ID in
-        <foreach collection="list" item="id" open="(" close=")" separator=",">
-            #{id,jdbcType=VARCHAR}
-        </foreach>
-    </delete>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

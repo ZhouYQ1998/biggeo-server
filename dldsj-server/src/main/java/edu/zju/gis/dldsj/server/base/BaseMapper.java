@@ -24,11 +24,6 @@ public interface BaseMapper<T extends Base, ID extends Serializable> {
     int deleteByPrimaryKey(ID id);
 
     /**
-     * 删除实体（批量）
-     */
-    int batchDelete(List<ID> ids);
-
-    /**
      * 更新实体
      */
     int updateByPrimaryKey(T t);
