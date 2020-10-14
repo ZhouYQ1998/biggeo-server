@@ -2,7 +2,6 @@ package edu.zju.gis.dldsj.server.base;
 
 import com.github.pagehelper.PageHelper;
 import edu.zju.gis.dldsj.server.common.Page;
-
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
 import edu.zju.gis.dldsj.server.entity.Batch;
@@ -279,10 +278,13 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
     }
 
     /**
+     * 通过参数查询实体
      *
+     * @param params
+     * @return
      */
-    @Override
-    public List<T> getByPage(int offset, int size) {
-        return mapper.selectByPage(offset, size);
+    public Page<T> search(BaseFilter<ID> params, Page page) {
+        PageHelper.startPage(page.getPageNo(), page.getPageSize());
+        return new Page<>(mapper.search(params));
     }
 }

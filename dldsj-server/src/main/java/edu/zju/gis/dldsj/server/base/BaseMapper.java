@@ -1,7 +1,5 @@
 package edu.zju.gis.dldsj.server.base;
 
-import org.apache.ibatis.annotations.Param;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -48,8 +46,5 @@ public interface BaseMapper<T extends Base, ID extends Serializable> {
      */
     List<T> search(BaseFilter<ID> params);
 
-    /**
-     *
-     */
-    List<T> selectByPage(@Param("offset") int offset, @Param("size") int size);
+
 }

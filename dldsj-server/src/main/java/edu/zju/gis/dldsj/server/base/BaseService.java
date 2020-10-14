@@ -60,8 +60,9 @@ public interface BaseService<T extends Base<ID>, ID extends Serializable> {
     Result<List<Batch<T>>> batchUpdate(List<T> t);
 
     /**
-     *
+     * 根据查询条件获取列表
+     * @return
      */
-    List<T> getByPage(int offset, int size);
+    Page<T> search(BaseFilter<ID> params, Page page);
 
 }

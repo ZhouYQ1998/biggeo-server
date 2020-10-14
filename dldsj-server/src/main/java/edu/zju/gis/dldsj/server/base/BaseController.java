@@ -121,4 +121,17 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
         return service.batchUpdate(t);
     }
 
+    /**
+     * 将根据查询条件获取的列表结果分页
+     * 默认pageNo=1, pageSize=20
+     * @param param
+     * @param page
+     * @return
+     */
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    @ResponseBody
+    public Result getPage(@RequestBody Search param, Page page) {
+        return Result.success().setBody(service.search(param, page));
+    }
+
 }

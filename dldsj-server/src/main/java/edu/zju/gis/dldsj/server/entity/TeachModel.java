@@ -14,7 +14,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class teachModel extends Base<String> {
+public class TeachModel extends Base<String> {
     String name;
     String description;
     Date date;

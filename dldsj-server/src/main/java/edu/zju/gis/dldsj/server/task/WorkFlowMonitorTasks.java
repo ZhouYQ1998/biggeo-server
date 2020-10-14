@@ -14,6 +14,7 @@ import edu.zju.gis.dldsj.server.service.WorkFlowService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 @Slf4j
 @Getter
 @Setter
+@Component
 public class WorkFlowMonitorTasks implements Runnable {
     private CommonSetting setting;
     private WorkFlowService workFlowService;
@@ -30,12 +32,17 @@ public class WorkFlowMonitorTasks implements Runnable {
     @Override
     public void run() {
         log.info("开启新的工作流监控任务：dagId=`{}`", runId);
+        int i = 0;
+        Long dateTimestamp = executionDate.getTime()/1000-13*3600;
         try {
             WorkFlowRun workFlowRun = this.workFlowService.getRunById(runId);
+            System.out.println(workFlowRun.getRunId());
+            System.out.println(workFlowRun.getStatus());
             while (workFlowRun.getStatus().equals("running")) {
                 List<WorkFlowJob> jobs = this.workFlowService.getJobsByRun(runId);
                 for (WorkFlowJob job : jobs) {
-                    AirflowTaskInstance instance = this.workFlowService.airflow_getInstance(runId, job.getJobId(), executionDate);
+                    //executionDate此时是Date类型的数据，将其转换成时间戳，并转换时区
+                    AirflowTaskInstance instance = this.workFlowService.airflow_getInstance(runId, job.getJobId(), dateTimestamp);
                     if (instance != null) {
                         job.setStartTime(instance.getStartDate());
                         job.setEndTime(instance.getEndDate());
@@ -43,9 +50,15 @@ public class WorkFlowMonitorTasks implements Runnable {
                         workFlowService.updateJob(job);
                     }
                 }
-                AirflowDagRun run = this.workFlowService.airflow_getDagRun(runId, executionDate);
+                AirflowDagRun run = this.workFlowService.airflow_getDagRun(runId,dateTimestamp);
+                //List<AirflowDagRun> listRun = this.workFlowService.airflow_getRunningDag(runId);
+                //AirflowDagRun run = listRun.get(listRun.size()-1);
+
                 workFlowRun.setStatus(run.getState());
                 Thread.sleep(setting.getMonitorInterval());
+
+                i++;
+                log.info("循环次数"+i);
             }
             workFlowService.updateRun(workFlowRun);
             log.info("工作流`{}`@`{}`监控已完成，最终状态为：{}", runId, workFlowRun.getEndTime(), workFlowRun.getStatus());

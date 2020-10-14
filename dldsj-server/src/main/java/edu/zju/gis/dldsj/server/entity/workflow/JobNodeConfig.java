@@ -1,8 +1,8 @@
 package edu.zju.gis.dldsj.server.entity.workflow;
 
+import edu.zju.gis.dldsj.server.service.ParallelModelService;
 import lombok.Getter;
 import lombok.Setter;
-import edu.zju.gis.dldsj.server.service.ParallelModelService;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import java.util.List;
 public class JobNodeConfig {
 
     private String taskId;
+    private String modelId;
     private Integer retries;
     /**
      * in seconds
@@ -43,9 +44,9 @@ public class JobNodeConfig {
     private List<String> sparkSetting;
 
     public String buildTask(ParallelModelService parallelModelService) {
-        String task = String.format("%s = BashOperator(\n" +
+        /*String task = String.format("%s = BashOperator(\n" +
                 "    task_id='%s',\n" +
-                "    bash_command='%s',\n", taskId.replace("-", "_"), taskId, parallelModelService.getCmd(artifactId, taskId, params, sparkSetting));
+                "    bash_command='%s',\n", modelId+"_"+taskId.replace("-","_"), taskId, parallelModelService.getCmd(artifactId, taskId, params, sparkSetting));
         if (retries != null)
             task += String.format("    retries=%d,\n", retries);
         if (retryDelay != null)
@@ -60,6 +61,9 @@ public class JobNodeConfig {
             task += String.format("    env=%s,\n", env);
         task += "    dag=dag\n" +
                 ")\n\n";
+        */
+        String task = String.format("%s = BashOperator(\n" + "    task_id='%s',\n" + "    bash_command='date'",modelId+"_"+taskId.replace("-","_"), taskId)+
+                "    ,\ndag=dag\n"+")\n\n";
         return task;
     }
 }

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.AirflowDagMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.workflow.AirflowDag">
+        <id column="dag_id" jdbcType="VARCHAR" property="dagId"/>
+        <result column="is_paused" jdbcType="BIT" property="isPaused"/>
+        <result column="is_subdag" jdbcType="BIT" property="isSubdag"/>
+        <result column="is_active" jdbcType="BIT" property="isActive"/>
+        <result column="last_scheduler_run" jdbcType="TIMESTAMP" property="lastSchedulerRun"/>
+        <result column="last_pickled" jdbcType="TIMESTAMP" property="lastPickled"/>
+        <result column="last_expired" jdbcType="TIMESTAMP" property="lastExpired"/>
+        <result column="scheduler_lock" jdbcType="BIT" property="schedulerLock"/>
+        <result column="pickle_id" jdbcType="INTEGER" property="pickleId"/>
+        <result column="fileloc" jdbcType="VARCHAR" property="fileloc"/>
+        <result column="owners" jdbcType="VARCHAR" property="owners"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        dag_id, is_paused, is_subdag, is_active, last_scheduler_run, last_pickled, last_expired,
+        scheduler_lock, pickle_id, fileloc, owners
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from airflow.dag
+        where dag_id = #{dagId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from airflow.dag
+        where dag_id = #{dagId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.workflow.AirflowDag">
+        insert into airflow.dag (dag_id,
+                                 is_paused,
+                                 is_subdag,
+                                 is_active,
+                                 last_scheduler_run,
+                                 last_pickled,
+                                 last_expired,
+                                 scheduler_lock,
+                                 pickle_id,
+                                 fileloc,
+                                 owners)
+        values (#{dagId,jdbcType=VARCHAR},
+                #{isPaused,jdbcType=BIT},
+                #{isSubdag,jdbcType=BIT},
+                #{isActive,jdbcType=BIT},
+                #{lastSchedulerRun,jdbcType=TIMESTAMP},
+                #{lastPickled,jdbcType=TIMESTAMP},
+                #{lastExpired,jdbcType=TIMESTAMP},
+                #{schedulerLock,jdbcType=BIT},
+                #{pickleId,jdbcType=INTEGER},
+                #{fileloc,jdbcType=VARCHAR},
+                #{owners,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="edu.zju.gis.dldsj.server.entity.workflow.AirflowDag">
+        insert into airflow.dag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dagId != null">
+                dag_id,
+            </if>
+            <if test="isPaused != null">
+                is_paused,
+            </if>
+            <if test="isSubdag != null">
+                is_subdag,
+            </if>
+            <if test="isActive != null">
+                is_active,
+            </if>
+            <if test="lastSchedulerRun != null">
+                last_scheduler_run,
+            </if>
+            <if test="lastPickled != null">
+                last_pickled,
+            </if>
+            <if test="lastExpired != null">
+                last_expired,
+            </if>
+            <if test="schedulerLock != null">
+                scheduler_lock,
+            </if>
+            <if test="pickleId != null">
+                pickle_id,
+            </if>
+            <if test="fileloc != null">
+                fileloc,
+            </if>
+            <if test="owners != null">
+                owners,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dagId != null">
+                #{dagId,jdbcType=VARCHAR},
+            </if>
+            <if test="isPaused != null">
+                #{isPaused,jdbcType=BIT},
+            </if>
+            <if test="isSubdag != null">
+                #{isSubdag,jdbcType=BIT},
+            </if>
+            <if test="isActive != null">
+                #{isActive,jdbcType=BIT},
+            </if>
+            <if test="lastSchedulerRun != null">
+                #{lastSchedulerRun,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastPickled != null">
+                #{lastPickled,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastExpired != null">
+                #{lastExpired,jdbcType=TIMESTAMP},
+            </if>
+            <if test="schedulerLock != null">
+                #{schedulerLock,jdbcType=BIT},
+            </if>
+            <if test="pickleId != null">
+                #{pickleId,jdbcType=INTEGER},
+            </if>
+            <if test="fileloc != null">
+                #{fileloc,jdbcType=VARCHAR},
+            </if>
+            <if test="owners != null">
+                #{owners,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

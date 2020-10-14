@@ -3,8 +3,8 @@ package edu.zju.gis.dldsj.server.controller;
 import edu.zju.gis.dldsj.server.base.BaseController;
 import edu.zju.gis.dldsj.server.base.BaseFilter;
 import edu.zju.gis.dldsj.server.common.Result;
-import edu.zju.gis.dldsj.server.entity.teachModel;
-import edu.zju.gis.dldsj.server.service.teachModelService;
+import edu.zju.gis.dldsj.server.entity.TeachModel;
+import edu.zju.gis.dldsj.server.service.TeachModelService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Log4j
 @Controller
 @RequestMapping("teachModel")
-public class teachModelController extends BaseController<teachModel, teachModelService,String, BaseFilter<String>> {
+public class TeachModelController extends BaseController<TeachModel, TeachModelService,String, BaseFilter<String>> {
 
 
     /**
@@ -28,7 +28,7 @@ public class teachModelController extends BaseController<teachModel, teachModelS
      */
     @RequestMapping(value = "/uploadTeachModel",method = RequestMethod.POST)
     @ResponseBody
-    public Result uploadTeachModel(@SessionAttribute("role") String role,teachModel teachModel){
+    public Result uploadTeachModel(@SessionAttribute("role") String role,TeachModel teachModel){
         if (role.equals("visitor")){
             return Result.error().setMessage("游客无此权限");
         }

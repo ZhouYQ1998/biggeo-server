@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.AirflowDagRunMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.workflow.AirflowDagRun">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="dag_id" jdbcType="VARCHAR" property="dagId"/>
+        <result column="execution_date" jdbcType="TIMESTAMP" property="executionDate"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="run_id" jdbcType="VARCHAR" property="runId"/>
+        <result column="external_trigger" jdbcType="BIT" property="externalTrigger"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="edu.zju.gis.dldsj.server.entity.workflow.AirflowDagRun">
+        <result column="conf" jdbcType="LONGVARBINARY" property="conf"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, dag_id, execution_date, state, run_id, external_trigger, end_date, start_date
+    </sql>
+    <sql id="Blob_Column_List">
+        conf
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from airflow.dag_run
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from airflow.dag_run
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByDagId" parameterType="String">
+        delete
+        from airflow.dag_run
+        where dag_id = #{dagId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.workflow.AirflowDagRun">
+        insert into airflow.dag_run (id,
+                                     dag_id,
+                                     execution_date,
+                                     state,
+                                     run_id,
+                                     external_trigger,
+                                     end_date,
+                                     start_date,
+                                     conf)
+        values (#{id,jdbcType=INTEGER},
+                #{dagId,jdbcType=VARCHAR},
+                #{executionDate,jdbcType=TIMESTAMP},
+                #{state,jdbcType=VARCHAR},
+                #{runId,jdbcType=VARCHAR},
+                #{externalTrigger,jdbcType=BIT},
+                #{endDate,jdbcType=TIMESTAMP},
+                #{startDate,jdbcType=TIMESTAMP},
+                #{conf,jdbcType=LONGVARBINARY})
+    </insert>
+    <insert id="insertSelective" parameterType="edu.zju.gis.dldsj.server.entity.workflow.AirflowDagRun">
+        insert into airflow.dag_run
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="dagId != null">
+                dag_id,
+            </if>
+            <if test="executionDate != null">
+                execution_date,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="runId != null">
+                run_id,
+            </if>
+            <if test="externalTrigger != null">
+                external_trigger,
+            </if>
+            <if test="endDate != null">
+                end_date,
+            </if>
+            <if test="startDate != null">
+                start_date,
+            </if>
+            <if test="conf != null">
+                conf,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="dagId != null">
+                #{dagId,jdbcType=VARCHAR},
+            </if>
+            <if test="executionDate != null">
+                #{executionDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="runId != null">
+                #{runId,jdbcType=VARCHAR},
+            </if>
+            <if test="externalTrigger != null">
+                #{externalTrigger,jdbcType=BIT},
+            </if>
+            <if test="endDate != null">
+                #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="startDate != null">
+                #{startDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="conf != null">
+                #{conf,jdbcType=LONGVARBINARY},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="edu.zju.gis.dldsj.server.entity.workflow.AirflowDagRun">
+        update airflow.dag_run
+        <set>
+            <if test="dagId != null">
+                dag_id = #{dagId,jdbcType=VARCHAR},
+            </if>
+            <if test="executionDate != null">
+                execution_date = #{executionDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="runId != null">
+                run_id = #{runId,jdbcType=VARCHAR},
+            </if>
+            <if test="externalTrigger != null">
+                external_trigger = #{externalTrigger,jdbcType=BIT},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="startDate != null">
+                start_date = #{startDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="conf != null">
+                conf = #{conf,jdbcType=LONGVARBINARY},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.workflow.AirflowDagRun">
+        update airflow.dag_run
+        set dag_id           = #{dagId,jdbcType=VARCHAR},
+            execution_date   = #{executionDate,jdbcType=TIMESTAMP},
+            state            = #{state,jdbcType=VARCHAR},
+            run_id           = #{runId,jdbcType=VARCHAR},
+            external_trigger = #{externalTrigger,jdbcType=BIT},
+            end_date         = #{endDate,jdbcType=TIMESTAMP},
+            start_date       = #{startDate,jdbcType=TIMESTAMP},
+            conf             = #{conf,jdbcType=LONGVARBINARY}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectRunningDagById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from airflow.dag_run
+        where dag_id=#{dagId,jdbcType=VARCHAR} and state = 'running'
+    </select>
+    <select id="selectDagRunByTime" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from airflow.dag_run
+        where dag_id=#{arg0,jdbcType=VARCHAR} and
+        FLOOR(CAST((UNIX_TIMESTAMP (execution_date)) AS DECIMAL(20,2) )) = #{arg1,jdbcType=BIGINT}
+    </select>
+</mapper>

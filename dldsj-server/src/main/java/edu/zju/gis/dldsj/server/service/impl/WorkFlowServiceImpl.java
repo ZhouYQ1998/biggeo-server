@@ -8,7 +8,6 @@ import edu.zju.gis.dldsj.server.service.WorkFlowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,6 +42,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 
     @Override
     public int deleteDagById(String dagId) {
+        this.airflowDagRunMapper.deleteByDagId(dagId);
         return this.workFlowDagMapper.deleteByPrimaryKey(dagId);
     }
 
@@ -119,12 +119,12 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     }
 
     @Override
-    public AirflowDagRun airflow_getDagRun(String dagId, Date executionDate) {
+    public AirflowDagRun airflow_getDagRun(String dagId, long executionDate) {
         return this.airflowDagRunMapper.selectDagRunByTime(dagId, executionDate);
     }
 
     @Override
-    public AirflowTaskInstance airflow_getInstance(String dagId, String jobId, Date executionDate) {
+    public AirflowTaskInstance airflow_getInstance(String dagId, String jobId, long executionDate) {
         return this.airflowInstanceMapper.selectInstance(dagId, jobId, executionDate);
     }
 }

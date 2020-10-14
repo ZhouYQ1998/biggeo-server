@@ -4,7 +4,6 @@ package edu.zju.gis.dldsj.server.service;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.workflow.*;
 
-import java.util.Date;
 import java.util.List;
 
 public interface WorkFlowService {
@@ -43,7 +42,8 @@ public interface WorkFlowService {
 
     List<AirflowDagRun> airflow_getRunningDag(String dagId);
 
-    AirflowDagRun airflow_getDagRun(String dagId, Date executionDate);
+    AirflowDagRun airflow_getDagRun(String dagId, long executionDate);
 
-    AirflowTaskInstance airflow_getInstance(String dagId, String jobId, Date executionDate);
+    AirflowTaskInstance airflow_getInstance(String dagId, String jobId, long executionDate);
+
 }

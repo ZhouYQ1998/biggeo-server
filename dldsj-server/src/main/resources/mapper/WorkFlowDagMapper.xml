@@ -33,7 +33,7 @@
 
     <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowDag">
     insert into <include refid="TABLE_NAME"/>
-    <include refid="Base_Column_List"/>
+    (<include refid="Base_Column_List"/>)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
       #{userId,jdbcType=VARCHAR}, #{connections,jdbcType=VARCHAR}, #{nodes,jdbcType=VARCHAR},
       #{style,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{lastModifyTime,jdbcType=TIMESTAMP}

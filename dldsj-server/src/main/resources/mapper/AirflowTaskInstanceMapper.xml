@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.AirflowTaskInstanceMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.workflow.AirflowTaskInstance">
+        <id column="task_id" jdbcType="VARCHAR" property="taskId"/>
+        <id column="dag_id" jdbcType="VARCHAR" property="dagId"/>
+        <id column="execution_date" jdbcType="TIMESTAMP" property="executionDate"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="duration" jdbcType="REAL" property="duration"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="try_number" jdbcType="INTEGER" property="tryNumber"/>
+        <result column="hostname" jdbcType="VARCHAR" property="hostname"/>
+        <result column="unixname" jdbcType="VARCHAR" property="unixname"/>
+        <result column="job_id" jdbcType="INTEGER" property="jobId"/>
+        <result column="pool" jdbcType="VARCHAR" property="pool"/>
+        <result column="queue" jdbcType="VARCHAR" property="queue"/>
+        <result column="priority_weight" jdbcType="INTEGER" property="priorityWeight"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
+        <result column="queued_dttm" jdbcType="TIMESTAMP" property="queuedDttm"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="max_tries" jdbcType="INTEGER" property="maxTries"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        task_id, dag_id, execution_date, start_date, end_date, duration, state, try_number,
+        hostname, unixname, job_id, pool, queue, priority_weight, operator, queued_dttm,
+        pid, max_tries
+    </sql>
+
+    <delete id="deleteByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.workflow.AirflowTaskInstance">
+        delete
+        from airflow.task_instance
+        where task_id = #{taskId,jdbcType=VARCHAR}
+          and dag_id = #{dagId,jdbcType=VARCHAR}
+          and execution_date = #{executionDate,jdbcType=TIMESTAMP}
+    </delete>
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.workflow.AirflowTaskInstance">
+        insert into airflow.task_instance (task_id,
+                                           dag_id,
+                                           execution_date,
+                                           start_date,
+                                           end_date,
+                                           duration,
+                                           state,
+                                           try_number,
+                                           hostname,
+                                           unixname,
+                                           job_id,
+                                           pool,
+                                           queue,
+                                           priority_weight,
+                                           operator,
+                                           queued_dttm,
+                                           pid,
+                                           max_tries)
+        values (#{taskId,jdbcType=VARCHAR},
+                #{dagId,jdbcType=VARCHAR},
+                #{executionDate,jdbcType=TIMESTAMP},
+                #{startDate,jdbcType=TIMESTAMP},
+                #{endDate,jdbcType=TIMESTAMP},
+                #{duration,jdbcType=REAL},
+                #{state,jdbcType=VARCHAR},
+                #{tryNumber,jdbcType=INTEGER},
+                #{hostname,jdbcType=VARCHAR},
+                #{unixname,jdbcType=VARCHAR},
+                #{jobId,jdbcType=INTEGER},
+                #{pool,jdbcType=VARCHAR},
+                #{queue,jdbcType=VARCHAR},
+                #{priorityWeight,jdbcType=INTEGER},
+                #{operator,jdbcType=VARCHAR},
+                #{queuedDttm,jdbcType=TIMESTAMP},
+                #{pid,jdbcType=INTEGER},
+                #{maxTries,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="edu.zju.gis.dldsj.server.entity.workflow.AirflowTaskInstance">
+        insert into airflow.task_instance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">
+                task_id,
+            </if>
+            <if test="dagId != null">
+                dag_id,
+            </if>
+            <if test="executionDate != null">
+                execution_date,
+            </if>
+            <if test="startDate != null">
+                start_date,
+            </if>
+            <if test="endDate != null">
+                end_date,
+            </if>
+            <if test="duration != null">
+                duration,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="tryNumber != null">
+                try_number,
+            </if>
+            <if test="hostname != null">
+                hostname,
+            </if>
+            <if test="unixname != null">
+                unixname,
+            </if>
+            <if test="jobId != null">
+                job_id,
+            </if>
+            <if test="pool != null">
+                pool,
+            </if>
+            <if test="queue != null">
+                queue,
+            </if>
+            <if test="priorityWeight != null">
+                priority_weight,
+            </if>
+            <if test="operator != null">
+                operator,
+            </if>
+            <if test="queuedDttm != null">
+                queued_dttm,
+            </if>
+            <if test="pid != null">
+                pid,
+            </if>
+            <if test="maxTries != null">
+                max_tries,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">
+                #{taskId,jdbcType=VARCHAR},
+            </if>
+            <if test="dagId != null">
+                #{dagId,jdbcType=VARCHAR},
+            </if>
+            <if test="executionDate != null">
+                #{executionDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="startDate != null">
+                #{startDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endDate != null">
+                #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="duration != null">
+                #{duration,jdbcType=REAL},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="tryNumber != null">
+                #{tryNumber,jdbcType=INTEGER},
+            </if>
+            <if test="hostname != null">
+                #{hostname,jdbcType=VARCHAR},
+            </if>
+            <if test="unixname != null">
+                #{unixname,jdbcType=VARCHAR},
+            </if>
+            <if test="jobId != null">
+                #{jobId,jdbcType=INTEGER},
+            </if>
+            <if test="pool != null">
+                #{pool,jdbcType=VARCHAR},
+            </if>
+            <if test="queue != null">
+                #{queue,jdbcType=VARCHAR},
+            </if>
+            <if test="priorityWeight != null">
+                #{priorityWeight,jdbcType=INTEGER},
+            </if>
+            <if test="operator != null">
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="queuedDttm != null">
+                #{queuedDttm,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pid != null">
+                #{pid,jdbcType=INTEGER},
+            </if>
+            <if test="maxTries != null">
+                #{maxTries,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectInstance" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from airflow.task_instance
+        where task_id = #{arg1,jdbcType=VARCHAR}
+        and dag_id = #{arg0,jdbcType=VARCHAR}
+        and FLOOR(CAST((UNIX_TIMESTAMP (execution_date)) AS DECIMAL(20,2) )) = #{arg2,jdbcType=BIGINT}
+    </select>
+
+</mapper>

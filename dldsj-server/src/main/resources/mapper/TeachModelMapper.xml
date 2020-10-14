@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.zju.gis.dldsj.server.mapper.teachModelMapper">
-    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.teachModel">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.TeachModelMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.TeachModel">
         <id column="TEACHMODEL_ID" jdbcType="VARCHAR" property="id"/>
         <result column="NAME" jdbcType="VARCHAR" property="name"/>
         <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
@@ -18,7 +18,7 @@
     <sql id="Base_Column_List">
         TEACHMODEL_ID, NAME, DESCRIPTION, DATE, KEYWORDS, GROUP_ID, AUTHOR_ID, EMAIL, FILE_TEMPLATE, FILE_PATH, PIC_PATH, FILE_TYPE
     </sql>
-    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.teachModel">
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.TeachModel">
         insert into tb_teach_model
         <trim prefix="(" suffix=")" suffixOverrides=",">
             TEACHMODEL_ID,
@@ -89,7 +89,7 @@
         from tb_teach_model
     </select>
 
-    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.teachModel">
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.TeachModel">
         update tb_teach_model
         <set>
             <if test="name!= null">

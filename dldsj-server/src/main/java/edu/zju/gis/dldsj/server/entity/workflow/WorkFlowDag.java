@@ -13,22 +13,13 @@ import java.util.Date;
 @Getter
 @Setter
 public class WorkFlowDag {
-
     private String id;
-
     private String name;
-
     private String description;
-
     private String userId;
-
     private String connections;
-
     private String nodes;
-
     private String style;
-
     private Date createdTime;
-
     private Date lastModifyTime;
 }

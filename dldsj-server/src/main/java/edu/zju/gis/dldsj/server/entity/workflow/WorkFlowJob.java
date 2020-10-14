@@ -14,20 +14,11 @@ import java.util.Date;
 @Setter
 public class WorkFlowJob {
     private String jobId;
-
     private String runId;
-
-    private String jobOrder;
-
     private String name;
-
     private String model;
-
     private String params;
-
     private String status;
-
     private Date startTime;
-
     private Date endTime;
 }

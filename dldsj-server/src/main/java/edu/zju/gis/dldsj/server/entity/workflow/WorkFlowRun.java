@@ -13,15 +13,10 @@ import java.util.Date;
 @Getter
 @Setter
 public class WorkFlowRun {
-    private String id;
-
+    private String runId;
     private String name;
-
     private String userId;
-
     private String status;
-
     private Date startTime;
-
     private Date endTime;
 }

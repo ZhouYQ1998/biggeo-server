@@ -4,7 +4,6 @@
     <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowJob">
         <id column="JOB_ID" property="jobId" jdbcType="VARCHAR"/>
         <result column="RUN_ID" property="runId" jdbcType="VARCHAR"/>
-        <result column="JOB_ORDER" property="jobOrder" jdbcType="VARCHAR"/>
         <result column="JOB_NAME" property="name" jdbcType="VARCHAR"/>
         <result column="MODEL" property="model" jdbcType="VARCHAR"/>
         <result column="PARAMS" property="params" jdbcType="VARCHAR"/>
@@ -13,7 +12,7 @@
         <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-        JOB_ID, RUN_ID, JOB_ORDER, JOB_NAME, MODEL, PARAMS, STATUS, START_TIME, END_TIME
+        JOB_ID, RUN_ID, JOB_NAME, MODEL, PARAMS, STATUS, START_TIME, END_TIME
     </sql>
     <sql id="TABLE_NAME">
         tb_workflow_job
@@ -30,7 +29,7 @@
   </delete>
     <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowJob">
     insert into <include refid="TABLE_NAME"/>
-        <include refid="Base_Column_List"/>
+        (<include refid="Base_Column_List"/>)
     values (#{jobId,jdbcType=VARCHAR}, #{runId,jdbcType=VARCHAR}, #{jobOrder,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{model,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP})
   </insert>
@@ -42,9 +41,6 @@
             </if>
             <if test="runId != null">
                 RUN_ID,
-            </if>
-            <if test="jobOrder != null">
-                JOB_ORDER,
             </if>
             <if test="name != null">
                 JOB_NAME,
@@ -70,7 +66,7 @@
                 #{jobId,jdbcType=VARCHAR},
             </if>
             <if test="runId != null">
-                #{runid,jdbcType=VARCHAR},
+                #{runId,jdbcType=VARCHAR},
             </if>
             <if test="jobOrder != null">
                 #{jobOrder,jdbcType=VARCHAR},
@@ -101,9 +97,6 @@
             <if test="runId != null">
                 RUN_ID = #{runId,jdbcType=VARCHAR},
             </if>
-            <if test="jobId != null">
-                JOB_ORDER = #{jobOrder,jdbcType=VARCHAR},
-            </if>
             <if test="name != null">
                 JOB_NAME = #{name,jdbcType=VARCHAR},
             </if>
@@ -127,20 +120,19 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowJob">
     update <include refid="TABLE_NAME"/>
-    set runId = #{runid,jdbcType=VARCHAR},
-      jobid = #{jobid,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      model = #{model,jdbcType=VARCHAR},
-      params = #{params,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      startTime = #{starttime,jdbcType=TIMESTAMP},
-      endTime = #{endtime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=VARCHAR}
+    set RUN_ID = #{runId,jdbcType=VARCHAR},
+        JOB_NAME = #{name,jdbcType=VARCHAR},
+        MODEL = #{model,jdbcType=VARCHAR},
+        PARAMS = #{params,jdbcType=VARCHAR},
+        STATUS = #{status,jdbcType=VARCHAR},
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+        END_TIME = #{endTime,jdbcType=TIMESTAMP}
+    where JOB_ID = #{jobId,jdbcType=VARCHAR}
   </update>
     <select id="selectByRunId" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
         <include refid="Base_Column_List"/>
     from <include refid="TABLE_NAME"/>
-    where runId = #{runId,jdbcType=VARCHAR} ORDER BY startTime DESC
+    where RUN_ID = #{runId,jdbcType=VARCHAR} ORDER BY START_TIME DESC
   </select>
 </mapper>
