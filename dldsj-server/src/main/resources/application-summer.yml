@@ -26,9 +26,45 @@ spring:
       - classpath:/static
 
 settings:
+  parallelFilePath: /opt/3S/upload
+  templatePath: ${settings.parallelFilePath}/template
+  jarPath: ${settings.parallelFilePath}/jar
+  xmlPath: ${settings.parallelFilePath}/xml
+  picPath: ${settings.parallelFilePath}/pic
   frontEndRegionList:
     - http://localhost:8082
     - http://10.79.231.81:8082
     - http://td1:8082
   sessionMaxAge: 36000
-  mapfileSavepath: F:\data
+  mapfileSavepath: opt/3S/map
+  userSpaceRootPath: /3S/userSpace/
+  nameNode: 192.168.1.5
+  username: root
+  password: ubt123
+  javaHome: /opt/tool/jdk8
+  hadoopHome: /opt/tool/hadoop
+  sparkHome: /opt/tool/spark
+  jobMonitor: http://${settings.nameNode}:8088/ws/v1/cluster/apps
+  monitorInterval: 2000
+  jobFailInterval: 20000
+  jobResultPath: /gee
+  # unuseful for model subsystem
+  metaPath: /opt/dldsj/metadata
+  esHost: ubt1
+  esPort: 9300
+  esName: elasticsearch
+  esIndex: dls
+  initTaskPoolSize: 3
+  maxTaskPoolSize: 20
+  keepAliveSeconds: 60
+  dagsFolder: /Users/jiarui/Desktop/3S_class/airflow/dags
+  rasterToolTempDir: /output/
+  topic3ToolTempDir: /home/share/
+  calculateDataNameSpace: /calculateData/
+  selfDataNameSpace: /selfData/
+  systemPublicAccount: SYSTEM_PUBLIC
+  airFlowHome: /Users/jiarui/airflow
+  airFlowDagsPath: ${settings.airFlowHome}/dags
+uri:
+  hdfs: hdfs://192.168.1.5:9000/
+  lfs: file:///

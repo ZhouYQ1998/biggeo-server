@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @version v2.0
  */
 @Component
-public class MoniterTasks {
+public class MonitorTasks {
     @Async("taskExecutor")
     public void execute(Runnable runnable) {
         runnable.run();

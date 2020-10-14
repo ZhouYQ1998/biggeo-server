@@ -19,6 +19,8 @@ public class CodeConstants {
 
     public final static int USER_NOT_EXIST = 1002; // 用户不存在
 
+    public final static int USER_PERMISSION_ERROR = 1003; // 用户权限不足
+
     public final static int SSO_TOKEN_ERROR = 2001; // TOKEN未授权或已过期
 
     public final static int SSO_PERMISSION_ERROR = 2002; // 没有访问权限

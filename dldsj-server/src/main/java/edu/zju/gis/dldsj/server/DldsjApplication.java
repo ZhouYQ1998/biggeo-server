@@ -1,6 +1,5 @@
 package edu.zju.gis.dldsj.server;
 
-import edu.zju.gis.dldsj.server.task.MoniterTasks;
 import edu.zju.gis.dldsj.server.task.SpiderMonitorTasks;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -22,5 +21,4 @@ public class DldsjApplication {
         SpiderMonitorTasks task = new SpiderMonitorTasks();
         task.run();
     }
-
 }
