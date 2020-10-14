@@ -5,5 +5,5 @@ package edu.zju.gis.dldsj.server.constant;
  * @version 1.0 2018/09/26
  */
 public enum CodeType {
-    JAVA, SCALA, PYTHON
+    JAVA, SCALA, PYTHON, NONE
 }

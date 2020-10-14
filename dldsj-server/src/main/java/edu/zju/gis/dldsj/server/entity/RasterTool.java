@@ -1,13 +1,13 @@
 package edu.zju.gis.dldsj.server.entity;
 
 
-import edu.zju.gis.dldsj.server.model.Jsonable;
+import edu.zju.gis.dldsj.server.model.JsonAble;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RasterTool implements Jsonable {
+public class RasterTool implements JsonAble {
     private String artifactId;
     private String name;
     private String description;

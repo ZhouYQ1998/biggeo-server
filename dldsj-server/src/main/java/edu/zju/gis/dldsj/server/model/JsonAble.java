@@ -17,15 +17,15 @@ import java.util.HashMap;
  * @version 1.0 2018/07/21
  * Comments 可用于发布ES索引的model的接口
  */
-public interface Jsonable extends Serializable {
+public interface JsonAble extends Serializable {
     String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     ObjectMapper mapper = new ObjectMapper().setDateFormat(new SimpleDateFormat(DEFAULT_DATE_FORMAT)).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    static <T extends Jsonable> T fromJsonString(String json, Class<T> cls) throws IOException {
+    static <T extends JsonAble> T fromJsonString(String json, Class<T> cls) throws IOException {
         return mapper.readValue(json, cls);
     }
 
-    static <T extends Jsonable> T fromJsonBytes(byte[] json, Class<T> cls) throws IOException {
+    static <T extends JsonAble> T fromJsonBytes(byte[] json, Class<T> cls) throws IOException {
         return mapper.readValue(json, cls);
     }
 
