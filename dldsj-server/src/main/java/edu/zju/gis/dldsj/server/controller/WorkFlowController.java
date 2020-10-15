@@ -9,7 +9,7 @@ import edu.zju.gis.dldsj.server.service.ParallelModelService;
 import edu.zju.gis.dldsj.server.service.WorkFlowService;
 import edu.zju.gis.dldsj.server.task.WorkFlowMonitorTasks;
 import edu.zju.gis.dldsj.server.task.MonitorTasks;
-import edu.zju.gis.dldsj.server.utils.CmdUtil;
+import edu.zju.gis.dldsj.server.utils.SSHUtil;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulator;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulatorFactory;
 import edu.zju.gis.dldsj.server.utils.fs.LocalFsManipulator;
@@ -285,17 +285,21 @@ public class WorkFlowController {
 
         this.workFlowService.airflow_insertDag(airflowDag);
         //提交手动激活工作流shell命令
-        //在本机上airflow安装在conda环境中
-        String pythonEnv = "/Users/jiarui/opt/anaconda3/bin/activate && conda activate /Users/jiarui/opt/anaconda3/envs/py38";
-        String pythonEnv2 = "conda activate py38";
-        String startCmd = String.format("export AIRFLOW_HOME=%s;airflow trigger_dag", setting.getAirFlowHome(),airflowDag.getDagId());
-//        SSHHelper.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), startCmd, setting.getParallelFilePath());
-        System.out.println(startCmd);
-        CmdUtil.runLocal(pythonEnv2);
-        int r = CmdUtil.runLocal(startCmd);
-        System.out.println(r);
-        //CmdUtil.runLocal("touch /Users/jiarui/oo2.txt");
-        System.out.println("ssh started");
+//        //在本机上airflow安装在conda环境中
+//        String pythonEnv = "/Users/jiarui/opt/anaconda3/bin/activate && conda activate /Users/jiarui/opt/anaconda3/envs/py38";
+//        String pythonEnv2 = "conda activate py38";
+//        String startCmd = String.format("export AIRFLOW_HOME=%s;airflow trigger_dag", setting.getAirFlowHome(),airflowDag.getDagId());
+////        SSHHelper.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), startCmd, setting.getParallelFilePath());
+//        System.out.println(startCmd);
+//        //CmdUtil.runLocal(pythonEnv2);
+//        int r = CmdUtil.runLocal(startCmd);
+//        System.out.println(r);
+//        //CmdUtil.runLocal("touch /Users/jiarui/oo2.txt");
+//        System.out.println("ssh started");
+
+        //提交手动激活工作流shell命令
+        String startCmd = String.format("export AIRFLOW_HOME=%s;airflow unpause %s;airflow trigger_dag %s", setting.getAirFlowHome(), airflowDag.getDagId(), airflowDag.getDagId());
+        SSHUtil.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), startCmd, setting.getParallelFilePath());
 
         //监控airflow.dagRun的记录数，确定工作流已启动
         for (int loop = setting.getJobFailInterval() / setting.getMonitorInterval(); loop >= 0; loop--) {
@@ -348,27 +352,34 @@ public class WorkFlowController {
      */
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
-    public Result test() throws ParseException {
-        String runId = "98660acc-a1d6-413a-9a3f-cf97559f7dc9";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        Date date = dateFormat.parse("2020-10-08 11:17:38");
-        List<AirflowDagRun> list = workFlowService.airflow_getRunningDag(runId);
-        //AirflowDagRun run = workFlowService.airflow_getDagRun(runId,date);
-        AirflowDagRun run = list.get(0);
-        if (run == null){
-            System.out.println("niu");
-            return Result.success().setBody("null");
-        }
-        else {
-            System.out.println(run.getId());
-            System.out.println(run.getDagId());
-            System.out.println(run.getExecutionDate());
-            Date date1 = run.getExecutionDate();
-            Long createTime = date1.getTime();
-            System.out.println(createTime/1000-13*3600);
-            System.out.println(date1);
-            return Result.success().setBody(run);
-        }
+    public Result test() throws ParseException, IOException {
+//        String runId = "98660acc-a1d6-413a-9a3f-cf97559f7dc9";
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+////        Date date = dateFormat.parse("2020-10-08 11:17:38");
+//        List<AirflowDagRun> list = workFlowService.airflow_getRunningDag(runId);
+//        //AirflowDagRun run = workFlowService.airflow_getDagRun(runId,date);
+//        AirflowDagRun run = list.get(0);
+//        if (run == null){
+//            System.out.println("niu");
+//            return Result.success().setBody("null");
+//        }
+//        else {
+//            System.out.println(run.getId());
+//            System.out.println(run.getDagId());
+//            System.out.println(run.getExecutionDate());
+//            Date date1 = run.getExecutionDate();
+//            Long createTime = date1.getTime();
+//            System.out.println(createTime/1000-13*3600);
+//            System.out.println(date1);
+//            return Result.success().setBody(run);
+//        }
+
+        //提交手动激活工作流shell命令
+        String dagId = "example_bash_operator";
+        String startCmd = String.format("export AIRFLOW_HOME=%s;airflow unpause %s;airflow trigger_dag %s", setting.getAirFlowHome(), dagId, dagId);
+        SSHUtil.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), startCmd, setting.getParallelFilePath());
+
+        return Result.success();
     }
 
 

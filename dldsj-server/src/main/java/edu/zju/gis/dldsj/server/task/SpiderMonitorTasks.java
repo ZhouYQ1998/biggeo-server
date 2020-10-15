@@ -1,6 +1,6 @@
 package edu.zju.gis.dldsj.server.task;
 
-import edu.zju.gis.dldsj.server.utils.CmdUtil;
+import edu.zju.gis.dldsj.server.utils.SSHUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -26,10 +26,11 @@ public class SpiderMonitorTasks implements Runnable{
             try {
                 String filepath = "/Users/jiarui/学习/ZJU/暑期课程/Summer_endpoint/dldsj-server/src/main/resources/test.py";
                 String cmd = "python "+filepath;
-                CmdUtil.runLocal(cmd);
+                //SSHUtil.runLocal(cmd);
+                System.out.println("cmd");
                 //休眠一天，一天运行一次
                 TimeUnit.HOURS.sleep(24);
-            } catch (InterruptedException | IOException e) {
+            } catch (InterruptedException e) {
                 log.error("AsyncService was interrupted!", e);
                 return;
             }
