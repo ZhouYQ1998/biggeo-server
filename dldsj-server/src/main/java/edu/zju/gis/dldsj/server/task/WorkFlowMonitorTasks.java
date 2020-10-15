@@ -33,7 +33,7 @@ public class WorkFlowMonitorTasks implements Runnable {
     public void run() {
         log.info("开启新的工作流监控任务：dagId=`{}`", runId);
         int i = 0;
-        Long dateTimestamp = executionDate.getTime()/1000-13*3600;
+        Long dateTimestamp = executionDate.getTime()/1000+8*3600;
         try {
             WorkFlowRun workFlowRun = this.workFlowService.getRunById(runId);
             System.out.println(workFlowRun.getRunId());
@@ -53,6 +53,9 @@ public class WorkFlowMonitorTasks implements Runnable {
                 AirflowDagRun run = this.workFlowService.airflow_getDagRun(runId,dateTimestamp);
                 //List<AirflowDagRun> listRun = this.workFlowService.airflow_getRunningDag(runId);
                 //AirflowDagRun run = listRun.get(listRun.size()-1);
+
+                System.out.println(runId);
+                System.out.println(dateTimestamp);
 
                 workFlowRun.setStatus(run.getState());
                 Thread.sleep(setting.getMonitorInterval());

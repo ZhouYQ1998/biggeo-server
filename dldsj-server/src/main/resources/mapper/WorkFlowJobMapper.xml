@@ -30,7 +30,7 @@
     <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowJob">
     insert into <include refid="TABLE_NAME"/>
         (<include refid="Base_Column_List"/>)
-    values (#{jobId,jdbcType=VARCHAR}, #{runId,jdbcType=VARCHAR}, #{jobOrder,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+    values (#{jobId,jdbcType=VARCHAR}, #{runId,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},
       #{model,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowJob">
@@ -67,9 +67,6 @@
             </if>
             <if test="runId != null">
                 #{runId,jdbcType=VARCHAR},
-            </if>
-            <if test="jobOrder != null">
-                #{jobOrder,jdbcType=VARCHAR},
             </if>
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},

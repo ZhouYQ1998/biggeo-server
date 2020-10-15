@@ -353,33 +353,32 @@ public class WorkFlowController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     public Result test() throws ParseException, IOException {
-//        String runId = "98660acc-a1d6-413a-9a3f-cf97559f7dc9";
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-////        Date date = dateFormat.parse("2020-10-08 11:17:38");
-//        List<AirflowDagRun> list = workFlowService.airflow_getRunningDag(runId);
-//        //AirflowDagRun run = workFlowService.airflow_getDagRun(runId,date);
-//        AirflowDagRun run = list.get(0);
-//        if (run == null){
-//            System.out.println("niu");
-//            return Result.success().setBody("null");
-//        }
-//        else {
-//            System.out.println(run.getId());
-//            System.out.println(run.getDagId());
-//            System.out.println(run.getExecutionDate());
-//            Date date1 = run.getExecutionDate();
-//            Long createTime = date1.getTime();
-//            System.out.println(createTime/1000-13*3600);
-//            System.out.println(date1);
-//            return Result.success().setBody(run);
-//        }
+        String runId = "eb0db2cf-84dd-4bcf-8ecb-ea4aaf1244ff";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Date date = dateFormat.parse("2020-10-08 11:17:38");
+        List<AirflowDagRun> list = workFlowService.airflow_getRunningDag(runId);
+        //AirflowDagRun run = workFlowService.airflow_getDagRun(runId,date);
+        AirflowDagRun run = list.get(0);
+        if (run == null){
+            System.out.println("niu");
+            return Result.success().setBody("null");
+        }
+        else {
+            System.out.println(run.getId());
+            System.out.println(run.getDagId());
+            System.out.println(run.getExecutionDate());
+            Date date1 = run.getExecutionDate();
+            Long createTime = date1.getTime();
+            System.out.println(createTime/1000+8*3600);
+            System.out.println(date1);
+            return Result.success().setBody(run);
+        }
 
-        //提交手动激活工作流shell命令
-        String dagId = "example_bash_operator";
-        String startCmd = String.format("export AIRFLOW_HOME=%s;airflow unpause %s;airflow trigger_dag %s", setting.getAirFlowHome(), dagId, dagId);
-        SSHUtil.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), startCmd, setting.getParallelFilePath());
-
-        return Result.success();
+//        //提交手动激活工作流shell命令
+//        String dagId = "example_bash_operator";
+//        String startCmd = String.format("export AIRFLOW_HOME=%s;airflow unpause %s;airflow trigger_dag %s", setting.getAirFlowHome(), dagId, dagId);
+//        SSHUtil.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), startCmd, setting.getParallelFilePath());
+ //       return Result.success();
     }
 
 
