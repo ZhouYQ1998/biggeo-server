@@ -70,4 +70,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User, String> i
         return userMapper.selectByCountry();
     }
 
+    @Override
+    public boolean isAdmin(String userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        return null != user && user.getRole().equals("manager");
+    }
+
 }

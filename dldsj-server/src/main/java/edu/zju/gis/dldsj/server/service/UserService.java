@@ -22,4 +22,6 @@ public interface UserService extends BaseService<User, String> {
 
     List<Map<String, String>> selectByCountry();
 
+    boolean isAdmin(String userId);
+
 }

@@ -193,7 +193,7 @@ public class ParallelModelController {
         FsManipulator fsManipulator = FsManipulatorFactory.create();
         try {
             ParallelModelWithBLOBs model = parallelModelService.select(artifactId);
-            if (userId.equals(model.getUserId())) {
+            if (userId.equals(model.getUserId()) || userService.isAdmin(userId)) {
                 parallelModelService.delete(artifactId);
                 // 删除模型在服务器本地保存的文件
                 fsManipulator.deleteFiles(model.getJarPath().split(","));
@@ -226,9 +226,7 @@ public class ParallelModelController {
         try {
             // 根据artifactId获取模型信息
             ParallelModelWithBLOBs model = parallelModelService.select(artifactId);
-            // todo 根据userId获取是否是管理员身份
-            boolean isAdmin = false;
-            if (model.getIsPublic() || isAdmin) {
+            if (model.getIsPublic() || userService.isAdmin(userId)) {
                 // 将模型相关文件打包压缩成一个文件
                 String tempZipPath = new File(setting.getTemplatePath(), artifactId + "-" + UUID.randomUUID().toString() + ".zip").getAbsolutePath();
                 String wholePath = model.getXmlPath() + "," + model.getJarPath() + "," + model.getPicPath();
