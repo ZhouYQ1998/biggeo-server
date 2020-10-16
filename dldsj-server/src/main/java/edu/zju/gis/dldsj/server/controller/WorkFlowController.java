@@ -298,7 +298,7 @@ public class WorkFlowController {
 //        System.out.println("ssh started");
 
         //提交手动激活工作流shell命令
-        String startCmd = String.format("export AIRFLOW_HOME=%s;airflow unpause %s;airflow trigger_dag %s", setting.getAirFlowHome(), airflowDag.getDagId(), airflowDag.getDagId());
+        String startCmd = String.format("conda activate python365;export AIRFLOW_HOME=%s;airflow unpause %s;airflow trigger_dag %s", setting.getAirFlowHome(), airflowDag.getDagId(), airflowDag.getDagId());
         SSHUtil.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), startCmd, setting.getParallelFilePath());
 
         //监控airflow.dagRun的记录数，确定工作流已启动
