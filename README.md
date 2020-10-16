@@ -108,7 +108,7 @@
 | TYPE            | 文章类型      | String | Not Null, "bachelor" or "master" or "doctor" |
 | KEYWORDS        | 关键词        | String |                                              |
 | ABSTRACT        | 摘要          | String |                                              |
-| URL             | 链接          | String |                                              |
+| URL             | 链接          | String | Unique                                       |
 
 ### 3.2 URL
 
@@ -159,14 +159,14 @@
 
 ### 5.1 Table
 
-| Column  | Description  | Type   | Remark                                      |
-| ------- | ------------ | ------ | ------------------------------------------- |
-| ID      | 主键（编号） | String | Not Null, Unique,, Primary Key, Auto Create |
-| NAME    | 姓名         | String | Not Null                                    |
-| SPEAKER | 演讲者       | String |                                             |
-| PLACE   | 地点         | String |                                             |
-| TIME    | 时间         | String |                                             |
-| URL     | 链接         | String |                                             |
+| Column  | Description  | Type   | Remark                                     |
+| ------- | ------------ | ------ | ------------------------------------------ |
+| ID      | 主键（编号） | String | Not Null, Unique, Primary Key, Auto Create |
+| NAME    | 姓名         | String | Not Null                                   |
+| SPEAKER | 演讲者       | String |                                            |
+| PLACE   | 地点         | String |                                            |
+| TIME    | 时间         | String |                                            |
+| URL     | 链接         | String |                                            |
 
 ### 5.2 URL
 
@@ -306,11 +306,11 @@
 
 # Task Division
 
-| Name   | Task                                                       |
-| ------ | ---------------------------------------------------------- |
-| 周育全 | base类实现，tb_user、tb_group_member设计及实现             |
-| 张郑良 | tb_log设计及实现                                           |
-| 赵佳晖 | tb_geographic_data设计及实现                               |
-| 张家瑞 | tb_teaching_cases设计及实现                                |
-| 冯瀑霏 | tb_online_tools、tb_map_servers设计及实现                  |
-| 陈柠檬 | tb_student_paper、tb_academic_paper、tb_lectures设计及实现 |
+| Name   | Task                                                         |
+| ------ | ------------------------------------------------------------ |
+| 周育全 | base类实现，tb_user、tb_student_paper、tb_academic_paper、tb_group_member设计及实现 |
+| 张郑良 | tb_log设计及实现                                             |
+| 赵佳晖 | tb_geographic_data、tb_online_tools设计及实现                |
+| 张家瑞 | tb_teaching_cases设计及实现                                  |
+| 冯瀑霏 | tb_map_servers设计及实现，数据收集及入库                     |
+| 陈柠檬 | tb_lectures设计及实现、数据收集及入库                        |
