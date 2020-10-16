@@ -24,7 +24,7 @@
 
 | URL                       | FUNCTION   | METHOD | PARAM                                    | RESULT              | REMARK              |
 | ------------------------- | ---------- | ------ | ---------------------------------------- | ------------------- | ------------------- |
-| /user/insert              | 插入用户   | PUT    | name,password,role[,phone,email,icon]    | {code,body,message} | phone,email为可选值 |
+| /user/insert              | 插入用户   | PUT    | name,password,role[,phone,email,icon]    | {code,body,message} | phone,email         |
 | /user/batchinsert         | 批量插入   | PUT    | [User[,User...]]                         | {code,body,message} |                     |
 | /user/delete/{id}         | 删除用户   | DELETE |                                          | {code,body,message} | body值为id          |
 | /user/deletebyname/{name} | 删除用户   | DELETE |                                          | {code,body,message} | body值为name        |
@@ -112,7 +112,14 @@
 
 ### 3.2 URL
 
-- 基础：增删改查及批量操作
+| URL                              | FUNCTION | METHOD | PARAM                                                        | RESULT              | REMARK      |
+| -------------------------------- | -------- | ------ | ------------------------------------------------------------ | ------------------- | ----------- |
+| /studentpaper/insert             | 插入用户 | PUT    | title,englishTitle,author,type[,publisher,tertiaryAuthor,year,keywords,abstract_,url] | {code,body,message} |             |
+| /studentpaper/delete/{id}        | 删除用户 | DELETE |                                                              | {code,body,message} | body值为id  |
+| /studentpaper/select/{id}        | 查询用户 | GET    |                                                              | {code,body,message} |             |
+| /studentpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                                            | ode,body,message}   | 逗号","分隔 |
+| /studentpaper/allselect          | 查询用户 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
+| /studentpaper/update             | 更新用户 | POST   | id[,title,englishTitle,author,publisher,tertiaryAuthor,year,type,keywords,abstract_,url] | {code,body,message} | id为必要值  |
 
 ## 4 tb_academic_paper
 
@@ -135,11 +142,18 @@
 | ABSTRACT           | 摘要          | String |                                            |
 | DOI                | DOI           | String | Unique                                     |
 | ISSU               | ISSU          | String |                                            |
-| URL                | 链接          | String | Not Null,Unique                            |
+| URL                | 链接          | String | Not Null, Unique                           |
 
 ### 4.2 URL
 
-- 基础：增删改查及批量操作
+| URL                               | FUNCTION | METHOD | PARAM                                                        | RESULT              | REMARK      |
+| --------------------------------- | -------- | ------ | ------------------------------------------------------------ | ------------------- | ----------- |
+| /academicpaper/insert             | 插入用户 | PUT    | title,englishTitle,type,author,url[,authorAffiliation,year,sourceName,volume,issue,pages,keywords,abstract_,doi,issu] | {code,body,message} |             |
+| /academicpaper/delete/{id}        | 删除用户 | DELETE |                                                              | {code,body,message} | body值为id  |
+| /academicpaper/select/{id}        | 查询用户 | GET    |                                                              | {code,body,message} |             |
+| /academicpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                                            | ode,body,message}   | 逗号","分隔 |
+| /academicpaper/allselect          | 查询用户 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
+| /academicpaper/update             | 更新用户 | POST   | id[,title,englishTitle,type,author,authorAffiliation,year,sourceName,volume,issue,pages,keywords,abstract_,doi,issu,url] | {code,body,message} | id为必要值  |
 
 ## 5 tb_lectures
 
@@ -262,16 +276,12 @@
 
 ## 10.2 URL
 
-
-
 | **URL**                              | **FUNCTION**                         | **REMARK**       | **METHOD** | **PARAM**                                             | **RESULT**            |
 | ------------------------------------ | ------------------------------------ | ---------------- | ---------- | ----------------------------------------------------- | --------------------- |
 | /uploadTeachModel                    | 管理员教学案例上传                   | 权限控制：管理员 | POST       | @SessionAttribute("role"){data, uploadPic, uploadFil} | {code,message}        |
 | /unregisterTeachModel/{teachModelId} | 管理员删除教学案例                   | 权限控制：管理员 | DELETE     | @SessionAttribute("role"){teachModelId, userId}       | {code,message}        |
 | /allselect                           | 获取所有教学案例                     | 所有用户         | GET        | {userId}                                              | {code, body, message} |
 | /select/{id}                         | 获取指定ID的教学案例的详细描述和文件 | 所有用户         | GET        | {teachModelId}                                        | {code, body, message} |
-
-# 
 
 # Resut code
 
