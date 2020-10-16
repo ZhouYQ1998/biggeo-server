@@ -115,6 +115,12 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     }
 
     @Override
+    public Page<WorkFlowDag> searchByDagName(String dagName, Page page) {
+        PageHelper.startPage(page.getPageNo(), page.getPageSize());
+        return new Page<>(this.workFlowDagMapper.searchByDagName(dagName));
+    }
+
+    @Override
     public boolean ifDagExist(String dagId) {
         return this.workFlowDagMapper.selectByPrimaryKey(dagId) != null;
     }

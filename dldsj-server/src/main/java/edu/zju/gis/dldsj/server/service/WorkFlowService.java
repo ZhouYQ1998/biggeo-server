@@ -39,6 +39,8 @@ public interface WorkFlowService {
 
     List<WorkFlowJob> getJobsByRun(String runId);
 
+    Page<WorkFlowDag> searchByDagName(String dagName,Page page);
+
     boolean ifDagExist(String dagId);
 
     //op in airflow default db

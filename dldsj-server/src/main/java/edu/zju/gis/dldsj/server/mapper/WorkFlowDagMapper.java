@@ -2,6 +2,7 @@ package edu.zju.gis.dldsj.server.mapper;
 
 
 import edu.zju.gis.dldsj.server.entity.workflow.WorkFlowDag;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface WorkFlowDagMapper  {
     int updateByPrimaryKey(WorkFlowDag record);
 
     List<WorkFlowDag> selectByUserId(String userId);
+
+    List<WorkFlowDag> searchByDagName(@Param("name") String name);
 }
