@@ -12,7 +12,4 @@ import java.util.List;
 
 public interface LectureService extends BaseService<Lecture,String> {
 
-
-    Page<Lecture> selectByOrder(String type,String typeOrder,Page page);
-
 }

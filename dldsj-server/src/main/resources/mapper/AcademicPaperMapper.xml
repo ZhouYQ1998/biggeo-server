@@ -128,7 +128,7 @@
         <include refid="Base_Column_List"/>
         from <include refid="TABLE_NAME"/>
     </select>
-    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.User">
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.AcademicPaper">
         update <include refid="TABLE_NAME"/>
         <set>
             <if test="title!= null">

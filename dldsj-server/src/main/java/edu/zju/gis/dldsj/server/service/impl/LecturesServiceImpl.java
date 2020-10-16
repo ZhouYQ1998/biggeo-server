@@ -17,19 +17,4 @@ import org.springframework.stereotype.Service;
 @Service
 public class LecturesServiceImpl extends BaseServiceImpl<LectureMapper, Lecture,String> implements LectureService {
 
-    public Page<Lecture> selectByOrder(String type, String orderType, Page page) {
-
-        //如果输入desc就降序排列，否则升序排列
-        String orderType2;
-        if (orderType.equals("desc")){
-            orderType2 = "DESC";
-        }
-        else{
-            orderType2 = "ASC";
-        }
-        PageHelper.startPage(page.getPageNo(),page.getPageSize());
-        return new Page<>(mapper.selectByOrder(type,orderType2));
-    }
-
-
 }

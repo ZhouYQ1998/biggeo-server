@@ -170,7 +170,14 @@
 
 ### 5.2 URL
 
-- 基础：增删改查及批量操作
+| URL                         | FUNCTION | METHOD | PARAM                            | RESULT              | REMARK      |
+| --------------------------- | -------- | ------ | -------------------------------- | ------------------- | ----------- |
+| /lecture/insert             | 插入用户 | PUT    | name[,speaker,place,time,url]    | {code,body,message} |             |
+| /lecture/delete/{id}        | 删除用户 | DELETE |                                  | {code,body,message} | body值为id  |
+| /lecture/select/{id}        | 查询用户 | GET    |                                  | {code,body,message} |             |
+| /lecture/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                | ode,body,message}   | 逗号","分隔 |
+| /lecture/allselect          | 查询用户 | GET    | [pageNo,pageSize]                | {code,body,message} | body为page  |
+| /lecture/update             | 更新用户 | POST   | id[,name,speaker,place,time,url] | {code,body,message} | id为必要值  |
 
 ## 6 tb_online_tools
 
@@ -192,17 +199,17 @@
 
 ### 7.1 Table
 
-| Column      | Description  | Type   | Remark                                      |
-| ----------- | ------------ | ------ | ------------------------------------------- |
-| ID          | 主键（编号） | String | Not Null, Unique,, Primary Key, Auto Create |
-| NAME        | 名称         | String | Not Null, Unique                            |
-| COMPANY     | 公司         | String | Not Null                                    |
-| REGION      | 地区         | String | Not Null, "CN" or "other"                   |
-| SERVER      | 提供的服务   | String |                                             |
-| LIMITED     | 使用限制     | String |                                             |
-| PICTURE     | 图片         | String |                                             |
-| DESCRIPTION | 描述         | String |                                             |
-| URL         | 链接         | String | Not Null                                    |
+| Column      | Description  | Type   | Remark                                     |
+| ----------- | ------------ | ------ | ------------------------------------------ |
+| ID          | 主键（编号） | String | Not Null, Unique, Primary Key, Auto Create |
+| NAME        | 名称         | String | Not Null, Unique                           |
+| COMPANY     | 公司         | String | Not Null                                   |
+| REGION      | 地区         | String | Not Null, "CN" or "other"                  |
+| SERVER      | 提供的服务   | String |                                            |
+| LIMITED     | 使用限制     | String |                                            |
+| PICTURE     | 图片         | String |                                            |
+| DESCRIPTION | 描述         | String |                                            |
+| URL         | 链接         | String | Not Null                                   |
 
 ### 7.2 URL
 
@@ -214,7 +221,7 @@
 
 | Column  | Description  | Type   | Remark                                         |
 | ------- | ------------ | ------ | ---------------------------------------------- |
-| ID      | 主键（编号） | Int    | Not Null, Unique, Auto Create                  |
+| ID      | 主键（编号） | Int    | Not Null, Unique, Primary Key, Auto Create     |
 | NAME    | 姓名         | String | Not Null                                       |
 | VERSION | 开发版本     | String | "V1.0" or "V2.0"                               |
 | TEAM    | 小组编号     | String |                                                |
@@ -257,22 +264,20 @@
 
 ## 10.1 Table
 
-
-
-|  **Column**   |  **Description**   |   **Type**   |                 **Remark**                 |
-| :-----------: | :----------------: | :----------: | :----------------------------------------: |
-| TEACHMODEL_ID |    教学案例编号    |   INTEGER    | Primary Key, Auto Create, Not Null, Unique |
-|     NAME      |        名称        | VARCHAR(100) |                  Not Null                  |
-|  DESCRIPTION  |        描述        | VARCHAR(100) |                                            |
-|     DATE      |      创建日期      |  TIMESTAMP   |           Auto Create, Not Null            |
-|   KEYWORDS    |       关键字       | VARCHAR(100) |                                            |
-|   GROUP_ID    |    案例来源团队    | VARCHAR(100) |                                            |
-|   AUTHOR_ID   |      案例作者      | VARCHAR(100) |                                            |
-|     EMAIL     |    案例作者邮箱    | VARCHAR(100) |                                            |
-| FILE_TEMPLATE |  案例临时存储路径  | VARCHAR(100) |                  Not Null                  |
-|   FILE_PATH   | 案例转换后存储路径 | VARCHAR(100) |                  Not Null                  |
-|   PIC_PATH    |    案例图片样式    | VARCHAR(100) |                                            |
-|   FILE_TYPE   |    案例文件类型    | VARCHAR(100) |                  Not Null                  |
+| **Column**    | **Description**    | **Type**  | **Remark**                                 |
+| ------------- | ------------------ | :-------- | :----------------------------------------- |
+| TEACHMODEL_ID | 教学案例编号       | Int       | Not Null, Unique, Primary Key, Auto Create |
+| NAME          | 名称               | String    | Not Null                                   |
+| DESCRIPTION   | 描述               | String    |                                            |
+| DATE          | 创建日期           | TimeStamp | Not Null, Auto Create                      |
+| KEYWORDS      | 关键字             | String    |                                            |
+| GROUP_ID      | 案例来源团队       | String    |                                            |
+| AUTHOR_ID     | 案例作者           | String    |                                            |
+| EMAIL         | 案例作者邮箱       | String    |                                            |
+| FILE_TEMPLATE | 案例临时存储路径   | String    | Not Null                                   |
+| FILE_PATH     | 案例转换后存储路径 | String    | Not Null                                   |
+| PIC_PATH      | 案例图片样式       | String    |                                            |
+| FILE_TYPE     | 案例文件类型       | String    | Not Null                                   |
 
 ## 10.2 URL
 
