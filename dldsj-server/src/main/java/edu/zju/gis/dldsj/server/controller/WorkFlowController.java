@@ -71,13 +71,14 @@ public class WorkFlowController {
 
     /**
      * 单工作流模版详情
-     * @param dagId
+     * @param dagName
+     * @param userId
      * @return
      */
-    @RequestMapping(value = "/dags/{dagId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/dags/{dagName}", method = RequestMethod.GET)
     @ResponseBody
-    public Result getDagInfo(@PathVariable String dagId) {
-        WorkFlowDag dag = this.workFlowService.getDagById(dagId);
+    public Result getDagInfo(@SessionAttribute("userId") String userId,@PathVariable String dagName) {
+        WorkFlowDag dag = this.workFlowService.selectDagByNameAndUserId(dagName,userId);
         if (dag != null)
             return Result.success().setBody(dag);
         else
@@ -95,33 +96,42 @@ public class WorkFlowController {
     @ResponseBody
     public Result saveDag(@SessionAttribute("userId") String userId, @RequestBody WorkFlowParam workFlowParam) {
         WorkFlowDag dag = new WorkFlowDag();
-        dag.setId(workFlowParam.getId());
+        //dag.setId(workFlowParam.getId());
+        dag.setId(UUID.randomUUID().toString());
+        System.out.println(dag.getId());
+        dag.setName(workFlowParam.getName());
         dag.setUserId(userId);
         dag.setConnections(workFlowParam.getConnectionsAsJson());
         dag.setNodes(workFlowParam.getNodesAsJson());
         dag.setDescription(workFlowParam.getDescription());
         dag.setStyle(workFlowParam.getStyle());
         dag.setLastModifyTime(new Date());
-        if (this.workFlowService.ifDagExist(dag.getId())) {
-            this.workFlowService.updateDag(dag);
-            return Result.success().setMessage(this.workFlowService.getDagById(dag.getId()).getName() + "工作流更新成功。");
-        } else {
-            dag.setName(workFlowParam.getName());
+
+        //根据userId和传入的dagName,选择出对应出的dag
+        WorkFlowDag dag2 = workFlowService.selectDagByNameAndUserId(dag.getName(),userId);
+
+        if (dag2 == null) {
+            //dag.setName(workFlowParam.getName());
             dag.setCreatedTime(dag.getLastModifyTime());
             this.workFlowService.insertDag(dag);
             return Result.success().setMessage(dag.getName() + "工作流保存成功。");
+        } else {
+            this.workFlowService.updateDag(dag);
+            return Result.success().setMessage(this.workFlowService.getDagById(dag2.getId()).getName() + "工作流更新成功。");
         }
     }
 
     /**
      * 删除工作流模版
-     * @param dagId
+     * @param dagName
+     * @param userId
      * @return
      */
-    @RequestMapping(value = "/dags/delete/{dagId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/dags/delete/{dagName}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Result deleteDag(@PathVariable String dagId) {
-        int numb = this.workFlowService.deleteDagById(dagId);
+    public Result deleteDag(@SessionAttribute("userId") String userId,@PathVariable String dagName) {
+        int numb = this.workFlowService.deleteDagByNameAndUserId(dagName,userId);
+
         if (numb > 0)
             return Result.success().setMessage("工作流删除成功.");
         else

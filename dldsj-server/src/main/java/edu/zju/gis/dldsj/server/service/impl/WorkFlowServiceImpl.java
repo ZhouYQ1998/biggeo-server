@@ -47,6 +47,11 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     }
 
     @Override
+    public int deleteDagByNameAndUserId(String name, String userId) {
+        return workFlowDagMapper.deleteByNameAndUserId(name,userId);
+    }
+
+    @Override
     public int deleteRunById(String runId) {
         List<WorkFlowJob> jobs = this.workFlowJobMapper.selectByRunId(runId);
         for (WorkFlowJob job : jobs) {
@@ -76,6 +81,11 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     }
 
     @Override
+    public WorkFlowDag selectDagByNameAndUserId(String name, String userId) {
+        return workFlowDagMapper.selectByNameAndUserId(name,userId);
+    }
+
+    @Override
     public WorkFlowRun getRunById(String id) {
         return this.workFlowRunMapper.selectByPrimaryKey(id);
     }
@@ -84,6 +94,8 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     public WorkFlowJob getJobById(String id) {
         return this.workFlowJobMapper.selectByPrimaryKey(id);
     }
+
+
 
     @Override
     public Page<WorkFlowDag> getUserDags(String userId, Page page) {
