@@ -95,7 +95,9 @@ public class WorkFlowController {
     @ResponseBody
     public Result saveDag(@SessionAttribute("userId") String userId, @RequestBody WorkFlowParam workFlowParam) {
         WorkFlowDag dag = new WorkFlowDag();
-        dag.setId(workFlowParam.getId());
+        //dag.setId(workFlowParam.getId());
+        dag.setId(UUID.randomUUID().toString());
+        System.out.println(dag.getId());
         dag.setUserId(userId);
         dag.setConnections(workFlowParam.getConnectionsAsJson());
         dag.setNodes(workFlowParam.getNodesAsJson());
