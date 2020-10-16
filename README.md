@@ -250,24 +250,35 @@
 
 ## 10.1 Table
 
-| Column        | Description | Type | Remark |
-| ------------- | ----------- | ---- | ------ |
-| TEACHMODEL_ID |             |      |        |
-| NAME          |             |      |        |
-| DESCRIPTION   |             |      |        |
-| DATE          |             |      |        |
-| KEYWORDS      |             |      |        |
-| GROUP_ID      |             |      |        |
-| AUTHOR_ID     |             |      |        |
-| EMAIL         |             |      |        |
-| FILE_TEMPLATE |             |      |        |
-| FILE_PATH     |             |      |        |
-| PIC_PATH      |             |      |        |
-| FILE_TYPE     |             |      |        |
+
+
+|  **Column**   |  **Description**   |   **Type**   |                 **Remark**                 |
+| :-----------: | :----------------: | :----------: | :----------------------------------------: |
+| TEACHMODEL_ID |    教学案例编号    |   INTEGER    | Primary Key, Auto Create, Not Null, Unique |
+|     NAME      |        名称        | VARCHAR(100) |                  Not Null                  |
+|  DESCRIPTION  |        描述        | VARCHAR(100) |                                            |
+|     DATE      |      创建日期      |  TIMESTAMP   |           Auto Create, Not Null            |
+|   KEYWORDS    |       关键字       | VARCHAR(100) |                                            |
+|   GROUP_ID    |    案例来源团队    | VARCHAR(100) |                                            |
+|   AUTHOR_ID   |      案例作者      | VARCHAR(100) |                                            |
+|     EMAIL     |    案例作者邮箱    | VARCHAR(100) |                                            |
+| FILE_TEMPLATE |  案例临时存储路径  | VARCHAR(100) |                  Not Null                  |
+|   FILE_PATH   | 案例转换后存储路径 | VARCHAR(100) |                  Not Null                  |
+|   PIC_PATH    |    案例图片样式    | VARCHAR(100) |                                            |
+|   FILE_TYPE   |    案例文件类型    | VARCHAR(100) |                  Not Null                  |
 
 ## 10.2 URL
 
 
+
+| **URL**                              | **FUNCTION**                         | **REMARK**       | **METHOD** | **PARAM**                                             | **RESULT**            |
+| ------------------------------------ | ------------------------------------ | ---------------- | ---------- | ----------------------------------------------------- | --------------------- |
+| /uploadTeachModel                    | 管理员教学案例上传                   | 权限控制：管理员 | POST       | @SessionAttribute("role"){data, uploadPic, uploadFil} | {code,message}        |
+| /unregisterTeachModel/{teachModelId} | 管理员删除教学案例                   | 权限控制：管理员 | DELETE     | @SessionAttribute("role"){teachModelId, userId}       | {code,message}        |
+| /allselect                           | 获取所有教学案例                     | 所有用户         | GET        | {userId}                                              | {code, body, message} |
+| /select/{id}                         | 获取指定ID的教学案例的详细描述和文件 | 所有用户         | GET        | {teachModelId}                                        | {code, body, message} |
+
+# 
 
 # Resut code
 
