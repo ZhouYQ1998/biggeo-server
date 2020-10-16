@@ -13,7 +13,7 @@ import java.util.Map;
  * @author: zjh
  * @date: 20201012
  */
-public interface GeodataService extends BaseService<Geodata,String> {
+public interface GeodataService extends BaseService<Geodata, String> {
 
     //数据目录功能，根据type、uploader或source等目录字段，返回数据(单选)
     Page<Geodata> selectByType1(String type, Page page);
@@ -29,6 +29,13 @@ public interface GeodataService extends BaseService<Geodata,String> {
 
     //下载次数+1
     void downloadTimesPlus(String id);
+
     //统计下载量最高的5条数据
     List<Geodata> getPopularData();
+
+    String uploadFromLocal(String fsUri, String filePath);
+
+    String downloadFromHDFS(String fsUri, String hdfsPath, String fileDirectory);
+
+    String test(String uri);
 }

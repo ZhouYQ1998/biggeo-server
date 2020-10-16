@@ -65,9 +65,6 @@ public class ParallelModelController {
     @Value("${spring.mvc.static-path-pattern}")
     private String staticPathPattern;   // mvc静态资源请求目录
 
-    @Value("${uri.hdfs}")
-    private String hdfsUri;   // hdfs 路径
-
     /**
      * 模型注册
      * @param userId 用户ID 取自Session属性

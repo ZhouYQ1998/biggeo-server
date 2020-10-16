@@ -6,11 +6,18 @@ import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.entity.Geodata;
 import edu.zju.gis.dldsj.server.entity.searchPojo.GeodataSearchPojo;
 import edu.zju.gis.dldsj.server.service.GeodataService;
+import edu.zju.gis.dldsj.server.utils.fs.FsManipulator;
+import edu.zju.gis.dldsj.server.utils.fs.FsManipulatorFactory;
+import edu.zju.gis.dldsj.server.utils.fs.LocalFsManipulator;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -23,8 +30,13 @@ import java.util.Map;
 @Controller
 @RequestMapping("/geodata")
 @Slf4j
-public class GeodataController extends BaseController<Geodata, GeodataService,String, GeodataSearchPojo> {
+public class GeodataController extends BaseController<Geodata, GeodataService, String, GeodataSearchPojo> {
 
+    @Value("${settings.hdFsUri}")
+    private String hdfsUri;
+
+    @Value("${settings.lFsUri}")
+    private String lfsUri;
 
     /**
      * 按照type1 第一级目录来分类
@@ -88,13 +100,14 @@ public class GeodataController extends BaseController<Geodata, GeodataService,St
 
     /**
      * 根据输入的id，更新数据库中下载次数的字段
+     *
      * @param id
      */
     @RequestMapping(value = "/downloadplus", method = RequestMethod.GET)
     @ResponseBody
     public Result updateDownload(@RequestParam String id) {
         service.downloadTimesPlus(id);
-        return Result.success().setBody(id+"update success");
+        return Result.success().setBody(id + "update success");
     }
 
     /**
@@ -104,6 +117,34 @@ public class GeodataController extends BaseController<Geodata, GeodataService,St
     @ResponseBody
     public Result getPopularData() {
         return Result.success().setBody(service.getPopularData());
+    }
+
+    /**
+     * 上传 文件
+     */
+    @RequestMapping(value = "/uploadFromLocal", method = RequestMethod.GET)
+    @ResponseBody
+    public Result uploadFromLocal(String filePath) {
+        return Result.success().setBody(service.uploadFromLocal(hdfsUri, filePath));
+    }
+
+    /**
+     * 下载 文件
+     */
+    @RequestMapping(value = "/downloadFromHDFS", method = RequestMethod.GET)
+    @ResponseBody
+    public Result downloadFromHDFS(String hdfsPath, String fileDirectory) {
+        return Result.success().setBody(service.downloadFromHDFS(hdfsUri, hdfsPath, fileDirectory));
+    }
+
+
+    /**
+     * 测试上传、下载
+     */
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @ResponseBody
+    public Result test() {
+        return Result.success().setBody(service.test(hdfsUri));
     }
 
 
