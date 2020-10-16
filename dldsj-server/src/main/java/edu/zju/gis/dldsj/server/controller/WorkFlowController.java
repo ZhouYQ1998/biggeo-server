@@ -85,6 +85,16 @@ public class WorkFlowController {
             return Result.error();
     }
 
+    @RequestMapping(value = "/dags/search/{searchName}",method = RequestMethod.GET)
+    @ResponseBody
+    public Result searchDag(@PathVariable String searchName,Page page){
+        Page<WorkFlowDag> searchRes = this.workFlowService.searchByDagName(searchName,page);
+        if (searchRes != null)
+            return Result.success().setBody(searchRes);
+        else
+            return Result.error();
+    }
+
 
     /**
      * 保存工作流模版

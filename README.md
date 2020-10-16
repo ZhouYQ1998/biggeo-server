@@ -108,7 +108,7 @@
 | TYPE            | 文章类型      | String | Not Null, "bachelor" or "master" or "doctor" |
 | KEYWORDS        | 关键词        | String |                                              |
 | ABSTRACT        | 摘要          | String |                                              |
-| URL             | 链接          | String |                                              |
+| URL             | 链接          | String | Unique                                       |
 
 ### 3.2 URL
 
@@ -142,28 +142,42 @@
 | ABSTRACT           | 摘要          | String |                                            |
 | DOI                | DOI           | String | Unique                                     |
 | ISSU               | ISSU          | String |                                            |
-| URL                | 链接          | String | Not Null,Unique                            |
+| URL                | 链接          | String | Not Null, Unique                           |
 
 ### 4.2 URL
 
-- 基础：增删改查及批量操作
+| URL                               | FUNCTION | METHOD | PARAM                                                        | RESULT              | REMARK      |
+| --------------------------------- | -------- | ------ | ------------------------------------------------------------ | ------------------- | ----------- |
+| /academicpaper/insert             | 插入用户 | PUT    | title,englishTitle,type,author,url[,authorAffiliation,year,sourceName,volume,issue,pages,keywords,abstract_,doi,issu] | {code,body,message} |             |
+| /academicpaper/delete/{id}        | 删除用户 | DELETE |                                                              | {code,body,message} | body值为id  |
+| /academicpaper/select/{id}        | 查询用户 | GET    |                                                              | {code,body,message} |             |
+| /academicpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                                            | ode,body,message}   | 逗号","分隔 |
+| /academicpaper/allselect          | 查询用户 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
+| /academicpaper/update             | 更新用户 | POST   | id[,title,englishTitle,type,author,authorAffiliation,year,sourceName,volume,issue,pages,keywords,abstract_,doi,issu,url] | {code,body,message} | id为必要值  |
 
 ## 5 tb_lectures
 
 ### 5.1 Table
 
-| Column  | Description  | Type   | Remark                                      |
-| ------- | ------------ | ------ | ------------------------------------------- |
-| ID      | 主键（编号） | String | Not Null, Unique,, Primary Key, Auto Create |
-| NAME    | 姓名         | String | Not Null                                    |
-| SPEAKER | 演讲者       | String |                                             |
-| PLACE   | 地点         | String |                                             |
-| TIME    | 时间         | String |                                             |
-| URL     | 链接         | String |                                             |
+| Column  | Description  | Type   | Remark                                     |
+| ------- | ------------ | ------ | ------------------------------------------ |
+| ID      | 主键（编号） | String | Not Null, Unique, Primary Key, Auto Create |
+| NAME    | 姓名         | String | Not Null                                   |
+| SPEAKER | 演讲者       | String |                                            |
+| PLACE   | 地点         | String |                                            |
+| TIME    | 时间         | String |                                            |
+| URL     | 链接         | String |                                            |
 
 ### 5.2 URL
 
-- 基础：增删改查及批量操作
+| URL                         | FUNCTION | METHOD | PARAM                            | RESULT              | REMARK      |
+| --------------------------- | -------- | ------ | -------------------------------- | ------------------- | ----------- |
+| /lecture/insert             | 插入用户 | PUT    | name[,speaker,place,time,url]    | {code,body,message} |             |
+| /lecture/delete/{id}        | 删除用户 | DELETE |                                  | {code,body,message} | body值为id  |
+| /lecture/select/{id}        | 查询用户 | GET    |                                  | {code,body,message} |             |
+| /lecture/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                | ode,body,message}   | 逗号","分隔 |
+| /lecture/allselect          | 查询用户 | GET    | [pageNo,pageSize]                | {code,body,message} | body为page  |
+| /lecture/update             | 更新用户 | POST   | id[,name,speaker,place,time,url] | {code,body,message} | id为必要值  |
 
 ## 6 tb_online_tools
 
@@ -185,17 +199,17 @@
 
 ### 7.1 Table
 
-| Column      | Description  | Type   | Remark                                      |
-| ----------- | ------------ | ------ | ------------------------------------------- |
-| ID          | 主键（编号） | String | Not Null, Unique,, Primary Key, Auto Create |
-| NAME        | 名称         | String | Not Null, Unique                            |
-| COMPANY     | 公司         | String | Not Null                                    |
-| REGION      | 地区         | String | Not Null, "CN" or "other"                   |
-| SERVER      | 提供的服务   | String |                                             |
-| LIMITED     | 使用限制     | String |                                             |
-| PICTURE     | 图片         | String |                                             |
-| DESCRIPTION | 描述         | String |                                             |
-| URL         | 链接         | String | Not Null                                    |
+| Column      | Description  | Type   | Remark                                     |
+| ----------- | ------------ | ------ | ------------------------------------------ |
+| ID          | 主键（编号） | String | Not Null, Unique, Primary Key, Auto Create |
+| NAME        | 名称         | String | Not Null, Unique                           |
+| COMPANY     | 公司         | String | Not Null                                   |
+| REGION      | 地区         | String | Not Null, "CN" or "other"                  |
+| SERVER      | 提供的服务   | String |                                            |
+| LIMITED     | 使用限制     | String |                                            |
+| PICTURE     | 图片         | String |                                            |
+| DESCRIPTION | 描述         | String |                                            |
+| URL         | 链接         | String | Not Null                                   |
 
 ### 7.2 URL
 
@@ -207,7 +221,7 @@
 
 | Column  | Description  | Type   | Remark                                         |
 | ------- | ------------ | ------ | ---------------------------------------------- |
-| ID      | 主键（编号） | Int    | Not Null, Unique, Auto Create                  |
+| ID      | 主键（编号） | Int    | Not Null, Unique, Primary Key, Auto Create     |
 | NAME    | 姓名         | String | Not Null                                       |
 | VERSION | 开发版本     | String | "V1.0" or "V2.0"                               |
 | TEAM    | 小组编号     | String |                                                |
@@ -250,26 +264,22 @@
 
 ## 10.1 Table
 
-
-
-|  **Column**   |  **Description**   |   **Type**   |                 **Remark**                 |
-| :-----------: | :----------------: | :----------: | :----------------------------------------: |
-| TEACHMODEL_ID |    教学案例编号    |   INTEGER    | Primary Key, Auto Create, Not Null, Unique |
-|     NAME      |        名称        | VARCHAR(100) |                  Not Null                  |
-|  DESCRIPTION  |        描述        | VARCHAR(100) |                                            |
-|     DATE      |      创建日期      |  TIMESTAMP   |           Auto Create, Not Null            |
-|   KEYWORDS    |       关键字       | VARCHAR(100) |                                            |
-|   GROUP_ID    |    案例来源团队    | VARCHAR(100) |                                            |
-|   AUTHOR_ID   |      案例作者      | VARCHAR(100) |                                            |
-|     EMAIL     |    案例作者邮箱    | VARCHAR(100) |                                            |
-| FILE_TEMPLATE |  案例临时存储路径  | VARCHAR(100) |                  Not Null                  |
-|   FILE_PATH   | 案例转换后存储路径 | VARCHAR(100) |                  Not Null                  |
-|   PIC_PATH    |    案例图片样式    | VARCHAR(100) |                                            |
-|   FILE_TYPE   |    案例文件类型    | VARCHAR(100) |                  Not Null                  |
+| **Column**    | **Description**    | **Type**  | **Remark**                                 |
+| ------------- | ------------------ | :-------- | :----------------------------------------- |
+| TEACHMODEL_ID | 教学案例编号       | Int       | Not Null, Unique, Primary Key, Auto Create |
+| NAME          | 名称               | String    | Not Null                                   |
+| DESCRIPTION   | 描述               | String    |                                            |
+| DATE          | 创建日期           | TimeStamp | Not Null, Auto Create                      |
+| KEYWORDS      | 关键字             | String    |                                            |
+| GROUP_ID      | 案例来源团队       | String    |                                            |
+| AUTHOR_ID     | 案例作者           | String    |                                            |
+| EMAIL         | 案例作者邮箱       | String    |                                            |
+| FILE_TEMPLATE | 案例临时存储路径   | String    | Not Null                                   |
+| FILE_PATH     | 案例转换后存储路径 | String    | Not Null                                   |
+| PIC_PATH      | 案例图片样式       | String    |                                            |
+| FILE_TYPE     | 案例文件类型       | String    | Not Null                                   |
 
 ## 10.2 URL
-
-
 
 | **URL**                              | **FUNCTION**                         | **REMARK**       | **METHOD** | **PARAM**                                             | **RESULT**            |
 | ------------------------------------ | ------------------------------------ | ---------------- | ---------- | ----------------------------------------------------- | --------------------- |
@@ -277,8 +287,6 @@
 | /unregisterTeachModel/{teachModelId} | 管理员删除教学案例                   | 权限控制：管理员 | DELETE     | @SessionAttribute("role"){teachModelId, userId}       | {code,message}        |
 | /allselect                           | 获取所有教学案例                     | 所有用户         | GET        | {userId}                                              | {code, body, message} |
 | /select/{id}                         | 获取指定ID的教学案例的详细描述和文件 | 所有用户         | GET        | {teachModelId}                                        | {code, body, message} |
-
-# 
 
 # Resut code
 
@@ -298,11 +306,11 @@
 
 # Task Division
 
-| Name   | Task                                                       |
-| ------ | ---------------------------------------------------------- |
-| 周育全 | base类实现，tb_user、tb_group_member设计及实现             |
-| 张郑良 | tb_log设计及实现                                           |
-| 赵佳晖 | tb_geographic_data设计及实现                               |
-| 张家瑞 | tb_teaching_cases设计及实现                                |
-| 冯瀑霏 | tb_online_tools、tb_map_servers设计及实现                  |
-| 陈柠檬 | tb_student_paper、tb_academic_paper、tb_lectures设计及实现 |
+| Name   | Task                                                         |
+| ------ | ------------------------------------------------------------ |
+| 周育全 | base类实现，tb_user、tb_student_paper、tb_academic_paper、tb_group_member设计及实现 |
+| 张郑良 | tb_log设计及实现                                             |
+| 赵佳晖 | tb_geographic_data、tb_online_tools设计及实现                |
+| 张家瑞 | tb_teaching_cases设计及实现                                  |
+| 冯瀑霏 | tb_map_servers设计及实现，数据收集及入库                     |
+| 陈柠檬 | tb_lectures设计及实现、数据收集及入库                        |

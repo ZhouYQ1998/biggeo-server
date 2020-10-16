@@ -16,8 +16,8 @@ import lombok.ToString;
 public class Lecture extends Base<String> {
     private String name;
     private String speaker;
-    private String time;
     private String place;
-    private String href;
+    private String time;
+    private String url;
 }
 
