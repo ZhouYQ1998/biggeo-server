@@ -24,7 +24,7 @@
 
 | URL                       | FUNCTION   | METHOD | PARAM                                    | RESULT              | REMARK              |
 | ------------------------- | ---------- | ------ | ---------------------------------------- | ------------------- | ------------------- |
-| /user/insert              | 插入用户   | PUT    | name,password,role[,phone,email,icon]    | {code,body,message} | phone,email为可选值 |
+| /user/insert              | 插入用户   | PUT    | name,password,role[,phone,email,icon]    | {code,body,message} | phone,email         |
 | /user/batchinsert         | 批量插入   | PUT    | [User[,User...]]                         | {code,body,message} |                     |
 | /user/delete/{id}         | 删除用户   | DELETE |                                          | {code,body,message} | body值为id          |
 | /user/deletebyname/{name} | 删除用户   | DELETE |                                          | {code,body,message} | body值为name        |
@@ -112,7 +112,14 @@
 
 ### 3.2 URL
 
-- 基础：增删改查及批量操作
+| URL                              | FUNCTION | METHOD | PARAM                                                        | RESULT              | REMARK      |
+| -------------------------------- | -------- | ------ | ------------------------------------------------------------ | ------------------- | ----------- |
+| /studentpaper/insert             | 插入用户 | PUT    | title,englishTitle,author,type[,publisher,tertiaryAuthor,year,keywords,abstract_,url] | {code,body,message} |             |
+| /studentpaper/delete/{id}        | 删除用户 | DELETE |                                                              | {code,body,message} | body值为id  |
+| /studentpaper/select/{id}        | 查询用户 | GET    |                                                              | {code,body,message} |             |
+| /studentpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                                            | ode,body,message}   | 逗号","分隔 |
+| /studentpaper/allselect          | 查询用户 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
+| /studentpaper/update             | 更新用户 | POST   | id[,title,englishTitle,author,publisher,tertiaryAuthor,year,type,keywords,abstract_,url] | {code,body,message} | id为必要值  |
 
 ## 4 tb_academic_paper
 

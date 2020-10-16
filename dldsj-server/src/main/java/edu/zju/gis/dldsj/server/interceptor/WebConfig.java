@@ -41,7 +41,6 @@ public class WebConfig implements WebMvcConfigurer {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
             HttpSession session = request.getSession();
-            /*
             if (session.getAttribute("userId") != null) {
                 return true;
             } else {
@@ -51,8 +50,7 @@ public class WebConfig implements WebMvcConfigurer {
                 response.getWriter().write(result.toString());
                 return false;
             }
-            */
-            return true;
+//            return true;
         }
     }
 }

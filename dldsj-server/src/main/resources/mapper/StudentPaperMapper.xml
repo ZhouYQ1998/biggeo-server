@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.StudentPaperMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.StudentPaper">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="TITLE" jdbcType="VARCHAR" property="title"/>
+        <result column="ENGLISH_TITLE" jdbcType="VARCHAR" property="englishTitle"/>
+        <result column="AUTHOR" jdbcType="VARCHAR" property="author"/>
+        <result column="PUBLISHER" jdbcType="VARCHAR" property="publisher"/>
+        <result column="TERTIARY_AUTHOR" jdbcType="VARCHAR" property="tertiaryAuthor"/>
+        <result column="YEAR" jdbcType="VARCHAR" property="year"/>
+        <result column="TYPE" jdbcType="VARCHAR" property="type"/>
+        <result column="KEYWORDS" jdbcType="VARCHAR" property="keywords"/>
+        <result column="ABSTRACT" jdbcType="VARCHAR" property="abstract_"/>
+        <result column="URL" jdbcType="VARCHAR" property="url"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID, TITLE, ENGLISH_TITLE, AUTHOR, PUBLISHER, TERTIARY_AUTHOR, YEAR, TYPE, KEYWORDS, ABSTRACT, URL
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_student_paper
+    </sql>
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.User">
+        insert into <include refid="TABLE_NAME"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            TITLE,
+            ENGLISH_TITLE,
+            AUTHOR,
+            TYPE,
+            <if test="publisher != null">
+                PUBLISHER,
+            </if>
+            <if test="tertiaryAuthor != null">
+                TERTIARY_AUTHOR,
+            </if>
+            <if test="year != null">
+                YEAR,
+            </if>
+            <if test="keywords != null">
+                KEYWORDS,
+            </if>
+            <if test="abstract_ != null">
+                ABSTRACT,
+            </if>
+            <if test="url != null">
+                URL
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=VARCHAR},
+            #{title,jdbcType=VARCHAR},
+            #{englishTitle,jdbcType=VARCHAR},
+            #{author,jdbcType=VARCHAR},
+            #{type,jdbcType=VARCHAR},
+            <if test="publisher != null">
+                #{publisher,jdbcType=VARCHAR},
+            </if>
+            <if test="tertiaryAuthor != null">
+                #{tertiaryAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="year != null">
+                #{year,jdbcType=VARCHAR},
+            </if>
+            <if test="keywords != null">
+                #{keywords,jdbcType=VARCHAR},
+            </if>
+            <if test="abstract_ != null">
+                #{abstract_,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from <include refid="TABLE_NAME"/>
+        where ID = #{id,jdbcType=VARCHAR}
+    </delete>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+    <select id="batchSelect" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where ID in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+    <select id="allSelect" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+    </select>
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.User">
+        update <include refid="TABLE_NAME"/>
+        <set>
+            <if test="title!= null">
+                TITLE = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="englishTitle != null">
+                ENGLISH_TITLE = #{englishTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="author != null">
+                AUTHOR = #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="publisher != null">
+                PUBLISHER = #{publisher,jdbcType=VARCHAR},
+            </if>
+            <if test="tertiaryAuthor != null">
+                TERTIARY_AUTHOR = #{tertiaryAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="year != null">
+                YEAR = #{year,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                TYPE = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="keywords != null">
+                KEYWORDS = #{keywords,jdbcType=VARCHAR},
+            </if>
+            <if test="abstract_ != null">
+                ABSTRACT = #{abstract_,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                URL = #{url,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

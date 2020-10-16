@@ -59,7 +59,7 @@ public class EmailUtil {
             // session.setDebug(true); // 开启Debug模式
 
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(EmailConstants.EmailAccount, "地学大数据教学平台", "UTF-8"));
+            message.setFrom(new InternetAddress(EmailConstants.EmailAccount, "地球系统大数据平台", "UTF-8"));
             message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
             message.setSubject("注册验证码", "UTF-8");
             message.setContent(EmailConstants.EmailContent(code), "text/html;charset=UTF-8");
