@@ -15,6 +15,8 @@ public interface WorkFlowService {
 
     int deleteDagById(String dagId);
 
+    int deleteDagByNameAndUserId(String name,String userId);
+
     int deleteRunById(String runId);
 
     int updateDag(WorkFlowDag dag);
@@ -24,6 +26,8 @@ public interface WorkFlowService {
     int updateJob(WorkFlowJob job);
 
     WorkFlowDag getDagById(String id);
+
+    WorkFlowDag selectDagByNameAndUserId(String name,String userId);
 
     WorkFlowRun getRunById(String id);
 

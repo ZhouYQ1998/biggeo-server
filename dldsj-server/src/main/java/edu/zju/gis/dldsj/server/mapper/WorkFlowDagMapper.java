@@ -8,11 +8,15 @@ import java.util.List;
 public interface WorkFlowDagMapper  {
     int deleteByPrimaryKey(String id);
 
+    int deleteByNameAndUserId(String name,String userId);
+
     int insert(WorkFlowDag record);
 
     int insertSelective(WorkFlowDag record);
 
     WorkFlowDag selectByPrimaryKey(String id);
+
+    WorkFlowDag selectByNameAndUserId(String name,String userId);
 
     int updateByPrimaryKeySelective(WorkFlowDag record);
 

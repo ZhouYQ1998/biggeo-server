@@ -26,9 +26,23 @@
         where DAG_ID = #{id,jdbcType=VARCHAR}
     </select>
 
+    <select id="selectByNameAndUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where DAG_NAME = #{arg0,jdbcType=VARCHAR}
+        and USER_ID = #{arg1,jdbcType=VARCHAR}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from <include refid="TABLE_NAME"/>
     where DAG_ID = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteByNameAndUserId" parameterType="java.lang.String">
+        delete from <include refid="TABLE_NAME"/>
+        where DAG_NAME = #{arg0,jdbcType=VARCHAR}
+        and USER_ID = #{arg1,jdbcType=VARCHAR}
     </delete>
 
     <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowDag">
