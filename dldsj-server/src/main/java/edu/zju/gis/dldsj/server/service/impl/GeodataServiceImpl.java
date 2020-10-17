@@ -3,7 +3,9 @@ package edu.zju.gis.dldsj.server.service.impl;
 import com.github.pagehelper.PageHelper;
 import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
 import edu.zju.gis.dldsj.server.common.Page;
+import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.config.CommonSetting;
+import edu.zju.gis.dldsj.server.constant.CodeConstants;
 import edu.zju.gis.dldsj.server.entity.Geodata;
 import edu.zju.gis.dldsj.server.mapper.GeodataMapper;
 import edu.zju.gis.dldsj.server.service.GeodataService;
@@ -20,10 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Jiarui
@@ -102,9 +101,74 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
         return mapper.getPopularData();
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+    public Result<Geodata> insertAndUp2hdfs(Geodata t) {
+        Result<Geodata> result = new Result<>();
+
+        String resMessage = "";
+        String filePath = t.getPath();
+
+        // 上传操作
+        if (new File(filePath).isFile()) {
+            String regexPath = filePath.replace('\\', '/');
+            String fileName = regexPath.substring(regexPath.lastIndexOf('/') + 1);
+            String hdfsPath = setting.getGeoDataPath() + '/' + fileName;
+
+            HdfsManipulator hdfsManipulator = (HdfsManipulator) FsManipulatorFactory.create(setting.getHdFsUri());
+            hdfsManipulator.uploadFromLocal(regexPath, hdfsPath);
+            t.setPath(setting.getHdFsUri() + hdfsPath);
+
+            resMessage = "文件上传成功！";
+        } else {
+            resMessage = "文件路径错误！";
+        }
+
+        // 插入操作
+        try {
+            t.setId((String) UUID.randomUUID().toString());
+            int num = mapper.insertAndUp2hdfs(t);
+            if (num == 1) {
+                result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("插入成功 " + resMessage);
+            } else {
+                result.setCode(CodeConstants.VALIDATE_ERROR).setBody(t).setMessage("插入失败 " + resMessage);
+            }
+        } catch (RuntimeException e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("插入失败：" + e.getMessage());
+        }
+        return result;
+    }
+
+    public Result<Geodata> downFromhdfs(String id, String fileDirectory) {
+        Result<Geodata> result = new Result<>();
+        try {
+            Geodata t = mapper.selectByPrimaryKey(id);
+            String resMessage = "下载失败！";
+            if (t != null) {
+                HdfsManipulator hdfsManipulator = (HdfsManipulator) FsManipulatorFactory.create(setting.getHdFsUri());
+                String hdfsPath = t.getPath();
+
+                if (hdfsManipulator.isFile(hdfsPath) && new File(fileDirectory).isDirectory()) {
+                    String fileName = hdfsPath.substring(hdfsPath.lastIndexOf('/') + 1);
+                    hdfsManipulator.downloadToLocal(hdfsPath, fileDirectory + '/' + fileName);
+                    resMessage = "下载成功！";
+                }
+                downloadTimesPlus(id);
+
+                result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("查询成功 " + resMessage);
+            } else {
+                result.setCode(CodeConstants.USER_NOT_EXIST).setMessage("查询失败：实体不存在 " + resMessage);
+            }
+        } catch (RuntimeException e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     @Override
     public String uploadFromLocal(String fsUri, String filePath) {
-        String resMessage = "上传失败！";
+        String resMessage = "文件上传失败！";
         HdfsManipulator hdfsManipulator = (HdfsManipulator) FsManipulatorFactory.create(fsUri);
 
         if (new File(filePath).isFile()) {
@@ -113,7 +177,7 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
             String hdfsPath = setting.getGeoDataPath() + '/' + fileName;
 
             hdfsManipulator.uploadFromLocal(regexPath, hdfsPath);
-            resMessage = "上传成功！";
+            resMessage = "文件上传成功！";
         } else {
             resMessage = "文件路径错误！";
         }

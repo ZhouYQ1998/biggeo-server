@@ -120,6 +120,21 @@ public class GeodataController extends BaseController<Geodata, GeodataService, S
         return Result.success().setBody(service.getPopularData());
     }
 
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @RequestMapping(value = "/insertAndUp2hdfs", method = RequestMethod.PUT)
+    @ResponseBody
+    public Result insertAndUp2hdfs(@RequestBody Geodata t) {
+        return service.insertAndUp2hdfs(t);
+    }
+
+    @RequestMapping(value = "/downFromhdfs", method = RequestMethod.GET)
+    @ResponseBody
+    public Result downFromhdfs(String id, String fileDirectory) {
+        return service.downFromhdfs(id, fileDirectory);
+    }
+
     /**
      * 上传 文件
      */

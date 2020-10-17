@@ -2,7 +2,9 @@ package edu.zju.gis.dldsj.server.service;
 
 import edu.zju.gis.dldsj.server.base.BaseService;
 import edu.zju.gis.dldsj.server.common.Page;
+import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.entity.Geodata;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,11 @@ public interface GeodataService extends BaseService<Geodata, String> {
 
     //统计下载量最高的5条数据
     List<Geodata> getPopularData();
+
+    //
+    Result<Geodata> insertAndUp2hdfs(Geodata t);
+
+    Result<Geodata> downFromhdfs(String id, String fileDirectory);
 
     String uploadFromLocal(String fsUri, String filePath);
 
