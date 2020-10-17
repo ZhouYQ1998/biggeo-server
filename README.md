@@ -118,12 +118,13 @@
 
 | URL                              | FUNCTION | METHOD | PARAM                                                        | RESULT              | REMARK      |
 | -------------------------------- | -------- | ------ | ------------------------------------------------------------ | ------------------- | ----------- |
-| /studentpaper/insert             | 插入用户 | PUT    | title,englishTitle,author,type[,publisher,tertiaryAuthor,year,keywords,abstract_,url] | {code,body,message} |             |
-| /studentpaper/delete/{id}        | 删除用户 | DELETE |                                                              | {code,body,message} | body值为id  |
-| /studentpaper/select/{id}        | 查询用户 | GET    |                                                              | {code,body,message} |             |
+| /studentpaper/insert             | 插入论文 | PUT    | title,englishTitle,author,type[,publisher,tertiaryAuthor,year,keywords,abstract_,url] | {code,body,message} |             |
+| /studentpaper/delete/{id}        | 删除论文 | DELETE |                                                              | {code,body,message} | body值为id  |
+| /studentpaper/select/{id}        | 查询论文 | GET    |                                                              | {code,body,message} |             |
+| /studentpaper/selectnew          | 查询最新 | GET    |                                                              | {code,body,message} |             |
 | /studentpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                                            | ode,body,message}   | 逗号","分隔 |
-| /studentpaper/allselect          | 查询用户 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
-| /studentpaper/update             | 更新用户 | POST   | id[,title,englishTitle,author,publisher,tertiaryAuthor,year,type,keywords,abstract_,url] | {code,body,message} | id为必要值  |
+| /studentpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
+| /studentpaper/update             | 更新论文 | POST   | id[,title,englishTitle,author,publisher,tertiaryAuthor,year,type,keywords,abstract_,url] | {code,body,message} | id为必要值  |
 
 ## 4 tb_academic_paper
 
@@ -152,36 +153,39 @@
 
 | URL                               | FUNCTION | METHOD | PARAM                                                        | RESULT              | REMARK      |
 | --------------------------------- | -------- | ------ | ------------------------------------------------------------ | ------------------- | ----------- |
-| /academicpaper/insert             | 插入用户 | PUT    | title,englishTitle,type,author,url[,authorAffiliation,year,sourceName,volume,issue,pages,keywords,abstract_,doi,issu] | {code,body,message} |             |
-| /academicpaper/delete/{id}        | 删除用户 | DELETE |                                                              | {code,body,message} | body值为id  |
-| /academicpaper/select/{id}        | 查询用户 | GET    |                                                              | {code,body,message} |             |
+| /academicpaper/insert             | 插入论文 | PUT    | title,englishTitle,type,author,url[,authorAffiliation,year,sourceName,volume,issue,pages,keywords,abstract_,doi,issu] | {code,body,message} |             |
+| /academicpaper/delete/{id}        | 删除论文 | DELETE |                                                              | {code,body,message} | body值为id  |
+| /academicpaper/select/{id}        | 查询论文 | GET    |                                                              | {code,body,message} |             |
+| /academicpaper/selectnew          | 查询最新 | GET    |                                                              | {code,body,message} |             |
 | /academicpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                                            | ode,body,message}   | 逗号","分隔 |
-| /academicpaper/allselect          | 查询用户 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
-| /academicpaper/update             | 更新用户 | POST   | id[,title,englishTitle,type,author,authorAffiliation,year,sourceName,volume,issue,pages,keywords,abstract_,doi,issu,url] | {code,body,message} | id为必要值  |
+| /academicpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
+| /academicpaper/update             | 更新论文 | POST   | id[,title,englishTitle,type,author,authorAffiliation,year,sourceName,volume,issue,pages,keywords,abstract_,doi,issu,url] | {code,body,message} | id为必要值  |
 
 ## 5 tb_lectures
 
 ### 5.1 Table
 
-| Column  | Description  | Type   | Remark                                     |
-| ------- | ------------ | ------ | ------------------------------------------ |
-| ID      | 主键（编号） | String | Not Null, Unique, Primary Key, Auto Create |
-| NAME    | 姓名         | String | Not Null                                   |
-| SPEAKER | 演讲者       | String |                                            |
-| PLACE   | 地点         | String |                                            |
-| TIME    | 时间         | String |                                            |
-| URL     | 链接         | String |                                            |
+| Column      | Description  | Type   | Remark                                     |
+| ----------- | ------------ | ------ | ------------------------------------------ |
+| ID          | 主键（编号） | String | Not Null, Unique, Primary Key, Auto Create |
+| NAME        | 姓名         | String | Not Null                                   |
+| SPEAKER     | 演讲者       | String |                                            |
+| PLACE       | 地点         | String |                                            |
+| TIME        | 时间         | Date   |                                            |
+| DETAIL_TIME | 详细时间     | String |                                            |
+| URL         | 链接         | String |                                            |
 
 ### 5.2 URL
 
 | URL                         | FUNCTION | METHOD | PARAM                            | RESULT              | REMARK      |
 | --------------------------- | -------- | ------ | -------------------------------- | ------------------- | ----------- |
-| /lecture/insert             | 插入用户 | PUT    | name[,speaker,place,time,url]    | {code,body,message} |             |
-| /lecture/delete/{id}        | 删除用户 | DELETE |                                  | {code,body,message} | body值为id  |
-| /lecture/select/{id}        | 查询用户 | GET    |                                  | {code,body,message} |             |
-| /lecture/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                | ode,body,message}   | 逗号","分隔 |
-| /lecture/allselect          | 查询用户 | GET    | [pageNo,pageSize]                | {code,body,message} | body为page  |
-| /lecture/update             | 更新用户 | POST   | id[,name,speaker,place,time,url] | {code,body,message} | id为必要值  |
+| /lecture/insert             | 插入讲座 | PUT    | name[,speaker,place,time,url]    | {code,body,message} |             |
+| /lecture/delete/{id}        | 删除讲座 | DELETE |                                  | {code,body,message} | body值为id  |
+| /lecture/select/{id}        | 查询讲座 | GET    |                                  | {code,body,message} |             |
+| /lecture/selectnew          | 查询最新 | GET    |                                  | {code,body,message} |             |
+| /lecture/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                | {code,body,message} | 逗号","分隔 |
+| /lecture/allselect          | 查询讲座 | GET    | [pageNo,pageSize]                | {code,body,message} | body为page  |
+| /lecture/update             | 更新讲座 | POST   | id[,name,speaker,place,time,url] | {code,body,message} | id为必要值  |
 
 ## 6 tb_online_tools
 
@@ -340,8 +344,4 @@
 | 张家瑞 | tb_teaching_cases设计及实现                                  |
 | 冯瀑霏 | tb_map_servers设计及实现，数据收集及入库                     |
 | 陈柠檬 | tb_lectures设计及实现、数据收集及入库                        |
-
-- academic_paper：数据量
-- map_server：company、region
-- lecture：detail_time 和 time
 

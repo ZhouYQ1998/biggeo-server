@@ -1,7 +1,10 @@
 package edu.zju.gis.dldsj.server.service.impl;
 
 import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
+import edu.zju.gis.dldsj.server.common.Result;
+import edu.zju.gis.dldsj.server.constant.CodeConstants;
 import edu.zju.gis.dldsj.server.entity.AcademicPaper;
+import edu.zju.gis.dldsj.server.entity.Lecture;
 import edu.zju.gis.dldsj.server.entity.StudentPaper;
 import edu.zju.gis.dldsj.server.mapper.AcademicPaperMapper;
 import edu.zju.gis.dldsj.server.mapper.StudentPaperMapper;
@@ -9,6 +12,8 @@ import edu.zju.gis.dldsj.server.service.AcademicPaperService;
 import edu.zju.gis.dldsj.server.service.StudentPaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author zyq 2020/09/23
@@ -18,5 +23,16 @@ public class AcademicPaperServiceImpl extends BaseServiceImpl<AcademicPaperMappe
 
     @Autowired
     private AcademicPaperMapper academicPaperMapper;
+
+    public Result<List<AcademicPaper>> selectNew(){
+        Result<List<AcademicPaper>> result = new Result<>();
+        try {
+            List<AcademicPaper> newAcademicPaper = academicPaperMapper.selectNew();
+            result.setCode(CodeConstants.SUCCESS).setBody(newAcademicPaper).setMessage("查询成功");
+        } catch (RuntimeException e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
+        }
+        return result;
+    };
 
 }

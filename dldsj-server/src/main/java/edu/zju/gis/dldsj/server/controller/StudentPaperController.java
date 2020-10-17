@@ -4,6 +4,7 @@ import edu.zju.gis.dldsj.server.base.BaseController;
 import edu.zju.gis.dldsj.server.base.BaseFilter;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
+import edu.zju.gis.dldsj.server.entity.AcademicPaper;
 import edu.zju.gis.dldsj.server.entity.StudentPaper;
 import edu.zju.gis.dldsj.server.entity.User;
 import edu.zju.gis.dldsj.server.service.StudentPaperService;
@@ -30,5 +31,15 @@ public class StudentPaperController extends BaseController<StudentPaper, Student
 
     @Autowired
     private StudentPaperService studentPaperService;
+
+    /***
+     * 查询最新论文
+     * @return result
+     */
+    @RequestMapping(value = "/selectnew", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<List<StudentPaper>> selectNew() {
+        return studentPaperService.selectNew();
+    }
 
 }
