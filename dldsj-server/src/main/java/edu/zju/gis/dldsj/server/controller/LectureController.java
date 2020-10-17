@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Log4j
 @Controller
+@CrossOrigin
 @RequestMapping("/lecture")
 public class LectureController extends BaseController<Lecture, LectureService, String, BaseFilter<String>> {
 

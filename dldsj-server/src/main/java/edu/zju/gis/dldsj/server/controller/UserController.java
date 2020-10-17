@@ -20,6 +20,7 @@ import java.util.*;
  */
 @Slf4j
 @Controller
+@CrossOrigin
 @RequestMapping("/user")
 public class UserController extends BaseController<User, UserService, String, BaseFilter<String>> {
 

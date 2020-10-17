@@ -9,12 +9,14 @@ import edu.zju.gis.dldsj.server.service.StudentPaperService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author zyq 2020/09/23
  */
 @Slf4j
+@CrossOrigin
 @Controller
 @RequestMapping("/academicpaper")
 public class AcademicPaperController extends BaseController<AcademicPaper, AcademicPaperService, String, BaseFilter<String>> {

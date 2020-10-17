@@ -24,6 +24,7 @@ import java.util.Map;
  */
 @Slf4j
 @Controller
+@CrossOrigin
 @RequestMapping("/studentpaper")
 public class StudentPaperController extends BaseController<StudentPaper, StudentPaperService, String, BaseFilter<String>> {
 

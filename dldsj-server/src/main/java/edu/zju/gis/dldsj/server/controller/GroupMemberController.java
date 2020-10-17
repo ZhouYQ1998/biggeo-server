@@ -9,16 +9,14 @@ import edu.zju.gis.dldsj.server.entity.GroupMember;
 import edu.zju.gis.dldsj.server.service.GroupMemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Jiarui 2020/08/31
  * @update zyq 2020/09/25
  */
 @Controller
+@CrossOrigin
 @RequestMapping("/member")
 @Slf4j
 public class GroupMemberController extends BaseController<GroupMember, GroupMemberService, Integer, BaseFilter<Integer>> {
