@@ -28,6 +28,7 @@ public class CommonSetting {
     private String xmlPath;
     private String templatePath;
     private String picPath;
+    private String geoDataPath;
     private String metaPath;
     private String nameNode;
     private String username;
@@ -63,5 +64,8 @@ public class CommonSetting {
     private String importToolJarPath;
     private String airFlowHome;
     private String airFlowDagsPath;
+    private String hdFsUri;
+    private String lFsUri;
+
 
 }

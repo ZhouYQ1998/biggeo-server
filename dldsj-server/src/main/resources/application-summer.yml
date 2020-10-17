@@ -31,6 +31,7 @@ settings:
   jarPath: ${settings.parallelFilePath}/jar
   xmlPath: ${settings.parallelFilePath}/xml
   picPath: ${settings.parallelFilePath}/pic
+  geoDataPath: /gis/3S/geoData
   frontEndRegionList:
     - http://localhost:8082
     - http://10.79.231.81:8082
@@ -63,9 +64,8 @@ settings:
   calculateDataNameSpace: /calculateData/
   selfDataNameSpace: /selfData/
   systemPublicAccount: SYSTEM_PUBLIC
-  airFlowHome: /root/airflow
+  airFlowHome: /root/airflow*
 #  airFlowHome: /Users/jiarui/airflow
   airFlowDagsPath: ${settings.airFlowHome}/dags
-uri:
-  hdfs: hdfs://192.168.1.5:9000/
-  lfs: file:///
+  hdFsUri: hdfs://192.168.1.5:9000
+  lFsUri: file://

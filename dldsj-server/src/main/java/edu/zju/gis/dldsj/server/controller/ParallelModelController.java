@@ -65,9 +65,6 @@ public class ParallelModelController {
     @Value("${spring.mvc.static-path-pattern}")
     private String staticPathPattern;   // mvc静态资源请求目录
 
-    @Value("${uri.hdfs}")
-    private String hdfsUri;   // hdfs 路径
-
     /**
      * 模型注册
      * @param userId 用户ID 取自Session属性
@@ -563,10 +560,12 @@ public class ParallelModelController {
         JSONArray modelParam = new JSONArray(model.getParameters());
         for (int i = 0; i < params.length(); i++) {
             JSONObject obj = modelParam.getJSONObject(i);
+            String param = params.getString(i);
             if (obj.has("out") || obj.has("in")) {
-                String path = params.getString(i);
-                params.put(i, Paths.get(setting.getUserSpaceRootPath(), userId, path).toString());
+                param = setting.getHdFsUri() + Paths.get(setting.getUserSpaceRootPath(), userId, param).toString();
+                params.put(i, param);
             }
+            params.put(i, obj.getString("tag") + " " + param);
         }
         List<String> modelParams = new ArrayList<>();
         for (int i = 0; i < params.length(); i++) {
