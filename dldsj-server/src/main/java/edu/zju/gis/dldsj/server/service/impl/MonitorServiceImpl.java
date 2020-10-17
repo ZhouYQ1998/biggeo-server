@@ -32,6 +32,6 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public int updateByName(Monitor monitor) {
-        return monitorMapper.updateByName(monitor);
+        return monitorMapper.updateByNameSelective(monitor);
     }
 }

@@ -28,7 +28,6 @@ public abstract class FsManipulator implements Closeable {
     protected FsManipulator(String uri, Configuration conf) {
         try {
             this.fs = FileSystem.get(URI.create(uri), conf);
-            System.out.println(this.fs.getClass());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

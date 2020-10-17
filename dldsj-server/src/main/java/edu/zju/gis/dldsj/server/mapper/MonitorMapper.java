@@ -14,4 +14,6 @@ public interface MonitorMapper {
     Monitor selectByName(String name);
 
     int updateByName(Monitor monitor);
+
+    int updateByNameSelective(Monitor monitor);
 }

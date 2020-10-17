@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -502,10 +503,10 @@ public class ParallelModelController {
         return result;
     }
 
-    @RequestMapping(value = "/test/{artifactId}", method = RequestMethod.POST)
-    public String test(@PathVariable String artifactId, @RequestBody String requestBody) {
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public String test(@RequestBody String requestBody) throws IOException {
         System.out.println(requestBody);
-        System.out.println(artifactId);
+        SSHUtil.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), "echo hello > /root/katus/test.txt", setting.getTemplatePath());
         return "success";
     }
 
@@ -577,7 +578,8 @@ public class ParallelModelController {
             result.setCode(CodeConstants.SYSTEM_ERROR).setBody("ERROR").setMessage("不支持的模型运行框架：" + model.getFrameworkType());
         } else {
             try {
-                SSHUtil.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), cmd, setting.getParallelFilePath());
+//                SSHUtil.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), cmd, setting.getTemplatePath());
+                SSHUtil.runLocal(cmd);
                 log.info("a new application is submitted by " + userName + " with cmd[" + cmd + "]");
                 submitTask(jobName, userId, userName, model, params, spatialOut, remarks);
                 result.setCode(CodeConstants.SUCCESS).setBody("SUCCESS").setBody(jobName);
