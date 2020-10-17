@@ -3,7 +3,7 @@
 
 <mapper namespace="edu.zju.gis.dldsj.server.mapper.MapServiceMapper">
     <sql id="Base_Column_List">
-        ID, NAME, COMPANY, REGION, SERVERS, LIMITED, PICTURE, DESCRIBES, URL
+        ID, NAME, COMPANY, REGION, SERVER, LIMITED, PICTURE, DESCRIPTION, URL
     </sql>
 
     <sql id="TABLE_NAME">
@@ -18,10 +18,10 @@
             NAME,
             COMPANY,
             REGION,
-            SERVERS,
+            SERVER,
             LIMITED,
             PICTURE,
-            DESCRIBES,
+            DESCRIPTION,
             URL
         </trim>
         <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
@@ -29,10 +29,10 @@
             #{NAME, jdbcType=VARCHAR},
             #{COMPANY, jdbcType=VARCHAR},
             #{REGION, jdbcType=VARCHAR},
-            #{SERVERS, jdbcType=VARCHAR},
+            #{SERVER, jdbcType=VARCHAR},
             #{LIMITED, jdbcType=VARCHAR},
             #{PICTURE, jdbcType=VARCHAR},
-            #{DESCRIBES, jdbcType=VARCHAR},
+            #{DESCRIPTION, jdbcType=VARCHAR},
             #{URL, jdbcType=VARCHAR},
         </trim>
     </insert>
@@ -48,10 +48,10 @@
             <if test="NAME != null">NAME = #{NAME, jdbcType=VARCHAR},</if>
             <if test="COMPANY != null">COMPANY = #{COMPANY, jdbcType=VARCHAR},</if>
             <if test="REGION != null">REGION = #{REGION, jdbcType=VARCHAR},</if>
-            <if test="SERVERS != null">SERVERS = #{SERVERS, jdbcType=VARCHAR},</if>
+            <if test="SERVER != null">SERVER = #{SERVER, jdbcType=VARCHAR},</if>
             <if test="LIMITED != null">LIMITED = #{LIMITED, jdbcType=VARCHAR},</if>
             <if test="PICTURE != null">PICTURE =  #{PICTURE, jdbcType=VARCHAR},</if>
-            <if test="DESCRIBES != null">DESCRIBES = #{DESCRIBES, jdbcType=VARCHAR},</if>
+            <if test="DESCRIPTION != null">DESCRIPTION = #{DESCRIPTION, jdbcType=VARCHAR},</if>
             <if test="URL != null">URL = #{URL, jdbcType=VARCHAR},</if>
         </set>
         where ID = #{id, jdbcType=VARCHAR}
