@@ -199,6 +199,17 @@
 
 - 基础：增删改查及批量操作
 
+| URL                             | FUNCTION | METHOD | PARAM                      | RESULT              | REMARK      |
+| ------------------------------- | -------- | ------ | -------------------------- | ------------------- | ----------- |
+| /onlinetools/insert             | 插入     | PUT    | OnlineTool                 | {code,body,message} |             |
+| /onlinetools/batchinsert        | 批量插入 | PUT    | [OnlineTool，[OnlineTool]] | {code,body,message} |             |
+| /onlinetools/delete/{id}        | 删除     | DELETE |                            | {code,body,message} | body值为id  |
+| /onlinetools/batchdelete/{id}   | 批量删除 | DELETE |                            | {code,body,message} | body值为id  |
+| /onlinetools/select/{id}        | 查询     | GET    |                            | {code,body,message} |             |
+| /onlinetools/batchseletct/{ids} | 批量     | GET    | [pageNo,pageSize]          | ode,body,message}   | 逗号","分隔 |
+| /onlinetools/allselect          | 查询     | GET    | [pageNo,pageSize]          | {code,body,message} | body为page  |
+| /onlinetools/update             | 更新     | POST   | OnlineTool                 | {code,body,message} |             |
+
 ## 7 tb_map_servers
 
 ### 7.1 Table
@@ -218,6 +229,17 @@
 ### 7.2 URL
 
 - 基础：增删改查及批量操作
+
+| URL                            | FUNCTION | METHOD | PARAM                      | RESULT              | REMARK      |
+| ------------------------------ | -------- | ------ | -------------------------- | ------------------- | ----------- |
+| /mapservice/insert             | 插入     | PUT    | MapService                 | {code,body,message} |             |
+| /mapservice/batchinsert        | 批量插入 | PUT    | [MapService，[MapService]] | {code,body,message} |             |
+| /mapservice/delete/{id}        | 删除     | DELETE |                            | {code,body,message} | body值为id  |
+| /mapservice/batchdelete/{id}   | 批量删除 | DELETE |                            | {code,body,message} | body值为id  |
+| /mapservice/select/{id}        | 查询     | GET    |                            | {code,body,message} |             |
+| /mapservice/batchseletct/{ids} | 批量     | GET    | [pageNo,pageSize]          | ode,body,message}   | 逗号","分隔 |
+| /mapservice/allselect          | 查询     | GET    | [pageNo,pageSize]          | {code,body,message} | body为page  |
+| /mapservice/update             | 更新     | POST   | MapService                 | {code,body,message} |             |
 
 ## 8 tb_group_member
 
