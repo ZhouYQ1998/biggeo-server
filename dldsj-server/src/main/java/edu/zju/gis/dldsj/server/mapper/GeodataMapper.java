@@ -38,4 +38,7 @@ public interface GeodataMapper extends BaseMapper<Geodata, String> {
     //下载量最多的5条数据
     List<Geodata> getPopularData();
 
+    //
+    int insertAndUp2hdfs(Geodata t);
+
 }

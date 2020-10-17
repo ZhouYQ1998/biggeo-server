@@ -79,6 +79,53 @@
         </trim>
     </insert>
 
+    <insert id="insertAndUp2hdfs" parameterType="edu.zju.gis.dldsj.server.entity.Geodata">
+        insert into
+        <include refid="TABLE_NAME"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            TITLE,
+            <if test="uploader != null">UPLOADER,</if>
+            USERNAME,
+            <if test="downloadAuthority != null">DOWNLOADAUTHORITY,</if>
+            <if test="time != null">RE_TIME,</if>
+            TYPE_1,
+            <if test="type2 != null">TYPE_2,</if>
+            <if test="keywords != null">KEYWORDS,</if>
+            <if test="source != null">SOURCE,</if>
+            <if test="abstractInfo != null">ABSTRACT,</if>
+            <if test="reference != null">REFERENCE,</if>
+            <if test="picture != null">PICTURE,</if>
+            <if test="oldName != null">OLD_FILENAME,</if>
+            <if test="newName != null">NEW_FILENAME,</if>
+            <if test="format != null">FORMAT,</if>
+            <if test="path != null">PATH,</if>
+            <if test="ram != null">RAM,</if>
+            <if test="downloadTimes != null">DOWNLOAD_TIMES,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=VARCHAR},
+            #{title,jdbcType=VARCHAR},
+            <if test="uploader != null">#{uploader,jdbcType=VARCHAR},</if>
+            #{userName,jdbcType=VARCHAR},
+            <if test="downloadAuthority != null">#{downloadAuthority,jdbcType=BOOLEAN},</if>
+            <if test="time != null">#{time,jdbcType=TIMESTAMP},</if>
+            #{type1,jdbcType=VARCHAR},
+            <if test="type2 != null">#{type2,jdbcType=VARCHAR},</if>
+            <if test="keywords != null">#{keywords,jdbcType=VARCHAR},</if>
+            <if test="source != null">#{source,jdbcType=VARCHAR},</if>
+            <if test="abstractInfo != null">#{abstractInfo,jdbcType=VARCHAR},</if>
+            <if test="reference != null">#{reference,jdbcType=VARCHAR},</if>
+            <if test="picture != null">#{picture,jdbcType=VARCHAR},</if>
+            <if test="oldName != null">#{oldName,jdbcType=VARCHAR},</if>
+            <if test="newName != null">#{newName,jdbcType=VARCHAR},</if>
+            <if test="format != null">#{format,jdbcType=VARCHAR},</if>
+            <if test="path != null">#{path,jdbcType=VARCHAR},</if>
+            <if test="ram != null">#{ram,jdbcType=VARCHAR},</if>
+            <if test="downloadTimes != null">#{downloadTimes,jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete
         from
