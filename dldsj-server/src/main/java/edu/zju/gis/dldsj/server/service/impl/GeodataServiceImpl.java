@@ -152,6 +152,8 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
                     hdfsManipulator.downloadToLocal(hdfsPath, fileDirectory + '/' + fileName);
                     resMessage = "下载成功！";
                 }
+                downloadTimesPlus(id);
+
                 result.setCode(CodeConstants.SUCCESS).setBody(t).setMessage("查询成功 " + resMessage);
             } else {
                 result.setCode(CodeConstants.USER_NOT_EXIST).setMessage("查询失败：实体不存在 " + resMessage);
