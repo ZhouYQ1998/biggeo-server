@@ -23,7 +23,6 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -31,7 +30,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +40,7 @@ import java.util.UUID;
  * @version 1.0, 2020-09-25
  */
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/parallel")
 public class ParallelModelController {
@@ -62,9 +61,6 @@ public class ParallelModelController {
 
     @Autowired
     private MonitorTasks monitorTasks;
-
-    @Value("${spring.mvc.static-path-pattern}")
-    private String staticPathPattern;   // mvc静态资源请求目录
 
     /**
      * 模型注册
@@ -150,10 +146,8 @@ public class ParallelModelController {
                     fsManipulator.deleteFile(picPath.getAbsolutePath());
                 }
                 picFile.transferTo(picPath);   // 在服务器文件系统中存了一份
-                model.setPicPath(picPath.getAbsolutePath());
-                // todo 关于静态资源路径的问题
-//                String picUrl = staticPathPattern.replace("*", "") + picPath.getName();
-//                model.setPicPath(picUrl);   // 存入资源静态路径
+                String picUrl = setting.getNginxUrl() + picPath.getAbsolutePath().substring(setting.getNginxPath().length());
+                model.setPicPath(picUrl);   // 存入资源静态路径
             }
             // 存储压缩文件
             if (zipFile != null) {
@@ -196,9 +190,8 @@ public class ParallelModelController {
                 // 删除模型在服务器本地保存的文件
                 fsManipulator.deleteFiles(model.getJarPath().split(","));
                 fsManipulator.deleteFile(model.getXmlPath());
-                fsManipulator.deleteFile(model.getPicPath());
-                // todo 关于静态资源目录的适配
-//                fsManipulator.deleteFile(model.getPicPath().replace("static/", ""));
+                String picPath = setting.getNginxPath() + model.getPicPath().substring(setting.getNginxUrl().length());
+                fsManipulator.deleteFile(picPath);
                 result.setCode(CodeConstants.SUCCESS).setBody("SUCCESS").setMessage("模型注销成功");
             } else {
                 result.setCode(CodeConstants.USER_PERMISSION_ERROR).setBody("ERROR").setMessage("不能删除他人的模型");
@@ -227,7 +220,8 @@ public class ParallelModelController {
             if (model.getIsPublic() || userService.isAdmin(userId)) {
                 // 将模型相关文件打包压缩成一个文件
                 String tempZipPath = new File(setting.getTemplatePath(), artifactId + "-" + UUID.randomUUID().toString() + ".zip").getAbsolutePath();
-                String wholePath = model.getXmlPath() + "," + model.getJarPath() + "," + model.getPicPath();
+                String picPath = setting.getNginxPath() + model.getPicPath().substring(setting.getNginxUrl().length());
+                String wholePath = model.getXmlPath() + "," + model.getJarPath() + "," + picPath;
                 ((LocalFsManipulator) fsManipulator).compress(wholePath.split(","), tempZipPath);
                 // 执行下载操作IO
                 LoadUtils.download(fsManipulator, tempZipPath, artifactId + ".zip", response);
@@ -504,9 +498,8 @@ public class ParallelModelController {
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public String test(@RequestBody String requestBody) throws IOException {
+    public String test(@RequestBody String requestBody){
         System.out.println(requestBody);
-        SSHUtil.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), "echo hello > /root/katus/test.txt", setting.getTemplatePath());
         return "success";
     }
 

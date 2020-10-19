@@ -32,14 +32,4 @@ public class StudentPaperController extends BaseController<StudentPaper, Student
     @Autowired
     private StudentPaperService studentPaperService;
 
-    /***
-     * 查询最新论文
-     * @return result
-     */
-    @RequestMapping(value = "/selectnew", method = RequestMethod.GET)
-    @ResponseBody
-    public Result<List<StudentPaper>> selectNew() {
-        return studentPaperService.selectNew();
-    }
-
 }

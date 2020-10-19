@@ -30,14 +30,4 @@ public class AcademicPaperController extends BaseController<AcademicPaper, Acade
     @Autowired
     private AcademicPaperService academicPaperService;
 
-    /***
-     * 查询最新论文
-     * @return result
-     */
-    @RequestMapping(value = "/selectnew", method = RequestMethod.GET)
-    @ResponseBody
-    public Result<List<AcademicPaper>> selectNew() {
-        return academicPaperService.selectNew();
-    }
-
 }

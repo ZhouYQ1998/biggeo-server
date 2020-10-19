@@ -13,6 +13,4 @@ import java.util.Map;
  */
 public interface StudentPaperMapper extends BaseMapper<StudentPaper, String> {
 
-    List<StudentPaper> selectNew();
-
 }

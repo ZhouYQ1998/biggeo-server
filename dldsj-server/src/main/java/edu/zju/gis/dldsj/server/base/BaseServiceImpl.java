@@ -5,6 +5,7 @@ import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
 import edu.zju.gis.dldsj.server.entity.Batch;
+import edu.zju.gis.dldsj.server.entity.Lecture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,7 +207,6 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
         try{
             PageHelper.startPage(page.getPageNo(), page.getPageSize());
             List<T> all = mapper.allSelect();
-            List<T> all1 = mapper.allSelect();
             Page<T> pageResult = new Page<T>(all);
             if(all.size() != 0){
                 result.setCode(CodeConstants.SUCCESS).setBody(pageResult).setMessage("查询成功");
@@ -219,6 +219,42 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
         }
         return result;
     }
+
+    /**
+     * 查询实体（最新）
+     */
+    public Result<List<T>> selectNew(){
+        Result<List<T>> result = new Result<>();
+        try {
+            List<T> newT = mapper.selectNew();
+            result.setCode(CodeConstants.SUCCESS).setBody(newT).setMessage("查询成功");
+        } catch (RuntimeException e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
+        }
+        return result;
+    };
+
+    /**
+     * 查询实体（模糊搜索）
+     */
+    public Result<Page<T>> selectFuzzyName(String key, Page<T> page){
+        Result<Page<T>> result = new Result<>();
+        try {
+            key = "%" + key + "%";
+            PageHelper.startPage(page.getPageNo(), page.getPageSize());
+            List<T> newT = mapper.selectFuzzyName(key);
+            Page<T> pageResult = new Page<T>(newT);
+            if(newT.size() != 0){
+                result.setCode(CodeConstants.SUCCESS).setBody(pageResult).setMessage("查询成功");
+            }
+            else{
+                result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("查询失败：无实体");
+            }
+        } catch (RuntimeException e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
+        }
+        return result;
+    };
 
     /**
      * 更新实体

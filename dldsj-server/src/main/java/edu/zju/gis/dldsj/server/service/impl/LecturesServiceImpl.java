@@ -27,15 +27,4 @@ public class LecturesServiceImpl extends BaseServiceImpl<LectureMapper, Lecture,
     @Autowired
     private LectureMapper lectureMapper;
 
-    public Result<List<Lecture>> selectNew(){
-        Result<List<Lecture>> result = new Result<>();
-        try {
-            List<Lecture> newLectures = lectureMapper.selectNew();
-            result.setCode(CodeConstants.SUCCESS).setBody(newLectures).setMessage("查询成功");
-        } catch (RuntimeException e) {
-            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
-        }
-        return result;
-    };
-
 }

@@ -14,12 +14,10 @@
         <result column="PAGES" jdbcType="VARCHAR" property="pages"/>
         <result column="KEYWORDS" jdbcType="VARCHAR" property="keywords"/>
         <result column="ABSTRACT" jdbcType="VARCHAR" property="abstract_"/>
-        <result column="DOI" jdbcType="VARCHAR" property="doi"/>
-        <result column="ISSU" jdbcType="VARCHAR" property="issu"/>
         <result column="URL" jdbcType="VARCHAR" property="url"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID, TITLE, ENGLISH_TITLE, TYPE, AUTHOR, AUTHOR_AFFILIATION, YEAR, SOURCE_NAME, VOLUME, ISSUE, PAGES, KEYWORDS, ABSTRACT, DOI, ISSU, URL
+        ID, TITLE, ENGLISH_TITLE, TYPE, AUTHOR, AUTHOR_AFFILIATION, YEAR, SOURCE_NAME, VOLUME, ISSUE, PAGES, KEYWORDS, ABSTRACT, URL
     </sql>
     <sql id="TABLE_NAME">
         tb_academic_paper
@@ -57,12 +55,6 @@
             <if test="abstract_ != null">
                 ABSTRACT,
             </if>
-            <if test="doi != null">
-                DOI,
-            </if>
-            <if test="issu != null">
-                ISSU
-            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             #{id,jdbcType=VARCHAR},
@@ -94,12 +86,6 @@
             </if>
             <if test="abstract_ != null">
                 #{abstract_,jdbcType=VARCHAR},
-            </if>
-            <if test="doi != null">
-                #{doi,jdbcType=VARCHAR},
-            </if>
-            <if test="issu != null">
-                #{issu,jdbcType=VARCHAR}
             </if>
         </trim>
     </insert>
@@ -167,12 +153,6 @@
             <if test="abstract_ != null">
                 ABSTRACT = #{abstract_,jdbcType=VARCHAR},
             </if>
-            <if test="doi != null">
-                DOI = #{doi,jdbcType=VARCHAR},
-            </if>
-            <if test="issu != null">
-                ISSU = #{issu,jdbcType=VARCHAR},
-            </if>
             <if test="url != null">
                 URL = #{url,jdbcType=VARCHAR},
             </if>
@@ -184,5 +164,11 @@
         <include refid="Base_Column_List"/>
         from <include refid="TABLE_NAME"/>
         order by YEAR desc, VOLUME desc LIMIT 5
+    </select>
+    <select id="selectFuzzyName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where TITLE like #{key,jdbcType=VARCHAR}
     </select>
 </mapper>

@@ -24,15 +24,4 @@ public class AcademicPaperServiceImpl extends BaseServiceImpl<AcademicPaperMappe
     @Autowired
     private AcademicPaperMapper academicPaperMapper;
 
-    public Result<List<AcademicPaper>> selectNew(){
-        Result<List<AcademicPaper>> result = new Result<>();
-        try {
-            List<AcademicPaper> newAcademicPaper = academicPaperMapper.selectNew();
-            result.setCode(CodeConstants.SUCCESS).setBody(newAcademicPaper).setMessage("查询成功");
-        } catch (RuntimeException e) {
-            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
-        }
-        return result;
-    };
-
 }

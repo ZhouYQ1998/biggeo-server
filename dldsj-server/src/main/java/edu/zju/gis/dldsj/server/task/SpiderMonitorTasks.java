@@ -27,7 +27,7 @@ public class SpiderMonitorTasks implements Runnable{
                 String filepath = "/Users/jiarui/学习/ZJU/暑期课程/Summer_endpoint/dldsj-server/src/main/resources/test.py";
                 String cmd = "python "+filepath;
                 //SSHUtil.runLocal(cmd);
-                System.out.println("cmd");
+                //System.out.println("cmd");
                 //休眠一天，一天运行一次
                 TimeUnit.HOURS.sleep(24);
             } catch (InterruptedException e) {
