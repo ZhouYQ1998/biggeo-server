@@ -1,0 +1,1 @@
+command `gcc -std=c11 main.c`  echo `./a.out`

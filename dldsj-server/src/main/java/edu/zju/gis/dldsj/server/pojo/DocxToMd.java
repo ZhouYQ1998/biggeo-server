@@ -3,12 +3,10 @@ package edu.zju.gis.dldsj.server.pojo;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.poi.xwpf.usermodel.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.stream.FileImageOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -227,4 +225,51 @@ public class DocxToMd {
 
         fos.close();
     }
+
+    public static void docxToMarkdown(FileInputStream fileInputStream, String outputPath) throws IOException{
+        XWPFDocument doc = new XWPFDocument(fileInputStream);
+        List<IBodyElement> elements=  doc.getBodyElements();//获取所有元素
+
+        int paragraphIndex = 0;
+        int tableIndex = 0;
+        FileOutputStream fos = new FileOutputStream(new File(outputPath));
+        for(IBodyElement element:elements){
+            System.out.print(element.getElementType()+" ");
+
+            if(BodyElementType.PARAGRAPH.equals(element.getElementType())){
+                List<XWPFRun> xwpfRuns = element.getBody().getParagraphArray(paragraphIndex).getRuns();
+                String paragraphText = paragraphTrans(xwpfRuns,paragraphIndex,"D:\\test");
+                System.out.print(paragraphText);
+                fos.write(paragraphText.getBytes());
+                fos.flush();
+                paragraphIndex++;
+            }else if (BodyElementType.TABLE.equals(element.getElementType())){
+                XWPFTable xwpfTable = element.getBody().getTableArray(tableIndex);
+                String tableText = tableTrans(xwpfTable,tableIndex);
+                System.out.print(tableText);
+                fos.write(tableText.getBytes());
+                fos.flush();
+                tableIndex++;
+            }else {
+                System.out.println("Unknown ElementType.");
+            }
+        }
+
+        fos.close();
+    }
+
+    public static FileInputStream transferToFileInputStream(MultipartFile multipartFile) throws IOException {
+        //选择用缓冲区来实现这个转换即使用java创建的临时文件
+        //使用MultipartFile.transferto()方法
+        FileInputStream ips = null;
+        File file1 = null;
+
+        file1 = File.createTempFile("temp", null);
+        multipartFile.transferTo(file1);
+        ips = new FileInputStream(file1);
+        file1.deleteOnExit();
+
+        return ips;
+    }
+
 }

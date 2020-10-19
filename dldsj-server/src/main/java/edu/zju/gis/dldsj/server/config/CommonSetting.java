@@ -66,6 +66,8 @@ public class CommonSetting {
     private String airFlowDagsPath;
     private String hdFsUri;
     private String lFsUri;
+    //Education Cases
+    private String eduCasePath;
 
 
 }
