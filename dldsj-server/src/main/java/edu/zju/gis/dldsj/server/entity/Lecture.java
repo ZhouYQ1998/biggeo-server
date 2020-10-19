@@ -18,6 +18,7 @@ public class Lecture extends Base<String> {
     private String speaker;
     private String place;
     private String time;
+    private String detailTime;
     private String url;
 }
 

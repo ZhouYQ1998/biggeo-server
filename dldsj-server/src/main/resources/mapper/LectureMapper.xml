@@ -6,6 +6,7 @@
         <result column="NAME" jdbcType="VARCHAR" property="name"/>
         <result column="SPEAKER" jdbcType="VARCHAR" property="speaker"/>
         <result column="TIME" jdbcType="VARCHAR" property="time"/>
+        <result column="DETAIL_TIME" jdbcType="VARCHAR" property="detailTime"/>
         <result column="PLACE" jdbcType="VARCHAR" property="place"/>
         <result column="URL" jdbcType="VARCHAR" property="url"/>
     </resultMap>
@@ -26,6 +27,9 @@
             <if test="time != null">
                 TIME,
             </if>
+            <if test="detailTime != null">
+                DETAIL_TIME,
+            </if>
             <if test="place != null">
                 PLACE,
             </if>
@@ -41,6 +45,9 @@
             </if>
             <if test="time != null">
                 #{time,jdbcType=VARCHAR},
+            </if>
+            <if test="detailTime != null">
+                #{detailTime,jdbcType=VARCHAR},
             </if>
             <if test="place != null">
                 #{place,jdbcType=VARCHAR},
@@ -90,11 +97,20 @@
             <if test="time != null">
                 TIME = #{time,jdbcType=VARCHAR},
             </if>
+            <if test="detailTime != null">
+                DETAIL_TIME = #{detailTime,jdbcType=VARCHAR},
+            </if>
             <if test="url != null">
                 URL = #{url,jdbcType=VARCHAR},
             </if>
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>
+    <select id="selectNew" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        order by TIME desc LIMIT 5
+    </select>
 
 </mapper>

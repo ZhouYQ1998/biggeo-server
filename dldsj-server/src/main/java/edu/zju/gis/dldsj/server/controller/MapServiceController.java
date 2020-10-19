@@ -7,6 +7,7 @@ import edu.zju.gis.dldsj.server.entity.MapService;
 import edu.zju.gis.dldsj.server.service.MapServiceService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Log4j
 @Controller
+@CrossOrigin
 @RequestMapping("/mapservice")
 public class MapServiceController extends BaseController<MapService, MapServiceService, String, BaseFilter<String>> {
 

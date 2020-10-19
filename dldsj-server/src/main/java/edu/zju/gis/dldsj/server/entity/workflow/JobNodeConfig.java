@@ -44,7 +44,7 @@ public class JobNodeConfig {
     private List<String> sparkSetting;
 
     public String buildTask(ParallelModelService parallelModelService) {
-        /*String task = String.format("%s = BashOperator(\n" +
+        String task = String.format("%s = BashOperator(\n" +
                 "    task_id='%s',\n" +
                 "    bash_command='%s',\n", modelId+"_"+taskId.replace("-","_"), taskId, parallelModelService.getCmd(artifactId, taskId, params, sparkSetting));
         if (retries != null)
@@ -61,9 +61,9 @@ public class JobNodeConfig {
             task += String.format("    env=%s,\n", env);
         task += "    dag=dag\n" +
                 ")\n\n";
-        */
-        String task = String.format("%s = BashOperator(\n" + "    task_id='%s',\n" + "    bash_command='date'",modelId+"_"+taskId.replace("-","_"), taskId)+
-                "    ,\ndag=dag\n"+")\n\n";
+
+//        String task = String.format("%s = BashOperator(\n" + "    task_id='%s',\n" + "    bash_command='date'",modelId+"_"+taskId.replace("-","_"), taskId)+
+//                "    ,\ndag=dag\n"+")\n\n";
         return task;
     }
 }

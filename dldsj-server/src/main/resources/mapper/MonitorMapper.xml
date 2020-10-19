@@ -291,4 +291,64 @@
             running_containers   = #{runningContainers,jdbcType=VARCHAR}
         where name = #{name,jdbcType=VARCHAR}
     </update>
+    <update id="updateByNameSelective" parameterType="edu.zju.gis.dldsj.server.entity.Monitor">
+        update mr_task_monitor
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="user != null">
+                user = #{user,jdbcType=VARCHAR},
+            </if>
+            <if test="applicationType != null">
+                application_type = #{applicationType,jdbcType=VARCHAR},
+            </if>
+            <if test="queue != null">
+                queue = #{queue,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="finalStatus != null">
+                final_status = #{finalStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="progress != null">
+                progress = #{progress,jdbcType=VARCHAR},
+            </if>
+            <if test="trackingUi != null">
+                tracking_ui = #{trackingUi,jdbcType=VARCHAR},
+            </if>
+            <if test="trackingUrl != null">
+                tracking_url = #{trackingUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="clusterId != null">
+                cluster_id = #{clusterId,jdbcType=VARCHAR},
+            </if>
+            <if test="startedTime != null">
+                started_time = #{startedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="finishedTime != null">
+                finished_time = #{finishedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="elapsedTime != null">
+                elapsed_time = #{elapsedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="amContainerLogs != null">
+                am_container_logs = #{amContainerLogs,jdbcType=VARCHAR},
+            </if>
+            <if test="amHostHttpAddress != null">
+                am_host_http_address = #{amHostHttpAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="allocatedMb != null">
+                allocated_mb = #{allocatedMb,jdbcType=VARCHAR},
+            </if>
+            <if test="allocatedVcores != null">
+                allocated_vcores = #{allocatedVcores,jdbcType=VARCHAR},
+            </if>
+            <if test="runningContainers != null">
+                running_containers = #{runningContainers,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where name = #{name,jdbcType=VARCHAR}
+    </update>
 </mapper>
