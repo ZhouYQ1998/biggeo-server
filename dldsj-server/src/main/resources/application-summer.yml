@@ -67,7 +67,7 @@ settings:
   calculateDataNameSpace: /calculateData/
   selfDataNameSpace: /selfData/
   systemPublicAccount: SYSTEM_PUBLIC
-  airFlowHome: /root/airflow*
+  airFlowHome: /root/airflow
 #  airFlowHome: /Users/jiarui/airflow
   airFlowDagsPath: ${settings.airFlowHome}/dags
   hdFsUri: hdfs://192.168.1.5:9000
