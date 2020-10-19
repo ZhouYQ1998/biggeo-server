@@ -274,5 +274,12 @@
         limit 5
     </select>
 
+    <!-- 获取模糊搜索结果 -->
+    <select id="selectFuzzyName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where TITLE like #{key,jdbcType=VARCHAR}
+    </select>
 
 </mapper>

@@ -56,6 +56,11 @@ public interface BaseService<T extends Base<ID>, ID extends Serializable> {
     Result<List<T>> selectNew();
 
     /**
+     * 查询实体（模糊搜索）
+     */
+    Result<Page<T>> selectFuzzyName(String key, Page<T> page);
+
+    /**
      * 更新实体
      */
     Result<T> update(T t);

@@ -165,4 +165,10 @@
         from <include refid="TABLE_NAME"/>
         order by YEAR desc, VOLUME desc LIMIT 5
     </select>
+    <select id="selectFuzzyName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where TITLE like #{key,jdbcType=VARCHAR}
+    </select>
 </mapper>

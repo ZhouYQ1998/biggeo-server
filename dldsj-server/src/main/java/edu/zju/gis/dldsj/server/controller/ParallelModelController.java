@@ -31,7 +31,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +41,7 @@ import java.util.UUID;
  * @version 1.0, 2020-09-25
  */
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/parallel")
 public class ParallelModelController {
@@ -504,9 +504,8 @@ public class ParallelModelController {
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public String test(@RequestBody String requestBody) throws IOException {
+    public String test(@RequestBody String requestBody){
         System.out.println(requestBody);
-        SSHUtil.runSSH(setting.getNameNode(), setting.getUsername(), setting.getPassword(), "echo hello > /root/katus/test.txt", setting.getTemplatePath());
         return "success";
     }
 

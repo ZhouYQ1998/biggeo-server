@@ -16,6 +16,7 @@ import java.util.List;
  * 实现Controller的基础CURD方法
  * 实现Controller的基础批量CURD方法
  **/
+@CrossOrigin
 public abstract class BaseController<T extends Base<ID>, Service extends BaseService<T, ID>, ID extends Serializable, Search extends BaseFilter<ID>> {
 
     /**
@@ -108,6 +109,17 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
     @ResponseBody
     public Result<List<T>> selectNew() {
         return service.selectNew();
+    }
+
+    /***
+     * 查询实体（模糊搜索）
+     * @param key String
+     * @return result
+     */
+    @RequestMapping(value = "/fuzzyname/{key}", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<Page<T>> selectFuzzyName(@PathVariable String key, Page<T> page) {
+        return service.selectFuzzyName(key, page);
     }
 
     /**
