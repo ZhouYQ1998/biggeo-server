@@ -31,6 +31,7 @@ settings:
   jarPath: ${settings.parallelFilePath}/jar
   xmlPath: ${settings.parallelFilePath}/xml
   picPath: ${settings.parallelFilePath}/pic
+  eduCasePath: /home/data/images/3S/educase
   geoDataPath: /gis/3S/geoData
   frontEndRegionList:
     - http://localhost:8082
