@@ -15,6 +15,7 @@ import java.util.Date;
 @Setter
 @ToString(callSuper = true)
 public class TeachModel extends Base<String> {
+    String teachmodelId;
     String name;
     String description;
     Date date;
