@@ -31,14 +31,4 @@ public class LectureController extends BaseController<Lecture, LectureService, S
     @Autowired
     private LectureService lectureService;
 
-    /***
-     * 查询最新讲座
-     * @return result
-     */
-    @RequestMapping(value = "/selectnew", method = RequestMethod.GET)
-    @ResponseBody
-    public Result<List<Lecture>> selectNew() {
-        return lectureService.selectNew();
-    }
-
 }

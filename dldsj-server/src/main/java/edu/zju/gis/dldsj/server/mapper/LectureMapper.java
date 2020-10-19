@@ -15,6 +15,4 @@ import java.util.List;
 
 public interface LectureMapper extends BaseMapper<Lecture,String> {
 
-    List<Lecture> selectNew();
-
 }

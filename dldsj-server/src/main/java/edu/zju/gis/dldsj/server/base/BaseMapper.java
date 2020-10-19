@@ -42,6 +42,11 @@ public interface BaseMapper<T extends Base, ID extends Serializable> {
     List<T> allSelect();
 
     /**
+     * 查询实体（最新）
+     */
+    List<T> selectNew();
+
+    /**
      * 根据参数查询对象
      */
     List<T> search(BaseFilter<ID> params);

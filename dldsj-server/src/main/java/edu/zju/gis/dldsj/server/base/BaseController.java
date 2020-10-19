@@ -3,6 +3,7 @@ package edu.zju.gis.dldsj.server.base;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.entity.Batch;
+import edu.zju.gis.dldsj.server.entity.Lecture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -97,6 +98,16 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
     @ResponseBody
     public Result<Page<T>> allSelect(Page<T> page) {
         return service.allSelect(page);
+    }
+
+    /***
+     * 查询实体（最新）
+     * @return result
+     */
+    @RequestMapping(value = "/selectnew", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<List<T>> selectNew() {
+        return service.selectNew();
     }
 
     /**

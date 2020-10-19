@@ -13,6 +13,4 @@ import java.util.List;
  */
 public interface AcademicPaperService extends BaseService<AcademicPaper, String> {
 
-    Result<List<AcademicPaper>> selectNew();
-
 }

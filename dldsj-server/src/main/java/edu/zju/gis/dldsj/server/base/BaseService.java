@@ -3,6 +3,7 @@ package edu.zju.gis.dldsj.server.base;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.entity.Batch;
+import edu.zju.gis.dldsj.server.entity.Lecture;
 
 import java.io.Serializable;
 import java.util.List;
@@ -48,6 +49,11 @@ public interface BaseService<T extends Base<ID>, ID extends Serializable> {
      * 查询实体（所有）
      */
     Result<Page<T>> allSelect(Page<T> page);
+
+    /**
+     * 查询实体（最新）
+     */
+    Result<List<T>> selectNew();
 
     /**
      * 更新实体

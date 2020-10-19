@@ -12,6 +12,4 @@ import java.util.List;
  */
 public interface AcademicPaperMapper extends BaseMapper<AcademicPaper, String> {
 
-    List<AcademicPaper> selectNew();
-
 }
