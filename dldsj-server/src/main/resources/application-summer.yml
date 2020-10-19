@@ -33,6 +33,7 @@ settings:
   xmlPath: ${settings.parallelFilePath}/xml
   picPath: ${settings.nginxPath}/bigGeoPlatform/modelImages
   eduCasePath: /home/data/images/3S/educase
+  eduCaseNginxPath: /images/3S/educase
   geoDataPath: /3S/geoData
   frontEndRegionList:
     - http://localhost:8082

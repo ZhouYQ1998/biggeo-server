@@ -25,6 +25,8 @@ public class DocxToMd {
     private List<XWPFHeader> headerList;
     // 页脚
     private List<XWPFFooter> footerList;
+    //图片编号
+    private int picIndex = 0;
 
     public void readFromdocx(String path) throws IOException {
         XWPFDocument doc = new XWPFDocument(new FileInputStream(path));
@@ -56,7 +58,7 @@ public class DocxToMd {
         return resultText.toString();
     }
 
-    public static String paragraphTrans(List<XWPFRun> xwpfRuns, int parIndex, String pathPrefix) throws IOException {
+    public String paragraphTrans(List<XWPFRun> xwpfRuns, int parIndex, String pathPrefix) throws IOException {
         String result = "";
         String paragraphStyle = null;
         StringBuilder preRun = new StringBuilder();
@@ -71,11 +73,13 @@ public class DocxToMd {
             for (XWPFPicture xwpfPicture : embeddedPictures) {
                 byte[] data = xwpfPicture.getPictureData().getData();
                 //输出图片
-                String pathName = pathPrefix + parIndex+"-"+runIndex  + ".png";
+                String pathName = pathPrefix + "/" + "pic"+ picIndex + ".png";
                 FileImageOutputStream imageOutput = new FileImageOutputStream(new File(pathName));
                 imageOutput.write(data, 0, data.length);
                 imageOutput.close();
-                paragraphText.append("![image](").append(pathName).append(")");
+
+                paragraphText.append("![image](").append("pic"+ picIndex + ".png").append(")");
+                picIndex++;
             }
 
             //该run是否存在文字
@@ -155,7 +159,7 @@ public class DocxToMd {
         return result+"\n";
     }
 
-    public static String tableTrans(XWPFTable xwpfTable, int tableIndex) {
+    public String tableTrans(XWPFTable xwpfTable, int tableIndex) {
         String result = "";
         StringBuilder tableBuilder = new StringBuilder();
 
@@ -194,19 +198,20 @@ public class DocxToMd {
         return result;
     }
 
-    public static void docxToMarkdown(String inputPath, String outputPath) throws IOException{
+    public void docxToMarkdown(String inputPath, String outputPath) throws IOException{
         XWPFDocument doc = new XWPFDocument(new FileInputStream(inputPath));
         List<IBodyElement> elements=  doc.getBodyElements();//获取所有元素
 
         int paragraphIndex = 0;
         int tableIndex = 0;
+        String pathPrefix = outputPath.substring(0,outputPath.lastIndexOf('/'));
         FileOutputStream fos = new FileOutputStream(new File(outputPath));
         for(IBodyElement element:elements){
             System.out.print(element.getElementType()+" ");
 
             if(BodyElementType.PARAGRAPH.equals(element.getElementType())){
                 List<XWPFRun> xwpfRuns = element.getBody().getParagraphArray(paragraphIndex).getRuns();
-                String paragraphText = paragraphTrans(xwpfRuns,paragraphIndex,"D:\\test");
+                String paragraphText = paragraphTrans(xwpfRuns,paragraphIndex,pathPrefix);
                 System.out.print(paragraphText);
                 fos.write(paragraphText.getBytes());
                 fos.flush();
@@ -226,19 +231,20 @@ public class DocxToMd {
         fos.close();
     }
 
-    public static void docxToMarkdown(FileInputStream fileInputStream, String outputPath) throws IOException{
+    public void docxToMarkdown(FileInputStream fileInputStream, String outputPath) throws IOException{
         XWPFDocument doc = new XWPFDocument(fileInputStream);
         List<IBodyElement> elements=  doc.getBodyElements();//获取所有元素
 
         int paragraphIndex = 0;
         int tableIndex = 0;
+        String pathPrefix = outputPath.substring(0,outputPath.lastIndexOf('/'));
         FileOutputStream fos = new FileOutputStream(new File(outputPath));
         for(IBodyElement element:elements){
             System.out.print(element.getElementType()+" ");
 
             if(BodyElementType.PARAGRAPH.equals(element.getElementType())){
                 List<XWPFRun> xwpfRuns = element.getBody().getParagraphArray(paragraphIndex).getRuns();
-                String paragraphText = paragraphTrans(xwpfRuns,paragraphIndex,"D:\\test");
+                String paragraphText = paragraphTrans(xwpfRuns,paragraphIndex,pathPrefix);
                 System.out.print(paragraphText);
                 fos.write(paragraphText.getBytes());
                 fos.flush();

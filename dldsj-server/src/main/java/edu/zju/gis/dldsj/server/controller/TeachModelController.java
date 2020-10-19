@@ -21,6 +21,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * @author Jiarui
@@ -34,6 +38,9 @@ public class TeachModelController extends BaseController<TeachModel, TeachModelS
 
     @Autowired
     private CommonSetting setting;
+
+    @Autowired
+    private TeachModelService teachModelService;
     /**
      * 管理员上传教学案例
      * @param role
@@ -51,15 +58,23 @@ public class TeachModelController extends BaseController<TeachModel, TeachModelS
             // 如果请求数据中不包括文件
             if (!ServletFileUpload.isMultipartContent(request)) {   // 判断是否是包含文件的表单数据
                 return result.setCode(CodeConstants.VALIDATE_ERROR).setBody("ERROR")
-                        .setMessage("上传文件为空");
+                        .setMessage("上传表单不符合要求");
             }
             //包含文件
             MultipartFile file = ((MultipartHttpServletRequest)request).getFile("file");
+            if(file==null)
+                return result.setCode(CodeConstants.VALIDATE_ERROR).setBody("ERROR")
+                    .setMessage("上传文件为空");
+
             String fileType = file.getContentType();
-            //TODO:如果文件类型不是DOCX
+            if(!fileType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
+                return result.setCode(CodeConstants.VALIDATE_ERROR).setBody("ERROR")
+                        .setMessage("请上传Word文件");
+
             FileInputStream docxIunputStream = DocxToMd.transferToFileInputStream(file);
 
-            String folderName = "";//TODO 从req中读取教学案例名;
+            Enumeration<String> er = request.getParameterNames();
+            String folderName = request.getParameter("name");//TODO 从req中读取教学案例名;
             String RUNNING_SHELL_FILE = "makeDir.sh";
             String SHELL_FILE_DIR = setting.getEduCasePath();
 
@@ -86,13 +101,35 @@ public class TeachModelController extends BaseController<TeachModel, TeachModelS
 
             if (runningStatus != 0) {
                 //TODO 脚本运行存在问题
+                InputStream is = p.getInputStream();
+                byte[] buff = new byte[8 * 1024 * 1024];
+                int len = -1;
+                StringBuilder sb = new StringBuilder();
+                while((len = is.read(buff)) != -1) {
+                    String content = new String(buff, 0, len);
+                    sb.append(content);
+                }
+                String err = sb.toString();
+                return result.setCode(CodeConstants.VALIDATE_ERROR).setBody("ERROR")
+                        .setMessage("脚本运行错误");
             }
-
+            String outputPath = setting.getEduCasePath()+"/"+folderName+"/"+folderName+".txt";
             //将传入的Docx文件转成Markdown并存入服务器对应文件夹当中
-            DocxToMd.docxToMarkdown(docxIunputStream,setting.getEduCasePath()+folderName);
+            DocxToMd docxToMd = new DocxToMd();
+            docxToMd.docxToMarkdown(docxIunputStream,outputPath);
 
             TeachModel teachModel = new TeachModel();
-            return Result.success().setBody(service.insert(teachModel));
+
+            String id = UUID.randomUUID().toString();
+            teachModel.setTeachmodelId(id);
+            teachModel.setName(folderName);
+            teachModel.setKeywords("markdown");
+            teachModel.setFilePath(setting.getEduCaseNginxPath()+"/"+folderName);
+            teachModel.setPicPath(setting.getEduCaseNginxPath()+"/pic0.png");
+
+            int resNumber = teachModelService.insertwll(teachModel);
+//            Result<TeachModel> res = service.insert(teachModel);
+            return result.setCode(CodeConstants.SUCCESS).setBody(id).setMessage("模型注册成功");
         }
         else return Result.error();
     }
