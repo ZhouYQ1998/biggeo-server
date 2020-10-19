@@ -14,9 +14,6 @@ spring:
     url: jdbc:mysql://10.79.231.81:3306/eduPlatform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
     username: root
     password: 123456
-#    url: jdbc:mysql://localhost/group2?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
-#    username: root
-#    password: mysql
   servlet:
     multipart:
       max-file-size: 200MB
@@ -34,6 +31,7 @@ settings:
   jarPath: ${settings.parallelFilePath}/jar
   xmlPath: ${settings.parallelFilePath}/xml
   picPath: ${settings.parallelFilePath}/pic
+  eduCasePath: /home/data/images/3S/educase
   geoDataPath: /3S/geoData
   frontEndRegionList:
     - http://localhost:8082
@@ -71,5 +69,4 @@ settings:
 #  airFlowHome: /Users/jiarui/airflow
   airFlowDagsPath: ${settings.airFlowHome}/dags
   hdFsUri: hdfs://192.168.1.5:9000
-#  hdFsUri: hdfs://localhost:9000
   lFsUri: file://
