@@ -15,6 +15,4 @@ import java.util.List;
 
 public interface LectureService extends BaseService<Lecture,String> {
 
-    Result<List<Lecture>> selectNew();
-
 }

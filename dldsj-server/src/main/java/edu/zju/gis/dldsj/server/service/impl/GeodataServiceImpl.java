@@ -115,10 +115,13 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
             String hdfsPath = setting.getGeoDataPath() + '/' + fileName;
 
             HdfsManipulator hdfsManipulator = (HdfsManipulator) FsManipulatorFactory.create(setting.getHdFsUri());
-            hdfsManipulator.uploadFromLocal(regexPath, hdfsPath);
-            t.setPath(setting.getHdFsUri() + hdfsPath);
-
-            resMessage = "文件上传成功！";
+            if (hdfsManipulator.uploadFromLocal(regexPath, hdfsPath)) {
+                t.setPath(setting.getHdFsUri() + hdfsPath);
+                resMessage = "文件上传成功！";
+            } else {
+                t.setPath("");
+                resMessage = "文件上传失败！";
+            }
         } else {
             resMessage = "文件路径错误！";
         }
@@ -149,8 +152,11 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
 
                 if (hdfsManipulator.isFile(hdfsPath) && new File(fileDirectory).isDirectory()) {
                     String fileName = hdfsPath.substring(hdfsPath.lastIndexOf('/') + 1);
-                    hdfsManipulator.downloadToLocal(hdfsPath, fileDirectory + '/' + fileName);
-                    resMessage = "下载成功！";
+                    if (hdfsManipulator.downloadToLocal(hdfsPath, fileDirectory + '/' + fileName)){
+                        resMessage = "下载成功！";
+                    }else {
+                        resMessage = "下载失败！";
+                    }
                 }
                 downloadTimesPlus(id);
 

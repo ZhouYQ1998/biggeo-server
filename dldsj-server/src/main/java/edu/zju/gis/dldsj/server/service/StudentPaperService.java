@@ -14,6 +14,4 @@ import java.util.Map;
  */
 public interface StudentPaperService extends BaseService<StudentPaper, String> {
 
-    Result<List<StudentPaper>> selectNew();
-
 }

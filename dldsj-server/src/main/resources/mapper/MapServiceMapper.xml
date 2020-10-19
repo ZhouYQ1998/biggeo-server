@@ -74,6 +74,12 @@
         select <include refid="Base_Column_List"/>
         from <include refid="TABLE_NAME"/>
     </select>
+    <select id="selectFuzzyName" parameterType="java.lang.String" resultType="edu.zju.gis.dldsj.server.entity.MapService">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where NAME like #{key,jdbcType=VARCHAR}
+    </select>
     <!-- CRUD end -->
 
 

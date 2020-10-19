@@ -70,5 +70,7 @@ public class CommonSetting {
     private String eduCasePath;
     private String eduCaseNginxPath;
 
+    private String nginxUrl;
+    private String nginxPath;
 
 }

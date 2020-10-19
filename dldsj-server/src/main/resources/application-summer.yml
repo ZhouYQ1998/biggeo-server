@@ -5,7 +5,6 @@ server:
   servlet:
     context-path: /summer/
 
-
 spring:
   application:
     name: ${application-info.name}
@@ -16,8 +15,8 @@ spring:
     password: 123456
   servlet:
     multipart:
-      max-file-size: 200MB
-      max-request-size: 200MB
+      max-file-size: 300MB
+      max-request-size: 300MB
   mvc:
     static-path-pattern: static/**
   resources:
@@ -26,11 +25,13 @@ spring:
       - classpath:/static
 
 settings:
+  nginxUrl: http://10.79.231.81:90
+  nginxPath: /home/data
   parallelFilePath: /opt/3S/upload
   templatePath: ${settings.parallelFilePath}/template
   jarPath: ${settings.parallelFilePath}/jar
   xmlPath: ${settings.parallelFilePath}/xml
-  picPath: ${settings.parallelFilePath}/pic
+  picPath: ${settings.nginxPath}/bigGeoPlatform/modelImages
   eduCasePath: /home/data/images/3S/educase
   eduCaseNginxPath: /images/3S/educase
   geoDataPath: /3S/geoData
@@ -66,7 +67,7 @@ settings:
   calculateDataNameSpace: /calculateData/
   selfDataNameSpace: /selfData/
   systemPublicAccount: SYSTEM_PUBLIC
-  airFlowHome: /root/airflow*
+  airFlowHome: /root/airflow
 #  airFlowHome: /Users/jiarui/airflow
   airFlowDagsPath: ${settings.airFlowHome}/dags
   hdFsUri: hdfs://192.168.1.5:9000

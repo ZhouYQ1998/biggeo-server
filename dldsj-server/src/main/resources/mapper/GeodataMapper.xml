@@ -25,7 +25,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         ID, TITLE, UPLOADER, USERNAME, DOWNLOADAUTHORITY, RE_TIME, TYPE_1, TYPE_2, KEYWORDS,
-        SOURCE, ABSTRACT, REFERENCE, PICTURE, OLD_FILENAME, NEW_FILENAME, FORMAT, PATH, RAM, DOWNLOAD_TIMES
+        ABSTRACT, REFERENCE, PICTURE, OLD_FILENAME, NEW_FILENAME, FORMAT, PATH, RAM, DOWNLOAD_TIMES
     </sql>
     <sql id="TABLE_NAME">
         tb_geographic_data
@@ -274,5 +274,12 @@
         limit 5
     </select>
 
+    <!-- 获取模糊搜索结果 -->
+    <select id="selectFuzzyName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where TITLE like #{key,jdbcType=VARCHAR}
+    </select>
 
 </mapper>

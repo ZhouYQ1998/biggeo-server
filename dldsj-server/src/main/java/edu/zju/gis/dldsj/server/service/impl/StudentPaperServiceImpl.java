@@ -25,15 +25,4 @@ public class StudentPaperServiceImpl extends BaseServiceImpl<StudentPaperMapper,
     @Autowired
     private StudentPaperMapper studentPaperMapper;
 
-    public Result<List<StudentPaper>> selectNew(){
-        Result<List<StudentPaper>> result = new Result<>();
-        try {
-            List<StudentPaper> newStudentPaper = studentPaperMapper.selectNew();
-            result.setCode(CodeConstants.SUCCESS).setBody(newStudentPaper).setMessage("查询成功");
-        } catch (RuntimeException e) {
-            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
-        }
-        return result;
-    };
-
 }

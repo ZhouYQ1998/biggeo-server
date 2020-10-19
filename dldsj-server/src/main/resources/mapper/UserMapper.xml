@@ -73,7 +73,7 @@
                 #{field,jdbcType=VARCHAR},
             </if>
             <if test="purpose != null">
-                #{institute,jdbcType=VARCHAR},
+                #{purpose,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>

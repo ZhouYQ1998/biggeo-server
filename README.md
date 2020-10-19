@@ -11,7 +11,7 @@
 | PASSWORD      | 密码         | String | Not Null                                   |
 | PHONE         | 电话号码     | String | Not Null                                   |
 | EMAIL         | 邮箱         | String | Not Null                                   |
-| ICON          | 头像         | String |                                            |
+| ICON          | 头像         | String | Default 1.png                              |
 | COUNTRY       | 国家（地区） | String |                                            |
 | INSTITUTE     | 机构         | String |                                            |
 | INSTITUTETYPE | 机构类型     | String |                                            |
@@ -83,6 +83,7 @@
 | /geodata/select/{id}        | 查询用户                       | GET    |                                                              | {code,body,message} |                |
 | /geodata/batchseletct/{ids} | 批量查询                       | GET    |                                                              | {code,body,message} |                |
 | /geodata/allselect          | 全部查询                       | GET    |                                                              |                     |                |
+| /geodata/fuzzyname/{key}    | 模糊查询                       | GET    | page                                                         | {code,body,message} |                |
 | /geodata/byuserName         | 名字查询                       | GET    | String userName                                              |                     |                |
 | /geodata/update             | 更新用户                       | POST   | id[,title,uploader,type1,type2,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |                |
 | /geodata/batchupdate        | 批量更新                       | POST   | [Geodata[,Geodata...]]                                       | {code,body,message} |                |
@@ -122,6 +123,7 @@
 | /studentpaper/delete/{id}        | 删除论文 | DELETE |                                                              | {code,body,message} | body值为id  |
 | /studentpaper/select/{id}        | 查询论文 | GET    |                                                              | {code,body,message} |             |
 | /studentpaper/selectnew          | 查询最新 | GET    |                                                              | {code,body,message} |             |
+| /studentpaper/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]                                            | {code,body,message} |             |
 | /studentpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                                            | ode,body,message}   | 逗号","分隔 |
 | /studentpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
 | /studentpaper/update             | 更新论文 | POST   | id[,title,englishTitle,author,publisher,tertiaryAuthor,year,type,keywords,abstract_,url] | {code,body,message} | id为必要值  |
@@ -157,6 +159,7 @@
 | /academicpaper/delete/{id}        | 删除论文 | DELETE |                                                              | {code,body,message} | body值为id  |
 | /academicpaper/select/{id}        | 查询论文 | GET    |                                                              | {code,body,message} |             |
 | /academicpaper/selectnew          | 查询最新 | GET    |                                                              | {code,body,message} |             |
+| /academicpaper/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]                                            | {code,body,message} |             |
 | /academicpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                                            | ode,body,message}   | 逗号","分隔 |
 | /academicpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
 | /academicpaper/update             | 更新论文 | POST   | id[,title,englishTitle,type,author,authorAffiliation,year,sourceName,volume,issue,pages,keywords,abstract_,doi,issu,url] | {code,body,message} | id为必要值  |
@@ -183,6 +186,7 @@
 | /lecture/delete/{id}        | 删除讲座 | DELETE |                                  | {code,body,message} | body值为id  |
 | /lecture/select/{id}        | 查询讲座 | GET    |                                  | {code,body,message} |             |
 | /lecture/selectnew          | 查询最新 | GET    |                                  | {code,body,message} |             |
+| /lecture/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]                | {code,body,message} |             |
 | /lecture/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                | {code,body,message} | 逗号","分隔 |
 | /lecture/allselect          | 查询讲座 | GET    | [pageNo,pageSize]                | {code,body,message} | body为page  |
 | /lecture/update             | 更新讲座 | POST   | id[,name,speaker,place,time,url] | {code,body,message} | id为必要值  |
@@ -212,6 +216,7 @@
 | /onlinetools/select/{id}        | 查询     | GET    |                            | {code,body,message} |             |
 | /onlinetools/batchseletct/{ids} | 批量     | GET    | [pageNo,pageSize]          | ode,body,message}   | 逗号","分隔 |
 | /onlinetools/allselect          | 查询     | GET    | [pageNo,pageSize]          | {code,body,message} | body为page  |
+| /onlinetools/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]          | {code,body,message} |             |
 | /onlinetools/update             | 更新     | POST   | OnlineTool                 | {code,body,message} |             |
 
 ## 7 tb_map_servers
@@ -243,6 +248,7 @@
 | /mapservice/select/{id}        | 查询     | GET    |                            | {code,body,message} |             |
 | /mapservice/batchseletct/{ids} | 批量     | GET    | [pageNo,pageSize]          | ode,body,message}   | 逗号","分隔 |
 | /mapservice/allselect          | 查询     | GET    | [pageNo,pageSize]          | {code,body,message} | body为page  |
+| /mapservice/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]          | {code,body,message} |             |
 | /mapservice/update             | 更新     | POST   | MapService                 | {code,body,message} |             |
 
 ## 8 tb_group_member

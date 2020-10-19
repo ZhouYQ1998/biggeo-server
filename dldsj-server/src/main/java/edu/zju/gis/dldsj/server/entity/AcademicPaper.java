@@ -24,8 +24,6 @@ public class AcademicPaper extends Base<String> {
     private String pages;
     private String keywords;
     private String abstract_;
-    private String doi;
-    private String issu;
     private String url;
 }
 
