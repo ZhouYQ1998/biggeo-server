@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Log4j
 @Controller
+@CrossOrigin
 @RequestMapping("teachModel")
 public class TeachModelController extends BaseController<TeachModel, TeachModelService,String, BaseFilter<String>> {
 

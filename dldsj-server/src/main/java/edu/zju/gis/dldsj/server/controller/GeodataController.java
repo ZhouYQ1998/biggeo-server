@@ -28,6 +28,7 @@ import java.util.Map;
  */
 
 @Controller
+@CrossOrigin
 @RequestMapping("/geodata")
 @Slf4j
 public class GeodataController extends BaseController<Geodata, GeodataService, String, GeodataSearchPojo> {

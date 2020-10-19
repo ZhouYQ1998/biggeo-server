@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -117,7 +116,7 @@ public class WorkFlowController {
         dag.setStyle(workFlowParam.getStyle());
         dag.setLastModifyTime(new Date());
 
-        //根据userId和传入的dagName,选择出对应出的dag
+        //根据userId和传入的dagName,看是否有已存在的dag
         WorkFlowDag dag2 = workFlowService.selectDagByNameAndUserId(dag.getName(),userId);
 
         if (dag2 == null) {
@@ -230,6 +229,7 @@ public class WorkFlowController {
     public Result submitDag(@SessionAttribute("userId") String userId, @RequestBody WorkFlowParam workFlowParam) throws IOException, InterruptedException {
         //遍历模型，整理参数，如拼接in，out参数的用户空间根目录，判断es索引名
         workFlowParam.setId(UUID.randomUUID().toString());
+        System.out.println(workFlowParam.getId());
         for (NodeInfo node : workFlowParam.getNodes()) {
             ParallelModelWithBLOBs model = parallelModelService.select(node.getModelId());
 
@@ -272,7 +272,11 @@ public class WorkFlowController {
             System.out.println(nodes.size()+node.getTaskName());
 
             JobNodeConfig config = new JobNodeConfig();
-            config.setTaskId(node.getId());
+            //config.setTaskId(node.getId());
+            //不用输入node的id，直接自动生成
+            String taskId = UUID.randomUUID().toString();
+            config.setTaskId(taskId);
+            workFlowParam.getNodes().get(nodeindex).setId(taskId);
             config.setModelId(node.getModelId());
             config.setDependsOnPast(true);
             config.setArtifactId(node.getModelId());
@@ -407,8 +411,27 @@ public class WorkFlowController {
         try {
             content.add(buildHead(userId, true, 1, workFlowParam.getId()));
             nodeConfigs.forEach(node -> content.add(node.buildTask(parallelModelService)));
+
+            //将connections中的source和target名字重新编写，使之与model的名字对应
+            List<Connection> consTransfer = new ArrayList<>();
+            List<Connection> consOri = workFlowParam.getConnections();
+            for (Connection con:consOri) {
+                int sourceNo = Integer.parseInt(con.getSource());
+                int targetNo = Integer.parseInt(con.getTarget());
+                String source = workFlowParam.getNodes().get(sourceNo).getModelId()+"_"+workFlowParam.getNodes().get(sourceNo).getId().replace("-","_");
+                String target = workFlowParam.getNodes().get(targetNo).getModelId()+"_"+workFlowParam.getNodes().get(targetNo).getId().replace("-","_");
+                Connection trans = new Connection();
+                trans.setSource(source);
+                trans.setTarget(target);
+                consTransfer.add(trans);
+            }
+
+            System.out.println(consTransfer);
+            workFlowParam.setConnections(consTransfer);
+
             for (int i = 0; i < workFlowParam.getConnections().size(); i++) {
-                content.add(workFlowParam.getConnections().get(i).getSource().replace("-","_") + ">>" + workFlowParam.getConnections().get(i).getTarget().replace("-","_"));
+                //content.add(workFlowParam.getConnections().get(i).getSource().replace("-","_") + ">>" + workFlowParam.getConnections().get(i).getTarget().replace("-","_"));
+                content.add(consTransfer.get(i).getSource()+">>"+consTransfer.get(i).getTarget());
             }
             FsManipulator fsManipulator = FsManipulatorFactory.create();
             ((LocalFsManipulator) fsManipulator).writeLines(filePath, content);

@@ -134,4 +134,10 @@
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>
+    <select id="selectNew" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        order by YEAR desc, AUTHOR desc LIMIT 5
+    </select>
 </mapper>
