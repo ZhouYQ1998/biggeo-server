@@ -69,7 +69,7 @@ public class ParallelModelController {
      * @return 标准结果体
      */
     @PostMapping(value = "/register")
-    public Result<String> register(@SessionAttribute("userId") String userId, HttpServletRequest request) {
+    public Result<String> register(@SessionAttribute("userId") String userId, @RequestParam Boolean isPublic, HttpServletRequest request) {
         Result<String> result = new Result<>();
         // 如果请求数据中不包括文件
         if (!ServletFileUpload.isMultipartContent(request)) {   // 判断是否是包含文件的表单数据
@@ -163,7 +163,7 @@ public class ParallelModelController {
             String paths = model.getXmlPath() + "," + model.getJarPath() + "," + model.getPicPath();
             log.info("文件上传完成, 保存路径为: " + paths);
             model.setUserId(userId);
-            model.setIsPublic(false);
+            model.setIsPublic(isPublic);
             parallelModelService.insert(model);
             result.setCode(CodeConstants.SUCCESS).setBody(paths).setMessage("模型注册成功");
         } catch (Exception e) {
