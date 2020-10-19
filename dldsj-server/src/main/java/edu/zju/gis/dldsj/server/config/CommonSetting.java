@@ -68,6 +68,7 @@ public class CommonSetting {
     private String lFsUri;
     //Education Cases
     private String eduCasePath;
-
+    private String nginxUrl;
+    private String nginxPath;
 
 }
