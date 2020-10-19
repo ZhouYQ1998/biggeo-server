@@ -9,13 +9,15 @@ run:
 
     #    windows:
 
-    cpp: D:\Projects\3S\codeOnline\src\main\resources\runCpp.bat
-    c: D:\Projects\3S\codeOnline\src\main\resources\runC.bat
+#    cpp: D:\Projects\3S\codeOnline\src\main\resources\runCpp.bat
+#    c: D:\Projects\3S\codeOnline\src\main\resources\runC.bat
 #    python: D:\ProgramFiles\Anaconda3\python.exe
-    java: D:\Projects\3S\codeOnline\src\main\resources\runJava.bat
+#    java: D:\Projects\3S\codeOnline\src\main\resources\runJava.bat
 
 #    linux:
 
     python: python
-#    c: /usr/local/src/runC.sh
+    c: /home/data/images/3S/codeonline/runC.sh
+    cpp: /home/data/images/3S/codeonline/runCpp.sh
+    java: /home/data/images/3S/codeonline/runJava.sh
 # -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8080
