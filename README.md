@@ -11,7 +11,7 @@
 | PASSWORD      | 密码         | String | Not Null                                   |
 | PHONE         | 电话号码     | String | Not Null                                   |
 | EMAIL         | 邮箱         | String | Not Null                                   |
-| ICON          | 头像         | String |                                            |
+| ICON          | 头像         | String | Default 1.png                              |
 | COUNTRY       | 国家（地区） | String |                                            |
 | INSTITUTE     | 机构         | String |                                            |
 | INSTITUTETYPE | 机构类型     | String |                                            |
