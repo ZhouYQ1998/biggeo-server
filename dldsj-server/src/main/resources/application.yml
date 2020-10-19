@@ -19,4 +19,5 @@ run:
     python: python
     c: /home/data/images/3S/codeonline/runC.sh
     cpp: /home/data/images/3S/codeonline/runCpp.sh
+    java: /home/data/images/3S/codeonline/runJava.sh
 # -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8080
