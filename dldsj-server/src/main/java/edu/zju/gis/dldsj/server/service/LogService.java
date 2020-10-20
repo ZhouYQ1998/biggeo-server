@@ -10,10 +10,13 @@ import java.sql.Timestamp;
 /**
  * @author zlzhang
  * @date 2020/10/16
+ * @update zyq 2020/10/20
  */
 public interface LogService extends BaseService<Log, String> {
 
+    int autoDelete();
+
     Result<Log> selectByActid(String actId);
 
-    Result<Page<Log>> selectByTime(Timestamp startTime, Timestamp endTime,Page page);
+    Result<Page<Log>> selectByTime(Timestamp startTime, Timestamp endTime,Page<Log> page);
 }

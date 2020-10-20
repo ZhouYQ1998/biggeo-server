@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 /**
  * @author zlzhang
  * @date 2020/10/18
+ * @update zyq 2020/10/20
  */
 @Slf4j
 @Controller
@@ -24,6 +25,19 @@ public class LogController extends BaseController<Log, LogService, String, BaseF
 
     @Autowired
     private LogService logService;
+
+    /**
+     * 插入日志
+     * @param log Log
+     * @return Result
+     */
+    @RequestMapping(value = "/insert", method = RequestMethod.PUT)
+    @ResponseBody
+    @Override
+    public Result<Log> insert(@RequestBody Log log) {
+        logService.autoDelete();
+        return service.insert(log);
+    }
 
     /***
      * 查询日志（通过ACTID，非主键）
@@ -44,7 +58,7 @@ public class LogController extends BaseController<Log, LogService, String, BaseF
      */
     @RequestMapping(value = "/selectbytime", method = RequestMethod.GET)
     @ResponseBody
-    public Result selectLogByTime(@RequestParam Timestamp startTime, @RequestParam Timestamp endTime, Page page) {
+    public Result<Page<Log>> selectLogByTime(@RequestParam Timestamp startTime, @RequestParam Timestamp endTime, Page<Log> page) {
         return logService.selectByTime(startTime, endTime, page);
     }
 
