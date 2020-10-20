@@ -5,7 +5,6 @@ server:
   servlet:
     context-path: /summer/
 
-
 spring:
   application:
     name: ${application-info.name}
@@ -14,13 +13,10 @@ spring:
     url: jdbc:mysql://10.79.231.81:3306/eduPlatform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
     username: root
     password: 123456
-#    url: jdbc:mysql://localhost/eduPlatform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
-#    username: root
-#    password: mysql
   servlet:
     multipart:
-      max-file-size: 200MB
-      max-request-size: 200MB
+      max-file-size: 300MB
+      max-request-size: 300MB
   mvc:
     static-path-pattern: static/**
   resources:
@@ -29,11 +25,15 @@ spring:
       - classpath:/static
 
 settings:
+  nginxUrl: http://10.79.231.81:90
+  nginxPath: /home/data
   parallelFilePath: /opt/3S/upload
   templatePath: ${settings.parallelFilePath}/template
   jarPath: ${settings.parallelFilePath}/jar
   xmlPath: ${settings.parallelFilePath}/xml
-  picPath: ${settings.parallelFilePath}/pic
+  picPath: ${settings.nginxPath}/bigGeoPlatform/modelImages
+  eduCasePath: /home/data/images/3S/educase
+  eduCaseNginxPath: /images/3S/educase
   geoDataPath: /3S/geoData
   frontEndRegionList:
     - http://localhost:8082
@@ -67,9 +67,8 @@ settings:
   calculateDataNameSpace: /calculateData/
   selfDataNameSpace: /selfData/
   systemPublicAccount: SYSTEM_PUBLIC
-  airFlowHome: /root/airflow*
+  airFlowHome: /root/airflow
 #  airFlowHome: /Users/jiarui/airflow
   airFlowDagsPath: ${settings.airFlowHome}/dags
   hdFsUri: hdfs://192.168.1.5:9000
-#  hdFsUri: hdfs://localhost:9000
   lFsUri: file://

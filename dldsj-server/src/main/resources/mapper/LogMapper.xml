@@ -37,6 +37,10 @@
             #{type,jdbcType=VARCHAR},
         </trim>
     </insert>
+    <delete id="deleteBeforeTime">
+        delete from <include refid="TABLE_NAME"/>
+        where TIME <![CDATA[ <= ]]> #{time,jdbcType=TIMESTAMP}
+    </delete>
     <select id="allSelect" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
