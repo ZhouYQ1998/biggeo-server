@@ -56,7 +56,7 @@
 | UPLOADED          | 作者         | String  |                                            |
 | userName          | 上传用户     | String  | Not Null, "manager" or "userName"          |
 | downloadAuthority | 下载权限     | Boolean | Default true                               |
-| TIME              | 时间         | Date    |                                            |
+| TIME              | 时间         | Date    | 当前时间                                   |
 | TYPE_1            | 类型一       | String  | Not Null                                   |
 | TYPE_2            | 类型二       | String  |                                            |
 | KEYWORDS          | 关键词       | String  | Not Null                                   |
@@ -74,28 +74,30 @@
 
 - HDFS：地理数据存储及下载
 
-| URL                         | FUNCTION                       | METHOD | PARAM                                                        | RESULT              | REMARK         |
-| --------------------------- | ------------------------------ | ------ | ------------------------------------------------------------ | ------------------- | -------------- |
-| /geodata/insert             | 插入用户                       | PUT    | title,uploader,type1,type2[,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |                |
-| /geodata/batchinsert        | 批量插入                       | PUT    | [Geodata[,Geodata...]]                                       | {code,body,message} |                |
-| /geodata/delete/{id}        | 删除用户                       | DELETE |                                                              | {code,body,message} |                |
-| /geodata//batchdelete/{ids} | 批量删除                       | DELETE |                                                              | {code,body,message} |                |
-| /geodata/select/{id}        | 查询用户                       | GET    |                                                              | {code,body,message} |                |
-| /geodata/batchseletct/{ids} | 批量查询                       | GET    |                                                              | {code,body,message} |                |
-| /geodata/allselect          | 全部查询                       | GET    |                                                              |                     |                |
-| /geodata/fuzzyname/{key}    | 模糊查询                       | GET    | page                                                         | {code,body,message} |                |
-| /geodata/byuserName         | 名字查询                       | GET    | String userName                                              |                     |                |
-| /geodata/update             | 更新用户                       | POST   | id[,title,uploader,type1,type2,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |                |
-| /geodata/batchupdate        | 批量更新                       | POST   | [Geodata[,Geodata...]]                                       | {code,body,message} |                |
-| /geodata/bytype1            | 按照一级目录分类               | GET    | type, page                                                   | {code,body,message} |                |
-| /geodata/bytype2            | 按照二级目录分类               | GET    | type, page                                                   | {code,body,message} |                |
-| /geodata/dis                | 返回结果的唯一不同值与对应数量 | GET    | field, page                                                  | {code,body,message} |                |
-| /geodata/downloadplus       | 更新数据库中下载次数           | GET    | id                                                           | {code,body,message} |                |
-| /geodata/populardata        | 返回下载数量最多的五条数据     | GET    | /                                                            |                     |                |
-| /geodata/insertAndUp2hdfs   | 插入数据并上传                 | PUT    | Geodata t                                                    |                     |                |
-| /geodata/downFromhdfs       | 根据ID下载                     | GET    | String id（唯一ID）, String fileDirectory（本地要保存的路径，不包括文件名C://gis/3s） |                     |                |
-| /geodata/uploadFromLocal    | 从本地文件中上传               | GET    | String filePath（本地文件路径C://gis/3s/hello.txt）          |                     | 单纯的上传下载 |
-| /geodata/downloadFromHDFS   | 从hdfs上下载                   | GET    | String hdfsPath（hdfs路径）, String fileDirectory （本地要保存的路径，不包括文件名C://gis/3s） |                     | 单纯的上传下载 |
+| URL                              | FUNCTION                       | METHOD | PARAM                                                        | RESULT              | REMARK           |
+| -------------------------------- | ------------------------------ | ------ | ------------------------------------------------------------ | ------------------- | ---------------- |
+| /geodata/insert                  | 插入用户                       | PUT    | title,uploader,type1,type2[,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |                  |
+| /geodata/batchinsert             | 批量插入                       | PUT    | [Geodata[,Geodata...]]                                       | {code,body,message} |                  |
+| /geodata/delete/{id}             | 删除用户                       | DELETE |                                                              | {code,body,message} |                  |
+| /geodata//batchdelete/{ids}      | 批量删除                       | DELETE |                                                              | {code,body,message} |                  |
+| /geodata/select/{id}             | 查询用户                       | GET    |                                                              | {code,body,message} |                  |
+| /geodata/batchseletct/{ids}      | 批量查询                       | GET    |                                                              | {code,body,message} |                  |
+| /geodata/allselect               | 全部查询                       | GET    |                                                              |                     |                  |
+| /geodata/fuzzyname/{key}         | 模糊查询                       | GET    | page                                                         | {code,body,message} |                  |
+| /geodata/byuserName              | 名字查询                       | GET    | String userName                                              |                     |                  |
+| /geodata/update                  | 更新用户                       | POST   | id[,title,uploader,type1,type2,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |                  |
+| /geodata/batchupdate             | 批量更新                       | POST   | [Geodata[,Geodata...]]                                       | {code,body,message} |                  |
+| /geodata/bytype1                 | 按照一级目录分类               | GET    | type, page                                                   | {code,body,message} |                  |
+| /geodata/bytype2                 | 按照二级目录分类               | GET    | type, page                                                   | {code,body,message} |                  |
+| /geodata/dis                     | 返回结果的唯一不同值与对应数量 | GET    | field, page                                                  | {code,body,message} |                  |
+| /geodata/downloadplus            | 更新数据库中下载次数           | GET    | id                                                           | {code,body,message} |                  |
+| /geodata/populardata             | 返回下载数量最多的五条数据     | GET    | /                                                            | {code,body,message} |                  |
+| /geodata/insertByForm            | 插入数据并上传                 | POST   | 数据库表（参数全部小写，path为表单中的文件file格式）         | {code,body,message} |                  |
+| /geodata/downloadByid            | 根据ID下载                     | POST   | id：String id（唯一ID），下载内容放入 response               | {code,body,message} |                  |
+| <u>/geodata/insertAndUp2hdfs</u> | 插入数据并上传                 | PUT    | Geodata t                                                    | {code,body,message} | 弃用，用表单上传 |
+| <u>/geodata/downFromhdfs</u>     | 根据ID下载                     | GET    | String id（唯一ID）, String fileDirectory（本地要保存的路径，不包括文件名C://gis/3s） | {code,body,message} | 弃用，用表单下载 |
+| /geodata/uploadFromLocal         | 从本地文件中上传               | GET    | String filePath（本地文件路径C://gis/3s/hello.txt）          | {code,body,message} | 单纯的上传下载   |
+| /geodata/downloadFromHDFS        | 从hdfs上下载                   | GET    | String hdfsPath（hdfs路径）, String fileDirectory （本地要保存的路径，不包括文件名C://gis/3s） | {code,body,message} | 单纯的上传下载   |
 
 ## 3 tb_student_paper
 

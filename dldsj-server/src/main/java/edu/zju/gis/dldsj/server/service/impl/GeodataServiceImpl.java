@@ -1,27 +1,38 @@
 package edu.zju.gis.dldsj.server.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.config.CommonSetting;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
+import edu.zju.gis.dldsj.server.constant.CodeType;
 import edu.zju.gis.dldsj.server.entity.Geodata;
+import edu.zju.gis.dldsj.server.entity.ParallelModelWithBLOBs;
 import edu.zju.gis.dldsj.server.mapper.GeodataMapper;
 import edu.zju.gis.dldsj.server.service.GeodataService;
+import edu.zju.gis.dldsj.server.utils.LoadUtils;
+import edu.zju.gis.dldsj.server.utils.XMLReader;
+import edu.zju.gis.dldsj.server.utils.fs.FsManipulator;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulatorFactory;
 import edu.zju.gis.dldsj.server.utils.fs.HdfsManipulator;
 import edu.zju.gis.dldsj.server.utils.fs.LocalFsManipulator;
 import lombok.SneakyThrows;
 import org.apache.hadoop.fs.Hdfs;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -102,6 +113,121 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+    public Result<Geodata> insertByForm(String role, HttpServletRequest request) {
+        Result<Geodata> result = new Result();
+        if (role.equals("manager")) {
+            // 用于判断是普通表单，还是带文件上传的表单，起了辨别的作用。
+            if (!ServletFileUpload.isMultipartContent(request)) {
+                return result.setCode(CodeConstants.VALIDATE_ERROR)
+                        .setMessage("表单中必须包含数据文件");
+            }
+
+            String hdFsPath = "";
+            Long fileSize = 0l;
+            // 上传并导入数据库
+            try {
+                // 获取name为path的文件
+                List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("path");
+                LocalFsManipulator localFsManipulator = (LocalFsManipulator) FsManipulatorFactory.create(setting.getLFsUri());
+                HdfsManipulator hdfsManipulator = (HdfsManipulator) FsManipulatorFactory.create(setting.getHdFsUri());
+                String randomUUID = UUID.randomUUID().toString();
+//                String templatePath = "F:\\EnglishPath\\7ThreeS\\goeDataTest\\templatePath";
+                String templatePath = setting.getTemplatePath();
+                String tempZipFileName = randomUUID + ".zip";
+                String wholePath = "";
+
+                // 压缩并上传文件
+                for (MultipartFile file : files) {
+                    String fileName = file.getOriginalFilename();
+                    String tempDirectory = templatePath + '/' + randomUUID;
+                    if (!new File(tempDirectory).exists()) localFsManipulator.mkdirs(tempDirectory);
+                    File tempFile = new File(tempDirectory, fileName);
+                    if (tempFile.exists()) localFsManipulator.deleteFile(tempFile.getAbsolutePath());
+
+                    file.transferTo(tempFile);
+                    fileSize += file.getSize();
+                    wholePath += tempFile.getAbsolutePath() + ",";
+                }
+                if (wholePath.length() > 1) wholePath = wholePath.substring(0, wholePath.length() - 1);
+
+                File tempZipFile = new File(templatePath + '/' + tempZipFileName);
+                localFsManipulator.compress(wholePath.split(","), tempZipFile.getAbsolutePath());
+
+                // 上传至 HDFS
+                hdFsPath = setting.getGeoDataPath() + '/' + tempZipFileName;
+                hdfsManipulator.uploadFromLocal(tempZipFile.getAbsolutePath(), hdFsPath);
+            } catch (Exception e) {
+                result.setCode(CodeConstants.SERVICE_ERROR).setMessage("数据上传失败：" + e.getMessage());
+            }
+
+            try {
+                // 插入数据库
+                Geodata geodata = new Geodata();
+                geodata.setId(UUID.randomUUID().toString());
+                geodata.setTitle(request.getParameter("title"));
+                geodata.setUploader(request.getParameter("uploader"));
+                geodata.setUserName(request.getParameter("username"));
+                geodata.setDownloadAuthority(request.getParameter("downloadauthority").equals("true"));
+//                geodata.setTime(new SimpleDateFormat("yyyy-mm-dd").parse(request.getParameter("re_time")));
+                geodata.setTime(new Date());
+                geodata.setType1(request.getParameter("type1"));
+                geodata.setType2(request.getParameter("type2"));
+                geodata.setKeywords(request.getParameter("keywords"));
+                // geodata.setSource(request.getParameter("source"));
+                geodata.setAbstractInfo(request.getParameter("abstract"));
+                geodata.setReference(request.getParameter("reference"));
+                geodata.setPicture(request.getParameter("picture"));
+                geodata.setOldName(request.getParameter("old_filename"));
+                geodata.setNewName(request.getParameter("new_filename"));
+                geodata.setFormat(".zip");
+                geodata.setPath(setting.getHdFsUri() + hdFsPath);
+                geodata.setRam(String.valueOf(1.0 * fileSize / 1024 / 1024) + " M"); // 压缩之前的大小
+                geodata.setDownloadTimes(0);
+                if (mapper.insert(geodata) == 1) {
+                    result.setCode(CodeConstants.SUCCESS).setBody(geodata).setMessage("插入成功 数据上传成功");
+                } else {
+                    result.setCode(CodeConstants.VALIDATE_ERROR).setBody(geodata)
+                            .setMessage("插入失败 表单必须包含 标题、用户名称、类型1、路径 参数。");
+                }
+            } catch (Exception e) {
+                result.setCode(CodeConstants.SERVICE_ERROR).setMessage("数据插入失败：" + e.getMessage());
+            }
+        } else {
+            result.setCode(CodeConstants.USER_PERMISSION_ERROR).setMessage("当前用户没有上传权限！");
+        }
+
+        return result;
+    }
+
+    @Override
+    public Result downloadByid(String id, HttpServletResponse response) {
+        Result<String> result = new Result<>();
+        Geodata geodata = mapper.selectByPrimaryKey(id);
+
+        // 各种路径
+        String tempZipFileName = UUID.randomUUID().toString() + ".zip";
+        String hdfsPath = geodata.getPath();
+//        String tempZipPath = "F:\\EnglishPath\\7ThreeS\\goeDataTest\\templatePath" + '/' + tempZipFileName;
+        String tempZipPath = setting.getTemplatePath()+ '/' + tempZipFileName;
+
+        // 下载到 Linux，发送至 HttpServletResponse
+        LocalFsManipulator localFsManipulator = (LocalFsManipulator) FsManipulatorFactory.create(setting.getLFsUri());
+        HdfsManipulator hdfsManipulator = (HdfsManipulator) FsManipulatorFactory.create(setting.getHdFsUri());
+        try {
+            // 从 HDFS 下载到本地
+            hdfsManipulator.downloadToLocal(hdfsPath, tempZipPath);
+            // 从本地上传到 HttpServletResponse
+            LoadUtils.download(localFsManipulator, tempZipPath, tempZipFileName, response);
+            // 下载量加一
+            downloadTimesPlus(id);
+        } catch (Exception e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("数据下载失败：" + e.getMessage());
+        }
+
+        return result;
+    }
+
+
     public Result<Geodata> insertAndUp2hdfs(Geodata t) {
         Result<Geodata> result = new Result<>();
 
@@ -152,9 +278,9 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
 
                 if (hdfsManipulator.isFile(hdfsPath) && new File(fileDirectory).isDirectory()) {
                     String fileName = hdfsPath.substring(hdfsPath.lastIndexOf('/') + 1);
-                    if (hdfsManipulator.downloadToLocal(hdfsPath, fileDirectory + '/' + fileName)){
+                    if (hdfsManipulator.downloadToLocal(hdfsPath, fileDirectory + '/' + fileName)) {
                         resMessage = "下载成功！";
-                    }else {
+                    } else {
                         resMessage = "下载失败！";
                     }
                 }
@@ -215,7 +341,6 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
         hdfsManipulator.uploadFromLocal(
                 "F:\\EnglishPath\\7ThreeS\\goeDataTest\\README.md",
                 "/gis/3S/geoData/dh.md");
-
 
         return "上传、下载成功";
     }
