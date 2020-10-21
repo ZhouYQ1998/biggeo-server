@@ -155,9 +155,10 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
 
                 // 上传至 HDFS
                 hdFsPath = setting.getGeoDataPath() + '/' + tempZipFileName;
-                hdfsManipulator.uploadFromLocal(tempZipFile.getAbsolutePath(), hdFsPath);
+                boolean isSuccess = hdfsManipulator.uploadFromLocal(tempZipFile.getAbsolutePath(), hdFsPath);
+                if (!isSuccess) return result.setCode(CodeConstants.SERVICE_ERROR).setMessage("数据上传至 HDFS 失败");
             } catch (Exception e) {
-                result.setCode(CodeConstants.SERVICE_ERROR).setMessage("数据上传失败：" + e.getMessage());
+                return result.setCode(CodeConstants.SERVICE_ERROR).setMessage("数据上传失败：" + e.getMessage());
             }
 
             try {
@@ -181,7 +182,7 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
                 geodata.setNewName(request.getParameter("new_filename"));
                 geodata.setFormat(".zip");
                 geodata.setPath(setting.getHdFsUri() + hdFsPath);
-                geodata.setRam(String.valueOf(1.0 * fileSize / 1024 / 1024) + " M"); // 压缩之前的大小
+                geodata.setRam((int) (1.0 * fileSize / 1024 / 1024 * 100) / 100.0 + " MB"); // 压缩之前的大小
                 geodata.setDownloadTimes(0);
                 if (mapper.insert(geodata) == 1) {
                     result.setCode(CodeConstants.SUCCESS).setBody(geodata).setMessage("插入成功 数据上传成功");
@@ -203,23 +204,26 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
     public Result downloadByid(String id, HttpServletResponse response) {
         Result<String> result = new Result<>();
         Geodata geodata = mapper.selectByPrimaryKey(id);
+        if (geodata == null) return result.setCode(CodeConstants.DAO_ERROR).setMessage("未找到ID记录");
 
         // 各种路径
         String tempZipFileName = UUID.randomUUID().toString() + ".zip";
         String hdfsPath = geodata.getPath();
 //        String tempZipPath = "F:\\EnglishPath\\7ThreeS\\goeDataTest\\templatePath" + '/' + tempZipFileName;
-        String tempZipPath = setting.getTemplatePath()+ '/' + tempZipFileName;
+        String tempZipPath = setting.getTemplatePath() + '/' + tempZipFileName;
 
         // 下载到 Linux，发送至 HttpServletResponse
         LocalFsManipulator localFsManipulator = (LocalFsManipulator) FsManipulatorFactory.create(setting.getLFsUri());
         HdfsManipulator hdfsManipulator = (HdfsManipulator) FsManipulatorFactory.create(setting.getHdFsUri());
         try {
             // 从 HDFS 下载到本地
-            hdfsManipulator.downloadToLocal(hdfsPath, tempZipPath);
+            boolean isHDFSSuccess = hdfsManipulator.downloadToLocal(hdfsPath, tempZipPath);
+            if (!isHDFSSuccess) return result.setCode(CodeConstants.SERVICE_ERROR).setMessage("HDFS 数据下载失败");
             // 从本地上传到 HttpServletResponse
             LoadUtils.download(localFsManipulator, tempZipPath, tempZipFileName, response);
             // 下载量加一
             downloadTimesPlus(id);
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("数据下载成功");
         } catch (Exception e) {
             result.setCode(CodeConstants.SERVICE_ERROR).setMessage("数据下载失败：" + e.getMessage());
         }
