@@ -75,28 +75,28 @@
 
 ### 2.2 URL
 
-| URL                         | FUNCTION             | METHOD | PARAM                          | RESULT              | REMARK       |
-| --------------------------- | -------------------- | ------ | ------------------------------ | ------------------- | ------------ |
-| /geodata/insert             | 插入用户             | PUT    | title,userName,type1,path[...] | {code,body,message} |              |
-| /geodata/batchinsert        | 批量插入             | PUT    | Geodata[,Geodata...]           | {code,body,message} |              |
-| /geodata/delete/{id}        | 删除用户             | DELETE |                                | {code,body,message} |              |
-| /geodata//batchdelete/{ids} | 批量删除             | DELETE |                                | {code,body,message} |              |
-| /geodata/select/{id}        | 查询用户             | GET    |                                | {code,body,message} |              |
-| /geodata/batchseletct/{ids} | 批量查询             | GET    |                                | {code,body,message} |              |
-| /geodata/allselect          | 全部查询             | GET    |                                | {code,body,message} |              |
-| /geodata/fuzzyname/{key}    | 模糊查询             | GET    | [pageNo,pageSize]              | {code,body,message} |              |
-| /geodata/byuserName         | 名字查询             | GET    | userName,[pageNo,pageSize]]    | {code,body,message} |              |
-| /geodata/update             | 更新用户             | POST   | id[...]                        | {code,body,message} |              |
-| /geodata/batchupdate        | 批量更新             | POST   | Geodata[,Geodata...]           | {code,body,message} |              |
-| /geodata/bytype1            | 一级分类             | GET    | type,[pageNo,pageSize]]        | {code,body,message} |              |
-| /geodata/bytype2            | 二级分类             | GET    | type,[pageNo,pageSize]]        | {code,body,message} |              |
-| /geodata/dis                | 字段唯一不同值与数量 | GET    | field,[pageNo,pageSize]]       | {code,body,message} |              |
-| /geodata/downloadplus       | 更新下载次数         | GET    | id                             | {code,body,message} |              |
-| /geodata/populardata        | 查询最多下载         | GET    |                                | {code,body,message} |              |
-| /geodata/insertAndUp2hdfs   | 插入并上传           | PUT    | Geodata                        | {code,body,message} |              |
-| /geodata/uploadFromLocal    | 上传                 | GET    | filePath                       | {code,body,message} |              |
-| /geodata/downFromhdfs       | 下载                 | GET    | id,fileDirectory               | {code,body,message} | 通过id       |
-| /geodata/downloadFromHDFS   | 下载                 | GET    | hdfsPath, fileDirectory        | {code,body,message} | 通过hdfs路径 |
+| URL                         | FUNCTION             | METHOD | PARAM                          | RESULT              | REMARK |
+| --------------------------- | -------------------- | ------ | ------------------------------ | ------------------- | ------ |
+| /geodata/insert             | 插入数据             | PUT    | title,userName,type1,path[...] | {code,body,message} |        |
+| /geodata/batchinsert        | 批量插入             | PUT    | Geodata[,Geodata...]           | {code,body,message} |        |
+| /geodata/delete/{id}        | 删除数据             | DELETE |                                | {code,body,message} |        |
+| /geodata//batchdelete/{ids} | 批量删除             | DELETE |                                | {code,body,message} |        |
+| /geodata/select/{id}        | 查询数据             | GET    |                                | {code,body,message} |        |
+| /geodata/batchseletct/{ids} | 批量查询             | GET    |                                | {code,body,message} |        |
+| /geodata/allselect          | 全部查询             | GET    |                                | {code,body,message} |        |
+| /geodata/fuzzyname/{key}    | 模糊查询             | GET    | [pageNo,pageSize]              | {code,body,message} |        |
+| /geodata/byuserName         | 名字查询             | GET    | userName,[pageNo,pageSize]]    | {code,body,message} |        |
+| /geodata/update             | 更新数据             | POST   | id[...]                        | {code,body,message} |        |
+| /geodata/batchupdate        | 批量更新             | POST   | Geodata[,Geodata...]           | {code,body,message} |        |
+| /geodata/bytype1            | 一级分类             | GET    | type,[pageNo,pageSize]]        | {code,body,message} |        |
+| /geodata/bytype2            | 二级分类             | GET    | type,[pageNo,pageSize]]        | {code,body,message} |        |
+| /geodata/dis                | 字段唯一不同值与数量 | GET    | field,[pageNo,pageSize]]       | {code,body,message} |        |
+| /geodata/downloadplus       | 更新下载次数         | GET    | id                             | {code,body,message} |        |
+| /geodata/populardata        | 查询最多下载         | GET    |                                | {code,body,message} |        |
+| /geodata/insertByForm            | 上传             | POST   | title,userName,type1,path[...] | {code,body,message} |                  |
+| /geodata/downloadByid            | 下载                     | POST   | id               | {code,body,message} | body为下载内容 |
+| /geodata/uploadFromLocal         | 上传               | GET    | filePath          | {code,body,message} |                |
+| /geodata/downloadFromHDFS        | 下载                   | GET    | hdfsPath,fileDirectory | {code,body,message} |    |
 
 - fileDirectory为本地保存路径（不包括文件名）
 - filePath为本地上传路径
@@ -128,7 +128,7 @@
 | /studentpaper/select/{id}        | 查询论文 | GET    |                                     | {code,body,message} |        |
 | /studentpaper/selectnew          | 查询最新 | GET    |                                     | {code,body,message} |        |
 | /studentpaper/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]                   | {code,body,message} |        |
-| /studentpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                   | ode,body,message}   |        |
+| /studentpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                   | {code,body,message} |        |
 | /studentpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                   | {code,body,message} |        |
 | /studentpaper/update             | 更新论文 | POST   | id[...]                             | {code,body,message} |        |
 

@@ -90,8 +90,6 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
                 case "TYPE_2":
                     str = s.getType2();
                     break;
-                case "SOURCE":
-                    str = s.getSource();
                 default:
                     str = "xxx";
             }
