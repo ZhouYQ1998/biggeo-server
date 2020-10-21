@@ -37,6 +37,7 @@
             #{type,jdbcType=VARCHAR},
         </trim>
     </insert>
+    <!-- 按照日期自动删除 -->
     <delete id="deleteBeforeTime">
         delete from <include refid="TABLE_NAME"/>
         where TIME <![CDATA[ <= ]]> #{time,jdbcType=TIMESTAMP}

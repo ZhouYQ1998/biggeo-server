@@ -16,7 +16,6 @@ import java.util.Date;
 @Setter
 @ToString(callSuper = true)
 public class Geodata extends Base<String> {
-    private String ID;
     private String title;
     private String uploader;
     private String userName;
@@ -25,7 +24,6 @@ public class Geodata extends Base<String> {
     private String type1;
     private String type2;
     private String keywords;
-    private String source;
     private String abstractInfo;
     private String reference;
 

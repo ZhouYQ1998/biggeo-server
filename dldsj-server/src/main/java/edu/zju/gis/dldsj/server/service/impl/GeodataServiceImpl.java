@@ -79,8 +79,6 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
                 case "TYPE_2":
                     str = s.getType2();
                     break;
-                case "SOURCE":
-                    str = s.getSource();
                 default:
                     str = "xxx";
             }
@@ -102,6 +100,7 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     public Result<Geodata> insertAndUp2hdfs(Geodata t) {
         Result<Geodata> result = new Result<>();
 
@@ -215,7 +214,6 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
         hdfsManipulator.uploadFromLocal(
                 "F:\\EnglishPath\\7ThreeS\\goeDataTest\\README.md",
                 "/gis/3S/geoData/dh.md");
-
 
         return "上传、下载成功";
     }

@@ -4,44 +4,47 @@
 
 ### 1.1 Table
 
-| Column        | Description  | Type   | Remark                                     |
-| ------------- | ------------ | ------ | ------------------------------------------ |
-| ID            | 主键（编号） | String | Not Null, Unique, Primary Key, Auto Create |
-| NAME          | 用户名       | String | Not Null, Unique                           |
-| PASSWORD      | 密码         | String | Not Null                                   |
-| PHONE         | 电话号码     | String | Not Null                                   |
-| EMAIL         | 邮箱         | String | Not Null                                   |
-| ICON          | 头像         | String | Default 1.png                              |
-| COUNTRY       | 国家（地区） | String |                                            |
-| INSTITUTE     | 机构         | String |                                            |
-| INSTITUTETYPE | 机构类型     | String |                                            |
-| FIELD         | 专业领域     | String |                                            |
-| PURPOSE       | 用途         | String |                                            |
-| ROLE          | 用户角色     | String | Not Null, "manager" or "visitor"           |
-| SIGN_COUNT    | 用户访问量   | Int    | Default 0                                  |
+| Column        | Description  | Type   | Remark                           |
+| ------------- | ------------ | ------ | -------------------------------- |
+| ID            | 主键（编号） | String | Primary Key, Auto Create         |
+| NAME          | 用户名       | String | Not Null, Unique                 |
+| PASSWORD      | 密码         | String | Not Null                         |
+| PHONE         | 电话号码     | String | Not Null                         |
+| EMAIL         | 邮箱         | String | Not Null                         |
+| ICON          | 头像         | String | Default 1.png                    |
+| COUNTRY       | 国家（地区） | String |                                  |
+| INSTITUTE     | 机构         | String |                                  |
+| INSTITUTETYPE | 机构类型     | String |                                  |
+| FIELD         | 专业领域     | String |                                  |
+| PURPOSE       | 用途         | String |                                  |
+| ROLE          | 用户角色     | String | Not Null, "manager" or "visitor" |
+| SIGN_COUNT    | 用户访问次数 | Int    | Not Null, Default 0              |
 
 ### 1.2 URL
 
-| URL                       | FUNCTION   | METHOD | PARAM                                    | RESULT              | REMARK              |
-| ------------------------- | ---------- | ------ | ---------------------------------------- | ------------------- | ------------------- |
-| /user/insert              | 插入用户   | PUT    | name,password,role[,phone,email,icon]    | {code,body,message} | phone,email         |
-| /user/batchinsert         | 批量插入   | PUT    | [User[,User...]]                         | {code,body,message} |                     |
-| /user/delete/{id}         | 删除用户   | DELETE |                                          | {code,body,message} | body值为id          |
-| /user/deletebyname/{name} | 删除用户   | DELETE |                                          | {code,body,message} | body值为name        |
-| /user//batchdelete/{ids}  | 批量删除   | DELETE |                                          | {code,body,message} | 逗号","分隔         |
-| /user/select/{id}         | 查询用户   | GET    |                                          | {code,body,message} |                     |
-| /user/selectbyname/{name} | 查询用户   | GET    |                                          | {code,body,message} |                     |
-| /user/batchseletct/{ids}  | 批量查询   | GET    | [pageNo,pageSize]                        | ode,body,message}   | 逗号","分隔         |
-| /user/allselect           | 查询用户   | GET    | [pageNo,pageSize]                        | {code,body,message} | body为page          |
-| /user/update              | 更新用户   | POST   | id[,name,password,role,phone,email,icon] | {code,body,message} | id为必要值          |
-| /user/batchupdate         | 批量更新   | POST   | [User[,User...]]                         | {code,body,message} |                     |
-| /user/login               | 用户登录   | POST   | name,password                            | {code,body,message} |                     |
-| /user/loginstatus         | 登录状态   | GET    |                                          | {code,body,message} |                     |
-| /user/logout              | 用户注销   | POST   |                                          | {code,body,message} | body值为id          |
-| /user/check/{email}       | 发送验证码 | GET    |                                          | {code,body,message} | body值为code和email |
-| /user/checkbyname/{name}  | 发送验证码 | GET    |                                          | {code,body,message} |                     |
-| /user/statistic           | 统计访问量 | GET    |                                          | {code,body,message} |                     |
+| URL                       | FUNCTION   | METHOD | PARAM                               | RESULT              | REMARK              |
+| ------------------------- | ---------- | ------ | ----------------------------------- | ------------------- | ------------------- |
+| /user/insert              | 插入用户   | PUT    | name,password,phone,email,role[...] | {code,body,message} |                     |
+| /user/batchinsert         | 批量插入   | PUT    | User[,User...]                      | {code,body,message} |                     |
+| /user/delete/{id}         | 删除用户   | DELETE |                                     | {code,body,message} |                     |
+| /user/deletebyname/{name} | 删除用户   | DELETE |                                     | {code,body,message} |                     |
+| /user//batchdelete/{ids}  | 批量删除   | DELETE |                                     | {code,body,message} |                     |
+| /user/select/{id}         | 查询用户   | GET    |                                     | {code,body,message} |                     |
+| /user/selectbyname/{name} | 查询用户   | GET    |                                     | {code,body,message} |                     |
+| /user/batchseletct/{ids}  | 批量查询   | GET    | [pageNo,pageSize]                   | ode,body,message}   |                     |
+| /user/allselect           | 查询用户   | GET    | [pageNo,pageSize]                   | {code,body,message} |                     |
+| /user/update              | 更新用户   | POST   | id[...]                             | {code,body,message} |                     |
+| /user/batchupdate         | 批量更新   | POST   | User[,User...]                      | {code,body,message} |                     |
+| /user/login               | 用户登录   | POST   | name,password                       | {code,body,message} |                     |
+| /user/loginstatus         | 登录状态   | GET    |                                     | {code,body,message} |                     |
+| /user/logout              | 用户注销   | POST   |                                     | {code,body,message} |                     |
+| /user/check/{email}       | 发送验证码 | GET    |                                     | {code,body,message} | body值为code和email |
+| /user/checkbyname/{name}  | 发送验证码 | GET    |                                     | {code,body,message} |                     |
+| /user/statistic           | 统计访问量 | GET    |                                     | {code,body,message} |                     |
 
+- ids为逗号分隔的id组字符串，下同
+- 删除操作返回值的body值为id或name，下同
+- 更新操作id为必要值，其他属性为可选值，下同
 - 插入和更新的批量操作返回值的body值包括“t”（实体）和“message”（实体操作结果），下同
 - PageNo默认为1，PageSize默认为20，下同
 
@@ -49,53 +52,54 @@
 
 ### 2.1 Table
 
-| Column            | Description  | Type    | Remark                                     |
-| ----------------- | ------------ | ------- | ------------------------------------------ |
-| ID                | 主键（编号） | String  | Not Null, Unique, Primary Key, Auto Create |
-| TITLE             | 标题         | String  | Not Null                                   |
-| UPLOADED          | 作者         | String  |                                            |
-| userName          | 上传用户     | String  | Not Null, "manager" or "userName"          |
-| downloadAuthority | 下载权限     | Boolean | Default true                               |
-| TIME              | 时间         | Date    |                                            |
-| TYPE_1            | 类型一       | String  | Not Null                                   |
-| TYPE_2            | 类型二       | String  |                                            |
-| KEYWORDS          | 关键词       | String  | Not Null                                   |
-| ABSTRACT          | 摘要         | String  |                                            |
-| REFRENCE          | 参考文献     | String  |                                            |
-| PICTURE           | 图片         | String  |                                            |
-| OLD_FILENAME      | 中文名称     | String  |                                            |
-| NEW_FILENAME      | 英文名称     | String  |                                            |
-| FORMAT            | 数据格式     | String  |                                            |
-| PATH              | 路径         | String  | Not Null                                   |
-| RAM               | 数据大小     | String  |                                            |
-| DOWNLOAD_TIM      | 下载数量     | Int     |                                            |
+| Column            | Description  | Type    | Remark                            |
+| ----------------- | ------------ | ------- | --------------------------------- |
+| ID                | 主键（编号） | String  | Primary Key, Auto Create          |
+| TITLE             | 标题         | String  | Not Null                          |
+| UPLOADED          | 作者         | String  |                                   |
+| userName          | 上传用户     | String  | Not Null, "manager" or "userName" |
+| downloadAuthority | 下载权限     | Boolean | Default 1                         |
+| TIME              | 时间         | Date    |                                   |
+| TYPE_1            | 类型一       | String  | Not Null                          |
+| TYPE_2            | 类型二       | String  |                                   |
+| KEYWORDS          | 关键词       | String  |                                   |
+| ABSTRACT          | 摘要         | String  |                                   |
+| REFRENCE          | 参考文献     | String  |                                   |
+| PICTURE           | 图片         | String  |                                   |
+| OLD_FILENAME      | 中文名称     | String  |                                   |
+| NEW_FILENAME      | 英文名称     | String  |                                   |
+| FORMAT            | 数据格式     | String  |                                   |
+| PATH              | 路径         | String  | Not Null                          |
+| RAM               | 数据大小     | String  |                                   |
+| DOWNLOAD_TIM      | 下载数量     | Int     |                                   |
 
 ### 2.2 URL
 
-- HDFS：地理数据存储及下载
+| URL                         | FUNCTION             | METHOD | PARAM                          | RESULT              | REMARK       |
+| --------------------------- | -------------------- | ------ | ------------------------------ | ------------------- | ------------ |
+| /geodata/insert             | 插入用户             | PUT    | title,userName,type1,path[...] | {code,body,message} |              |
+| /geodata/batchinsert        | 批量插入             | PUT    | Geodata[,Geodata...]           | {code,body,message} |              |
+| /geodata/delete/{id}        | 删除用户             | DELETE |                                | {code,body,message} |              |
+| /geodata//batchdelete/{ids} | 批量删除             | DELETE |                                | {code,body,message} |              |
+| /geodata/select/{id}        | 查询用户             | GET    |                                | {code,body,message} |              |
+| /geodata/batchseletct/{ids} | 批量查询             | GET    |                                | {code,body,message} |              |
+| /geodata/allselect          | 全部查询             | GET    |                                | {code,body,message} |              |
+| /geodata/fuzzyname/{key}    | 模糊查询             | GET    | [pageNo,pageSize]              | {code,body,message} |              |
+| /geodata/byuserName         | 名字查询             | GET    | userName,[pageNo,pageSize]]    | {code,body,message} |              |
+| /geodata/update             | 更新用户             | POST   | id[...]                        | {code,body,message} |              |
+| /geodata/batchupdate        | 批量更新             | POST   | Geodata[,Geodata...]           | {code,body,message} |              |
+| /geodata/bytype1            | 一级分类             | GET    | type,[pageNo,pageSize]]        | {code,body,message} |              |
+| /geodata/bytype2            | 二级分类             | GET    | type,[pageNo,pageSize]]        | {code,body,message} |              |
+| /geodata/dis                | 字段唯一不同值与数量 | GET    | field,[pageNo,pageSize]]       | {code,body,message} |              |
+| /geodata/downloadplus       | 更新下载次数         | GET    | id                             | {code,body,message} |              |
+| /geodata/populardata        | 查询最多下载         | GET    |                                | {code,body,message} |              |
+| /geodata/insertAndUp2hdfs   | 插入并上传           | PUT    | Geodata                        | {code,body,message} |              |
+| /geodata/uploadFromLocal    | 上传                 | GET    | filePath                       | {code,body,message} |              |
+| /geodata/downFromhdfs       | 下载                 | GET    | id,fileDirectory               | {code,body,message} | 通过id       |
+| /geodata/downloadFromHDFS   | 下载                 | GET    | hdfsPath, fileDirectory        | {code,body,message} | 通过hdfs路径 |
 
-| URL                         | FUNCTION                       | METHOD | PARAM                                                        | RESULT              | REMARK         |
-| --------------------------- | ------------------------------ | ------ | ------------------------------------------------------------ | ------------------- | -------------- |
-| /geodata/insert             | 插入用户                       | PUT    | title,uploader,type1,type2[,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |                |
-| /geodata/batchinsert        | 批量插入                       | PUT    | [Geodata[,Geodata...]]                                       | {code,body,message} |                |
-| /geodata/delete/{id}        | 删除用户                       | DELETE |                                                              | {code,body,message} |                |
-| /geodata//batchdelete/{ids} | 批量删除                       | DELETE |                                                              | {code,body,message} |                |
-| /geodata/select/{id}        | 查询用户                       | GET    |                                                              | {code,body,message} |                |
-| /geodata/batchseletct/{ids} | 批量查询                       | GET    |                                                              | {code,body,message} |                |
-| /geodata/allselect          | 全部查询                       | GET    |                                                              |                     |                |
-| /geodata/fuzzyname/{key}    | 模糊查询                       | GET    | page                                                         | {code,body,message} |                |
-| /geodata/byuserName         | 名字查询                       | GET    | String userName                                              |                     |                |
-| /geodata/update             | 更新用户                       | POST   | id[,title,uploader,type1,type2,tags,source,abstractInfo,reference,pic,oldName,newName,format,path,ram,downloadTimes] | {code,body,message} |                |
-| /geodata/batchupdate        | 批量更新                       | POST   | [Geodata[,Geodata...]]                                       | {code,body,message} |                |
-| /geodata/bytype1            | 按照一级目录分类               | GET    | type, page                                                   | {code,body,message} |                |
-| /geodata/bytype2            | 按照二级目录分类               | GET    | type, page                                                   | {code,body,message} |                |
-| /geodata/dis                | 返回结果的唯一不同值与对应数量 | GET    | field, page                                                  | {code,body,message} |                |
-| /geodata/downloadplus       | 更新数据库中下载次数           | GET    | id                                                           | {code,body,message} |                |
-| /geodata/populardata        | 返回下载数量最多的五条数据     | GET    | /                                                            |                     |                |
-| /geodata/insertAndUp2hdfs   | 插入数据并上传                 | PUT    | Geodata t                                                    |                     |                |
-| /geodata/downFromhdfs       | 根据ID下载                     | GET    | String id（唯一ID）, String fileDirectory（本地要保存的路径，不包括文件名C://gis/3s） |                     |                |
-| /geodata/uploadFromLocal    | 从本地文件中上传               | GET    | String filePath（本地文件路径C://gis/3s/hello.txt）          |                     | 单纯的上传下载 |
-| /geodata/downloadFromHDFS   | 从hdfs上下载                   | GET    | String hdfsPath（hdfs路径）, String fileDirectory （本地要保存的路径，不包括文件名C://gis/3s） |                     | 单纯的上传下载 |
+- fileDirectory为本地保存路径（不包括文件名）
+- filePath为本地上传路径
 
 ## 3 tb_student_paper
 
@@ -103,9 +107,9 @@
 
 | Column          | Description   | Type   | Remark                                       |
 | --------------- | ------------- | ------ | -------------------------------------------- |
-| ID              | 主键（编号）  | String | Not Null, Unique, Primary Key, Auto Create   |
+| ID              | 主键（编号）  | String | Primary Key, Auto Create                     |
 | TITLE           | 标题          | String | Not Null, Unique                             |
-| ENGLISH_TITLE   | 标题（英文）  | String | Not Null, Unique                             |
+| ENGLISH_TITLE   | 标题（英文）  | String |                                              |
 | AUTHOR          | 作者          | String | Not Null                                     |
 | PUBLISHER       | 所在单位/学校 | String |                                              |
 | TERTIARY_AUTHOR | 指导老师      | String |                                              |
@@ -117,139 +121,137 @@
 
 ### 3.2 URL
 
-| URL                              | FUNCTION | METHOD | PARAM                                                        | RESULT              | REMARK      |
-| -------------------------------- | -------- | ------ | ------------------------------------------------------------ | ------------------- | ----------- |
-| /studentpaper/insert             | 插入论文 | PUT    | title,englishTitle,author,type[,publisher,tertiaryAuthor,year,keywords,abstract_,url] | {code,body,message} |             |
-| /studentpaper/delete/{id}        | 删除论文 | DELETE |                                                              | {code,body,message} | body值为id  |
-| /studentpaper/select/{id}        | 查询论文 | GET    |                                                              | {code,body,message} |             |
-| /studentpaper/selectnew          | 查询最新 | GET    |                                                              | {code,body,message} |             |
-| /studentpaper/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]                                            | {code,body,message} |             |
-| /studentpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                                            | ode,body,message}   | 逗号","分隔 |
-| /studentpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
-| /studentpaper/update             | 更新论文 | POST   | id[,title,englishTitle,author,publisher,tertiaryAuthor,year,type,keywords,abstract_,url] | {code,body,message} | id为必要值  |
+| URL                              | FUNCTION | METHOD | PARAM                               | RESULT              | REMARK |
+| -------------------------------- | -------- | ------ | ----------------------------------- | ------------------- | ------ |
+| /studentpaper/insert             | 插入论文 | PUT    | title,englishTitle,author,type[...] | {code,body,message} |        |
+| /studentpaper/delete/{id}        | 删除论文 | DELETE |                                     | {code,body,message} |        |
+| /studentpaper/select/{id}        | 查询论文 | GET    |                                     | {code,body,message} |        |
+| /studentpaper/selectnew          | 查询最新 | GET    |                                     | {code,body,message} |        |
+| /studentpaper/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]                   | {code,body,message} |        |
+| /studentpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                   | ode,body,message}   |        |
+| /studentpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                   | {code,body,message} |        |
+| /studentpaper/update             | 更新论文 | POST   | id[...]                             | {code,body,message} |        |
 
 ## 4 tb_academic_paper
 
 ### 4.1 Table
 
-| Column             | Description   | Type   | Remark                                     |
-| ------------------ | ------------- | ------ | ------------------------------------------ |
-| ID                 | 主键（编号）  | String | Not Null, Unique, Primary Key, Auto Create |
-| TITLE              | 标题          | String | Not Null, Unique                           |
-| ENGLISH_TITLE      | 标题（英文）  | String | Not Null                                   |
-| TYPE               | 文章类型      | String | Not Null, "conference" or "journal"        |
-| AUTHOR             | 作者          | String | Not Null                                   |
-| AUTHOR_AFFILIATION | 所在单位/学校 | String |                                            |
-| YEAR               | 发表年份      | String |                                            |
-| SOURCE_NAME        | 期刊名称      | String |                                            |
-| VOLUME             | 期刊卷数      | String |                                            |
-| ISSUE              | 期刊期数      | String |                                            |
-| PAGES              | 期刊页数      | String |                                            |
-| KEYWORDS           | 关键词        | String |                                            |
-| ABSTRACT           | 摘要          | String |                                            |
-| DOI                | DOI           | String | Unique                                     |
-| ISSU               | ISSU          | String |                                            |
-| URL                | 链接          | String | Not Nul                                    |
+| Column             | Description   | Type   | Remark                              |
+| ------------------ | ------------- | ------ | ----------------------------------- |
+| ID                 | 主键（编号）  | String | Primary Key, Auto Create            |
+| TITLE              | 标题          | String | Not Null, Unique                    |
+| ENGLISH_TITLE      | 标题（英文）  | String |                                     |
+| TYPE               | 文章类型      | String | Not Null, "conference" or "journal" |
+| AUTHOR             | 作者          | String | Not Null                            |
+| AUTHOR_AFFILIATION | 所在单位/学校 | String |                                     |
+| YEAR               | 发表年份      | String |                                     |
+| SOURCE_NAME        | 期刊名称      | String |                                     |
+| VOLUME             | 期刊卷数      | String |                                     |
+| ISSUE              | 期刊期数      | String |                                     |
+| PAGES              | 期刊页数      | String |                                     |
+| KEYWORDS           | 关键词        | String |                                     |
+| ABSTRACT           | 摘要          | String |                                     |
+| URL                | 链接          | String | Not Null                            |
 
 ### 4.2 URL
 
-| URL                               | FUNCTION | METHOD | PARAM                                                        | RESULT              | REMARK      |
-| --------------------------------- | -------- | ------ | ------------------------------------------------------------ | ------------------- | ----------- |
-| /academicpaper/insert             | 插入论文 | PUT    | title,englishTitle,type,author,url[,authorAffiliation,year,sourceName,volume,issue,pages,keywords,abstract_,doi,issu] | {code,body,message} |             |
-| /academicpaper/delete/{id}        | 删除论文 | DELETE |                                                              | {code,body,message} | body值为id  |
-| /academicpaper/select/{id}        | 查询论文 | GET    |                                                              | {code,body,message} |             |
-| /academicpaper/selectnew          | 查询最新 | GET    |                                                              | {code,body,message} |             |
-| /academicpaper/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]                                            | {code,body,message} |             |
-| /academicpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                                            | ode,body,message}   | 逗号","分隔 |
-| /academicpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                                            | {code,body,message} | body为page  |
-| /academicpaper/update             | 更新论文 | POST   | id[,title,englishTitle,type,author,authorAffiliation,year,sourceName,volume,issue,pages,keywords,abstract_,doi,issu,url] | {code,body,message} | id为必要值  |
+| URL                               | FUNCTION | METHOD | PARAM                                   | RESULT              | REMARK |
+| --------------------------------- | -------- | ------ | --------------------------------------- | ------------------- | ------ |
+| /academicpaper/insert             | 插入论文 | PUT    | title,englishTitle,type,author,url[...] | {code,body,message} |        |
+| /academicpaper/delete/{id}        | 删除论文 | DELETE |                                         | {code,body,message} |        |
+| /academicpaper/select/{id}        | 查询论文 | GET    |                                         | {code,body,message} |        |
+| /academicpaper/selectnew          | 查询最新 | GET    |                                         | {code,body,message} |        |
+| /academicpaper/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]                       | {code,body,message} |        |
+| /academicpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                       | {code,body,message} |        |
+| /academicpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                       | {code,body,message} |        |
+| /academicpaper/update             | 更新论文 | POST   | id[...]                                 | {code,body,message} |        |
 
 ## 5 tb_lectures
 
 ### 5.1 Table
 
-| Column      | Description  | Type   | Remark                                     |
-| ----------- | ------------ | ------ | ------------------------------------------ |
-| ID          | 主键（编号） | String | Not Null, Unique, Primary Key, Auto Create |
-| NAME        | 姓名         | String | Not Null                                   |
-| SPEAKER     | 演讲者       | String |                                            |
-| PLACE       | 地点         | String |                                            |
-| TIME        | 时间         | Date   |                                            |
-| DETAIL_TIME | 详细时间     | String |                                            |
-| URL         | 链接         | String |                                            |
+| Column      | Description  | Type   | Remark                   |
+| ----------- | ------------ | ------ | ------------------------ |
+| ID          | 主键（编号） | String | Primary Key, Auto Create |
+| NAME        | 姓名         | String | Not Null                 |
+| SPEAKER     | 演讲者       | String |                          |
+| PLACE       | 地点         | String |                          |
+| TIME        | 发布时间     | Date   |                          |
+| DETAIL_TIME | 详细时间     | String |                          |
+| URL         | 链接         | String |                          |
 
 ### 5.2 URL
 
-| URL                         | FUNCTION | METHOD | PARAM                            | RESULT              | REMARK      |
-| --------------------------- | -------- | ------ | -------------------------------- | ------------------- | ----------- |
-| /lecture/insert             | 插入讲座 | PUT    | name[,speaker,place,time,url]    | {code,body,message} |             |
-| /lecture/delete/{id}        | 删除讲座 | DELETE |                                  | {code,body,message} | body值为id  |
-| /lecture/select/{id}        | 查询讲座 | GET    |                                  | {code,body,message} |             |
-| /lecture/selectnew          | 查询最新 | GET    |                                  | {code,body,message} |             |
-| /lecture/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]                | {code,body,message} |             |
-| /lecture/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                | {code,body,message} | 逗号","分隔 |
-| /lecture/allselect          | 查询讲座 | GET    | [pageNo,pageSize]                | {code,body,message} | body为page  |
-| /lecture/update             | 更新讲座 | POST   | id[,name,speaker,place,time,url] | {code,body,message} | id为必要值  |
+| URL                         | FUNCTION | METHOD | PARAM             | RESULT              | REMARK |
+| --------------------------- | -------- | ------ | ----------------- | ------------------- | ------ |
+| /lecture/insert             | 插入讲座 | PUT    | name[...]         | {code,body,message} |        |
+| /lecture/delete/{id}        | 删除讲座 | DELETE |                   | {code,body,message} |        |
+| /lecture/select/{id}        | 查询讲座 | GET    |                   | {code,body,message} |        |
+| /lecture/selectnew          | 查询最新 | GET    |                   | {code,body,message} |        |
+| /lecture/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize] | {code,body,message} |        |
+| /lecture/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize] | {code,body,message} |        |
+| /lecture/allselect          | 查询讲座 | GET    | [pageNo,pageSize] | {code,body,message} |        |
+| /lecture/update             | 更新讲座 | POST   | id[...]           | {code,body,message} |        |
 
 ## 6 tb_online_tools
 
 ### 6.1 Table
 
-| Column   | Description  | Type   | Remark                                     |
-| -------- | ------------ | ------ | ------------------------------------------ |
-| ID       | 主键（编号） | String | Not Null, Unique, Primary Key, Auto Create |
-| NAME     | 名称         | String | Not Null, Unique                           |
-| ABSTRACT | 介绍         | String |                                            |
-| PICTURE  | 图片         | String |                                            |
-| URL      | 链接         | String | Not Null                                   |
+| Column   | Description  | Type   | Remark                   |
+| -------- | ------------ | ------ | ------------------------ |
+| ID       | 主键（编号） | String | Primary Key, Auto Create |
+| NAME     | 名称         | String | Not Null, Unique         |
+| ABSTRACT | 介绍         | String |                          |
+| PICTURE  | 图片         | String |                          |
+| URL      | 链接         | String | Not Null, Unique         |
 
 ### 6.2 URL
 
 - 基础：增删改查及批量操作
 
-| URL                             | FUNCTION | METHOD | PARAM                      | RESULT              | REMARK      |
-| ------------------------------- | -------- | ------ | -------------------------- | ------------------- | ----------- |
-| /onlinetools/insert             | 插入     | PUT    | OnlineTool                 | {code,body,message} |             |
-| /onlinetools/batchinsert        | 批量插入 | PUT    | [OnlineTool，[OnlineTool]] | {code,body,message} |             |
-| /onlinetools/delete/{id}        | 删除     | DELETE |                            | {code,body,message} | body值为id  |
-| /onlinetools/batchdelete/{id}   | 批量删除 | DELETE |                            | {code,body,message} | body值为id  |
-| /onlinetools/select/{id}        | 查询     | GET    |                            | {code,body,message} |             |
-| /onlinetools/batchseletct/{ids} | 批量     | GET    | [pageNo,pageSize]          | ode,body,message}   | 逗号","分隔 |
-| /onlinetools/allselect          | 查询     | GET    | [pageNo,pageSize]          | {code,body,message} | body为page  |
-| /onlinetools/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]          | {code,body,message} |             |
-| /onlinetools/update             | 更新     | POST   | OnlineTool                 | {code,body,message} |             |
+| URL                             | FUNCTION | METHOD | PARAM                      | RESULT              | REMARK |
+| ------------------------------- | -------- | ------ | -------------------------- | ------------------- | ------ |
+| /onlinetools/insert             | 插入     | PUT    | NAME,URL[...]              | {code,body,message} |        |
+| /onlinetools/batchinsert        | 批量插入 | PUT    | OnlineTool[,OnlineTool...] | {code,body,message} |        |
+| /onlinetools/delete/{id}        | 删除     | DELETE |                            | {code,body,message} |        |
+| /onlinetools/batchdelete/{id}   | 批量删除 | DELETE |                            | {code,body,message} |        |
+| /onlinetools/select/{id}        | 查询     | GET    |                            | {code,body,message} |        |
+| /onlinetools/batchseletct/{ids} | 批量     | GET    | [pageNo,pageSize]          | {code,body,message} |        |
+| /onlinetools/allselect          | 查询     | GET    | [pageNo,pageSize]          | {code,body,message} |        |
+| /onlinetools/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]          | {code,body,message} |        |
+| /onlinetools/update             | 更新     | POST   | id[...]                    | {code,body,message} |        |
 
 ## 7 tb_map_servers
 
 ### 7.1 Table
 
-| Column      | Description  | Type   | Remark                                     |
-| ----------- | ------------ | ------ | ------------------------------------------ |
-| ID          | 主键（编号） | String | Not Null, Unique, Primary Key, Auto Create |
-| NAME        | 名称         | String | Not Null, Unique                           |
-| COMPANY     | 公司         | String | Not Null                                   |
-| REGION      | 地区         | String | Not Null, "CN" or "other"                  |
-| SERVER      | 提供的服务   | String |                                            |
-| LIMITED     | 使用限制     | String |                                            |
-| PICTURE     | 图片         | String |                                            |
-| DESCRIPTION | 描述         | String |                                            |
-| URL         | 链接         | String | Not Null                                   |
+| Column      | Description  | Type   | Remark                    |
+| ----------- | ------------ | ------ | ------------------------- |
+| ID          | 主键（编号） | String | Primary Key, Auto Create  |
+| NAME        | 名称         | String | Not Null, Unique          |
+| COMPANY     | 公司         | String | Not Null                  |
+| REGION      | 地区         | String | Not Null, "CN" or "other" |
+| SERVER      | 提供的服务   | String |                           |
+| LIMITED     | 使用限制     | String |                           |
+| PICTURE     | 图片         | String |                           |
+| DESCRIPTION | 描述         | String |                           |
+| URL         | 链接         | String | Not Null, Unique          |
 
 ### 7.2 URL
 
 - 基础：增删改查及批量操作
 
-| URL                            | FUNCTION | METHOD | PARAM                      | RESULT              | REMARK      |
-| ------------------------------ | -------- | ------ | -------------------------- | ------------------- | ----------- |
-| /mapservice/insert             | 插入     | PUT    | MapService                 | {code,body,message} |             |
-| /mapservice/batchinsert        | 批量插入 | PUT    | [MapService，[MapService]] | {code,body,message} |             |
-| /mapservice/delete/{id}        | 删除     | DELETE |                            | {code,body,message} | body值为id  |
-| /mapservice/batchdelete/{id}   | 批量删除 | DELETE |                            | {code,body,message} | body值为id  |
-| /mapservice/select/{id}        | 查询     | GET    |                            | {code,body,message} |             |
-| /mapservice/batchseletct/{ids} | 批量     | GET    | [pageNo,pageSize]          | ode,body,message}   | 逗号","分隔 |
-| /mapservice/allselect          | 查询     | GET    | [pageNo,pageSize]          | {code,body,message} | body为page  |
-| /mapservice/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]          | {code,body,message} |             |
-| /mapservice/update             | 更新     | POST   | MapService                 | {code,body,message} |             |
+| URL                            | FUNCTION | METHOD | PARAM                        | RESULT              | REMARK |
+| ------------------------------ | -------- | ------ | ---------------------------- | ------------------- | ------ |
+| /mapservice/insert             | 插入     | PUT    | NAME,COUNTYR,REGION,URL[...] | {code,body,message} |        |
+| /mapservice/batchinsert        | 批量插入 | PUT    | [MapService，[MapService]]   | {code,body,message} |        |
+| /mapservice/delete/{id}        | 删除     | DELETE |                              | {code,body,message} |        |
+| /mapservice/batchdelete/{id}   | 批量删除 | DELETE |                              | {code,body,message} |        |
+| /mapservice/select/{id}        | 查询     | GET    |                              | {code,body,message} |        |
+| /mapservice/batchseletct/{ids} | 批量     | GET    | [pageNo,pageSize]            | ode,body,message}   |        |
+| /mapservice/allselect          | 查询     | GET    | [pageNo,pageSize]            | {code,body,message} |        |
+| /mapservice/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]            | {code,body,message} |        |
+| /mapservice/update             | 更新     | POST   | id[...]                      | {code,body,message} |        |
 
 ## 8 tb_group_member
 
@@ -257,7 +259,7 @@
 
 | Column  | Description  | Type   | Remark                                         |
 | ------- | ------------ | ------ | ---------------------------------------------- |
-| ID      | 主键（编号） | Int    | Not Null, Unique, Primary Key, Auto Create     |
+| ID      | 主键（编号） | Int    | Primary Key, Auto Create                       |
 | NAME    | 姓名         | String | Not Null                                       |
 | VERSION | 开发版本     | String | "V1.0" or "V2.0"                               |
 | TEAM    | 小组编号     | String |                                                |
@@ -277,43 +279,45 @@
 
 ### 9.1 Table
 
-| Column   | Description  | Type | Remark |
-| -------- | ------------ | ---- | ------ |
-| ID       | 主键（编号） |      |        |
-| ACTID    | 操作员id     |      |        |
-| ROLE     | 操作员角色   |      |        |
-| TIME     | 操作时间     |      |        |
-| TABLE    | 操作表格     |      |        |
-| OBJECTID | 操作数据id   |      |        |
-| TYPE     | 操作类型     |      |        |
+| Column   | Description  | Type      | Remark                   |
+| -------- | ------------ | --------- | ------------------------ |
+| ID       | 主键（编号） | String    | Primary Key, Auto Create |
+| ACTID    | 操作员id     | String    | Not Null                 |
+| ROLE     | 操作员角色   | String    | Not Null                 |
+| TIME     | 操作时间     | Timestamp | Not Null                 |
+| TABLE    | 操作表格     | String    | Not Null                 |
+| OBJECTID | 操作数据id   | String    | Not Null                 |
+| TYPE     | 操作类型     | String    | Not Null                 |
 
 ### 9.2 URL
 
-- 基础：增加数据（增、删、查操作时触发）
-- 基础：查询数据及批量操作
-
-- 查询数据（通过ACTID，通过TIME（TIME范围），通过TABLE）
-
-- 定期删除日志：数据表触发器（如超过10000条数据，以时间顺序删除8000条）
+| URL                        | FUNCTION | METHOD | PARAM                                      | RESULT              | REMARK |
+| -------------------------- | -------- | ------ | ------------------------------------------ | ------------------- | ------ |
+| /log/insert                | 插入日志 | PUT    | id,actId,role,time,tableName,objectId,type | {code,body,message} |        |
+| /log/selectbyactid/{actId} | 查询日志 | GET    |                                            | {code,body,message} |        |
+| /log//selectbytime         | 查询日志 | GET    | startTime,endTime                          | {code,body,message} |        |
+| /log/allselect             | 查询日志 | GET    | [pageNo,pageSize]                          | {code,body,message} |        |
 
 ## 10 tb_teach_model
 
+- 该部分由 **邵剑**、**王泺棋** 负责
+
 ### 10.1 Table
 
-| **Column**    | **Description**    | **Type**  | **Remark**                                 |
-| ------------- | ------------------ | :-------- | :----------------------------------------- |
-| TEACHMODEL_ID | 教学案例编号       | Int       | Not Null, Unique, Primary Key, Auto Create |
-| NAME          | 名称               | String    | Not Null                                   |
-| DESCRIPTION   | 描述               | String    |                                            |
-| DATE          | 创建日期           | TimeStamp | Not Null, Auto Create                      |
-| KEYWORDS      | 关键字             | String    |                                            |
-| GROUP_ID      | 案例来源团队       | String    |                                            |
-| AUTHOR_ID     | 案例作者           | String    |                                            |
-| EMAIL         | 案例作者邮箱       | String    |                                            |
-| FILE_TEMPLATE | 案例临时存储路径   | String    | Not Null                                   |
-| FILE_PATH     | 案例转换后存储路径 | String    | Not Null                                   |
-| PIC_PATH      | 案例图片样式       | String    |                                            |
-| FILE_TYPE     | 案例文件类型       | String    | Not Null                                   |
+| **Column**    | **Description**    | **Type**  | **Remark**               |
+| ------------- | ------------------ | :-------- | :----------------------- |
+| TEACHMODEL_ID | 教学案例编号       | String    | Primary Key, Auto Create |
+| NAME          | 名称               | String    | Not Null                 |
+| DESCRIPTION   | 描述               | String    |                          |
+| DATE          | 创建日期           | TimeStamp | Not Null, Auto Create    |
+| KEYWORDS      | 关键字             | String    |                          |
+| GROUP_ID      | 案例来源团队       | String    |                          |
+| AUTHOR_ID     | 案例作者           | String    |                          |
+| EMAIL         | 案例作者邮箱       | String    |                          |
+| FILE_TEMPLATE | 案例临时存储路径   | String    | Not Null                 |
+| FILE_PATH     | 案例转换后存储路径 | String    | Not Null                 |
+| PIC_PATH      | 案例图片样式       | String    |                          |
+| FILE_TYPE     | 案例文件类型       | String    | Not Null                 |
 
 ### 10.2 URL
 
@@ -344,10 +348,9 @@
 
 | Name   | Task                                                         |
 | ------ | ------------------------------------------------------------ |
-| 周育全 | base类实现，tb_user、tb_student_paper、tb_academic_paper、tb_group_member设计及实现、数据收集及入库 |
+| 周育全 | base类设计及实现，tb_user、tb_student_paper、tb_academic_paper、tb_lectures、tb_group_member设计及实现，数据整理 |
 | 张郑良 | tb_log设计及实现                                             |
-| 赵佳晖 | tb_geographic_data、tb_online_tools设计及实现                |
+| 赵佳晖 | tb_geographic_data、tb_online_tools、tb_map_servers设计及实现，数据整理 |
 | 张家瑞 | tb_teaching_cases设计及实现                                  |
-| 冯瀑霏 | tb_map_servers设计及实现，数据收集及入库                     |
-| 陈柠檬 | tb_lectures设计及实现、数据收集及入库                        |
-
+| 冯瀑霏 | 数据收集及入库                                               |
+| 陈柠檬 | 数据收集及入库                                               |
