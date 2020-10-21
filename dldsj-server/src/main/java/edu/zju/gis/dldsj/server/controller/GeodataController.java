@@ -3,6 +3,7 @@ package edu.zju.gis.dldsj.server.controller;
 import edu.zju.gis.dldsj.server.base.BaseController;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
+import edu.zju.gis.dldsj.server.constant.CodeConstants;
 import edu.zju.gis.dldsj.server.entity.Geodata;
 import edu.zju.gis.dldsj.server.entity.searchPojo.GeodataSearchPojo;
 import edu.zju.gis.dldsj.server.service.GeodataService;
@@ -11,11 +12,15 @@ import edu.zju.gis.dldsj.server.utils.fs.FsManipulatorFactory;
 import edu.zju.gis.dldsj.server.utils.fs.LocalFsManipulator;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -122,6 +127,20 @@ public class GeodataController extends BaseController<Geodata, GeodataService, S
 
 
     // -----------------------------------------------------------------------------------------------------------------
+
+    // 通过表单插入数据
+    @RequestMapping(value = "/insertByForm", method = RequestMethod.POST)
+    @ResponseBody
+    public Result insertByForm(@SessionAttribute("role") String role, HttpServletRequest request) {
+        return service.insertByForm(role, request);
+    }
+
+    // 通过ID 下载数据
+    @RequestMapping(value = "/downloadByid", method = RequestMethod.GET)
+    @ResponseBody
+    public Result downloadByid(String id, HttpServletResponse response) {
+        return service.downloadByid(id, response);
+    }
 
     @RequestMapping(value = "/insertAndUp2hdfs", method = RequestMethod.PUT)
     @ResponseBody

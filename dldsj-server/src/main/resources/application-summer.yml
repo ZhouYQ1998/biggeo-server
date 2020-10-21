@@ -10,9 +10,12 @@ spring:
     name: ${application-info.name}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.79.231.81:3306/eduPlatform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
-    username: root
-    password: 123456
+#      url: jdbc:mysql://10.79.231.81:3306/eduPlatform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+#      username: root
+#      password: 123456
+      url: jdbc:mysql://localhost:3306/eduPlatform?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+      username: root
+      password: mysql
   servlet:
     multipart:
       max-file-size: 300MB
@@ -70,5 +73,6 @@ settings:
   airFlowHome: /root/airflow
 #  airFlowHome: /Users/jiarui/airflow
   airFlowDagsPath: ${settings.airFlowHome}/dags
-  hdFsUri: hdfs://192.168.1.5:9000
+#  hdFsUri: hdfs://192.168.1.5:9000
+  hdFsUri: hdfs://localhost:9000
   lFsUri: file://
