@@ -44,7 +44,6 @@
             TYPE_1,
             <if test="type2 != null">TYPE_2,</if>
             <if test="keywords != null">KEYWORDS,</if>
-            <if test="source != null">SOURCE,</if>
             <if test="abstractInfo != null">ABSTRACT,</if>
             <if test="reference != null">REFERENCE,</if>
             <if test="picture != null">PICTURE,</if>
@@ -65,7 +64,6 @@
             #{type1,jdbcType=VARCHAR},
             <if test="type2 != null">#{type2,jdbcType=VARCHAR},</if>
             <if test="keywords != null">#{keywords,jdbcType=VARCHAR},</if>
-            <if test="source != null">#{source,jdbcType=VARCHAR},</if>
             <if test="abstractInfo != null">#{abstractInfo,jdbcType=VARCHAR},</if>
             <if test="reference != null">#{reference,jdbcType=VARCHAR},</if>
             <if test="picture != null">#{picture,jdbcType=VARCHAR},</if>
@@ -91,7 +89,6 @@
             TYPE_1,
             <if test="type2 != null">TYPE_2,</if>
             <if test="keywords != null">KEYWORDS,</if>
-            <if test="source != null">SOURCE,</if>
             <if test="abstractInfo != null">ABSTRACT,</if>
             <if test="reference != null">REFERENCE,</if>
             <if test="picture != null">PICTURE,</if>
@@ -112,7 +109,6 @@
             #{type1,jdbcType=VARCHAR},
             <if test="type2 != null">#{type2,jdbcType=VARCHAR},</if>
             <if test="keywords != null">#{keywords,jdbcType=VARCHAR},</if>
-            <if test="source != null">#{source,jdbcType=VARCHAR},</if>
             <if test="abstractInfo != null">#{abstractInfo,jdbcType=VARCHAR},</if>
             <if test="reference != null">#{reference,jdbcType=VARCHAR},</if>
             <if test="picture != null">#{picture,jdbcType=VARCHAR},</if>
@@ -144,7 +140,6 @@
             <if test="type1 != null">TYPE_1 = #{type1,jdbcType=VARCHAR},</if>
             <if test="type2 != null">TYPE_2 = #{type2,jdbcType=VARCHAR},</if>
             <if test="keywords != null">KEYWORDS = #{keywords,jdbcType=VARCHAR},</if>
-            <if test="source != null">SOURCE = #{source,jdbcType=VARCHAR},</if>
             <if test="abstractInfo != null">ABSTRACT = #{abstractInfo,jdbcType=VARCHAR},</if>
             <if test="reference != null">REFERENCE = #{reference,jdbcType=VARCHAR},</if>
             <if test="picture != null">PICTURE = #{picture,jdbcType=VARCHAR},</if>
