@@ -1,25 +1,29 @@
 package edu.zju.gis.dldsj.server.controller;
 
-import com.github.pagehelper.PageHelper;
 import edu.zju.gis.dldsj.server.base.BaseController;
 import edu.zju.gis.dldsj.server.base.BaseFilter;
-import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
+import edu.zju.gis.dldsj.server.constant.CrawlerConstants;
+import edu.zju.gis.dldsj.server.entity.Batch;
 import edu.zju.gis.dldsj.server.entity.Lecture;
-import edu.zju.gis.dldsj.server.entity.User;
 import edu.zju.gis.dldsj.server.service.LectureService;
-import edu.zju.gis.dldsj.server.service.UserService;
+import edu.zju.gis.dldsj.server.utils.CrawlerUtil;
 import lombok.extern.log4j.Log4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * @author Jiarui
- * @date 2020/8/20
+ * @author zyq
+ * @date 2020/10/23
  */
 
 @Log4j
@@ -30,5 +34,46 @@ public class LectureController extends BaseController<Lecture, LectureService, S
 
     @Autowired
     private LectureService lectureService;
+
+    /***
+     * 爬取论文
+     * @return result
+     */
+    @RequestMapping(value = "/crawl", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<List<Batch<Lecture>>> crawl() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd yyyy-MM");
+        String[] htmls = CrawlerUtil.crawl(CrawlerConstants.LectureUrls, CrawlerConstants.UserAgent);
+        List<Lecture> lectures = new ArrayList<>();
+        for(String html: htmls){
+            Document document = Jsoup.parse(html);
+            Elements elements = document.getElementsByClass("list-acad");
+            for(Element element: elements){
+                try{
+                    Lecture lecture = new Lecture();
+                    lecture.setName(element.getElementsByTag("a").text());
+                    lecture.setTime(sdf.parse(element.getElementsByClass("acad-time").text()));
+                    lecture.setSpeaker(element.getElementsByClass("acad-con-speaker").text()
+                            .replace("主讲人", "")
+                            .replace("：", "")
+                            .replace(":", "").trim());
+                    lecture.setPlace(element.getElementsByClass("acad-con-place").text()
+                            .replace("地点", "")
+                            .replace("：", "")
+                            .replace(":", "").trim());
+                    lecture.setDetailTime(element.getElementsByClass("acad-con-time").text()
+                            .replace("时间", "")
+                            .replace("：", "")
+                            .replace(":", "").trim());
+                    lecture.setUrl("http://gs.zju.edu.cn/" + element.getElementsByTag("a").first().attr("href"));
+                    lectures.add(lecture);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        lectureService.allDelete();
+        return lectureService.batchInsert(lectures);
+    }
 
 }

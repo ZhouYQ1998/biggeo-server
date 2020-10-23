@@ -5,7 +5,7 @@
         <result column="ID" jdbcType="VARCHAR" property="id"/>
         <result column="NAME" jdbcType="VARCHAR" property="name"/>
         <result column="SPEAKER" jdbcType="VARCHAR" property="speaker"/>
-        <result column="TIME" jdbcType="VARCHAR" property="time"/>
+        <result column="TIME" jdbcType="DATE" property="time"/>
         <result column="DETAIL_TIME" jdbcType="VARCHAR" property="detailTime"/>
         <result column="PLACE" jdbcType="VARCHAR" property="place"/>
         <result column="URL" jdbcType="VARCHAR" property="url"/>
@@ -118,4 +118,8 @@
         from <include refid="TABLE_NAME"/>
         where NAME like #{key,jdbcType=VARCHAR}
     </select>
+    <delete id="allDelete">
+        delete
+        from <include refid="TABLE_NAME"/>
+    </delete>
 </mapper>

@@ -19,12 +19,6 @@ import java.util.Properties;
  * @author zyq
  * @date 2020/10/12
  */
-
-/**
- * Run local command 调用本地的command
- *
- * @return exit status
- */
 public class EmailUtil {
 
     public static Result<Map<String, String>> sendEmail(String email){

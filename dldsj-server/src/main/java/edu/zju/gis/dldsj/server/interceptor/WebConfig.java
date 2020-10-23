@@ -41,17 +41,16 @@ public class WebConfig implements WebMvcConfigurer {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
             HttpSession session = request.getSession();
-//            if (session.getAttribute("userId") != null) {
-//                return true;
-//            } else {
-//                Result<String> result = new Result<String>(CodeConstants.VALIDATE_ERROR, "用户登陆状态已过期，请重新登陆。");
-//                result.setBody("");
-//                response.setContentType("application/json;charset=utf-8");
-//                response.getWriter().write(result.toString());
-//                return false;
-//            }
-            session.setAttribute("role","manager");
-            return true;
+            if (session.getAttribute("userId") != null) {
+                return true;
+            } else {
+                Result<String> result = new Result<String>(CodeConstants.VALIDATE_ERROR, "用户登陆状态已过期，请重新登陆。");
+                result.setBody("");
+                response.setContentType("application/json;charset=utf-8");
+                response.getWriter().write(result.toString());
+                return false;
+            }
+//            return true;
         }
     }
 }

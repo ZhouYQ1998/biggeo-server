@@ -192,6 +192,9 @@
 | /lecture/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize] | {code,body,message} |        |
 | /lecture/allselect          | 查询讲座 | GET    | [pageNo,pageSize] | {code,body,message} |        |
 | /lecture/update             | 更新讲座 | POST   | id[...]           | {code,body,message} |        |
+| /lecture/crawl              | 爬取讲座 | GET    |                   | {code,body,message} |        |
+
+- 爬取讲座：删除已有讲座公告，爬取地球科学学院官网最新3页讲座
 
 ## 6 tb_online_tools
 
@@ -268,12 +271,12 @@
 | PHOTO   | 照片         | String |                                                |
 ### 8.2 URL
 
-| URL                   | FUNCTION       | METHOD | PARAM                         | RESULT      | REMARK |
-| --------------------- | -------------- | ------ | ----------------------------- | ----------- | ------ |
-| /member/allselect     | 查询所有开发者 | GET    | [PageNo,PageSize]             | {code,body} |        |
-| /member/showteachers  | 查询指导老师   | GET    | [PageNo,PageSize]             | {code,body} |        |
-| /member/showbyversion | 查询开发者     | GET    | version,[PageNo,PageSize]     | {code,body} |        |
-| /member/showbyteam    | 查询开发者     | GET    | version,team[PageNo,PageSize] | {code,body} |        |
+| URL                     | FUNCTION       | METHOD | PARAM                         | RESULT      | REMARK |
+| ----------------------- | -------------- | ------ | ----------------------------- | ----------- | ------ |
+| /member/allselect       | 查询所有开发者 | GET    | [PageNo,PageSize]             | {code,body} |        |
+| /member/selectteachers  | 查询指导老师   | GET    | [PageNo,PageSize]             | {code,body} |        |
+| /member/selectbyversion | 查询开发者     | GET    | version,[PageNo,PageSize]     | {code,body} |        |
+| /member/selectbyteam    | 查询开发者     | GET    | version,team[PageNo,PageSize] | {code,body} |        |
 
 ## 9 tb_log
 
