@@ -40,7 +40,9 @@ settings:
     - http://10.79.231.81:8082
     - http://td1:8082
   sessionMaxAge: 36000
-  mapfileSavepath: opt/3S/map
+  mapfileSavepath: /opt/3S/map
+  #mapfileSavepath: /Users/jiarui/Desktop/3S_class/json
+
   userSpaceRootPath: /3S/userSpace/
   nameNode: 10.79.231.81
   username: root
