@@ -3,21 +3,23 @@ package edu.zju.gis.dldsj.server.controller;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.univocity.parsers.tsv.TsvParser;
+import com.univocity.parsers.tsv.TsvParserSettings;
+import com.vividsolutions.jts.io.ParseException;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.config.CommonSetting;
 import edu.zju.gis.dldsj.server.entity.mapProject;
+import edu.zju.gis.dldsj.server.utils.dataProcessUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -273,6 +275,61 @@ public class FileController {
                     return Result.error("文件删除失败");
             }
             return Result.success();
+    }
+
+
+    @RequestMapping(value = "/trans", method = RequestMethod.GET)
+    @ResponseBody
+    public String transformData(@RequestParam String filepath,String output) throws ParseException, IOException {
+        //通过tsv解析器创建setting对象
+        TsvParserSettings settings = new TsvParserSettings();
+        settings.getFormat().setLineSeparator("\n");
+        // 创建TSV解析器（将分隔符传入对象）
+        TsvParser parser = new TsvParser(settings);
+        List<String[]> allRows = parser.parseAll(new FileInputStream(filepath));
+
+        String head = "{\n" +
+                "  \"type\": \"FeatureCollection\",\n" +
+                "  \"features\": [\n";
+        String result0 = head;
+        //循环读取tsv文件中的wkt格式数据，并转换成geoJson写入
+        for (int i = 1;i<allRows.size();i++){
+            List<String> inputs = Arrays.asList(allRows.get(i));
+            String wktString = inputs.get(0);
+            String geoJson = dataProcessUtil.wkt2GeoJson(wktString);
+            String feature =
+                    "    {\n" +
+                    "      \"type\": \"Feature\",\n" +
+                    "      \"properties\": {},\n" +
+                    "      \"geometry\": "+geoJson+"}\n";
+            if (i != allRows.size()-1){
+                feature += ",";
+            }
+            String temp = result0;
+            result0 = temp+feature;
+        }
+        String result = result0+"  ]\n" +
+                        "}";
+
+        String wktString = "MULTIPOLYGON (((121.771387057383 29.9380971493358,121.793727312699 29.9446520745484,121.787707483423 29.9290005184285,121.761621556556 29.9232482371194,121.771387057383 29.9380971493358)))";
+        String geoJson = dataProcessUtil.wkt2GeoJson(wktString);
+//        String result = "{\n" +
+//                "  \"type\": \"FeatureCollection\",\n" +
+//                "  \"features\": [\n" +
+//                "    {\n" +
+//                "      \"type\": \"Feature\",\n" +
+//                "      \"properties\": {},\n" +
+//                "      \"geometry\": "+geoJson+"}\n" +
+//                "  ]\n" +
+//                "}";
+        System.out.println(result);
+        try {
+            BufferedWriter wkt2json = new BufferedWriter(new FileWriter(setting.getMapfileSavepath() + File.separator + output));
+            wkt2json.write(result);
+            wkt2json.close();
+        }catch (IOException e) {
+        }
+        return result;
     }
 }
 
