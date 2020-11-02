@@ -152,7 +152,7 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
                 localFsManipulator.compress(wholePath.split(","), tempZipFile.getAbsolutePath());
 
                 // 上传至 HDFS
-                hdFsPath = setting.getGeoDataPath() + '/' + tempZipFileName;
+                hdFsPath = setting.getGeoDataPath() + "/public/manager/" + tempZipFileName;
                 boolean isSuccess = hdfsManipulator.uploadFromLocal(tempZipFile.getAbsolutePath(), hdFsPath);
                 if (!isSuccess) return result.setCode(CodeConstants.SERVICE_ERROR).setMessage("数据上传至 HDFS 失败");
             } catch (Exception e) {
