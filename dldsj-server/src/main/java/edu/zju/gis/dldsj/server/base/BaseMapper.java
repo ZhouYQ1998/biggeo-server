@@ -42,6 +42,11 @@ public interface BaseMapper<T extends Base, ID extends Serializable> {
     List<T> allSelect();
 
     /**
+     * 查询实体（所有排序）
+     */
+    List<T> allSelectOrder(String order);
+
+    /**
      * 查询实体（最新）
      */
     List<T> selectNew();

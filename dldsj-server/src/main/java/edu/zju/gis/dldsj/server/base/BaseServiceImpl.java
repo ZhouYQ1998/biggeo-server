@@ -221,6 +221,27 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
     }
 
     /**
+     * 查询实体（所有）
+     */
+    public Result<Page<T>> allSelectOrder(Page<T> page, String order){
+        Result<Page<T>> result = new Result<>();
+        try{
+            PageHelper.startPage(page.getPageNo(), page.getPageSize());
+            List<T> all = mapper.allSelectOrder(order);
+            Page<T> pageResult = new Page<T>(all);
+            if(all.size() != 0){
+                result.setCode(CodeConstants.SUCCESS).setBody(pageResult).setMessage("查询成功");
+            }
+            else{
+                result.setCode(CodeConstants.USER_NOT_EXIST).setMessage("查询失败：实体不存在");
+            }
+        }catch (RuntimeException e){
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
+        }
+        return result;
+    }
+
+    /**
      * 查询实体（最新）
      */
     public Result<List<T>> selectNew(){

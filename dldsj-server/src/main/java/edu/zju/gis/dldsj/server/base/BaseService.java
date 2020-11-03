@@ -51,6 +51,11 @@ public interface BaseService<T extends Base<ID>, ID extends Serializable> {
     Result<Page<T>> allSelect(Page<T> page);
 
     /**
+     * 查询实体（所有排序）
+     */
+    Result<Page<T>> allSelectOrder(Page<T> page, String order);
+
+    /**
      * 查询实体（最新）
      */
     Result<List<T>> selectNew();

@@ -101,6 +101,16 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
         return service.allSelect(page);
     }
 
+    /**
+     * 查询实体（所有排序）
+     * @return Result
+     */
+    @RequestMapping(value = "/allselectorder", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<Page<T>> allSelectOrder(Page<T> page, @RequestParam String order) {
+        return service.allSelectOrder(page, order);
+    }
+
     /***
      * 查询实体（最新）
      * @return result

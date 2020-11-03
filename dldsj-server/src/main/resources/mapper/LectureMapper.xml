@@ -82,6 +82,12 @@
         <include refid="Base_Column_List"/>
         from <include refid="TABLE_NAME"/>
     </select>
+    <select id="allSelectOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        order by TIME ${_parameter}
+    </select>
     <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.Lecture">
         update <include refid="TABLE_NAME"/>
         <set>
