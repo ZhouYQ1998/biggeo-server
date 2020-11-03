@@ -31,7 +31,7 @@
         select
         <include refid="Base_Column_List"/>
         from <include refid="TABLE_NAME"/>
-        where VERSION = #{version, jdbcType=VARCHAR} or ROLE = 'instructor'
+        where VERSION = #{version, jdbcType=VARCHAR}
     </select>
     <select id="selectByTeam" resultMap="BaseResultMap">
         select

@@ -72,7 +72,7 @@ public class LectureController extends BaseController<Lecture, LectureService, S
                 }
             }
         }
-        lectureService.allDelete();
+        if(lectures.size() != 0) lectureService.allDelete();
         return lectureService.batchInsert(lectures);
     }
 
