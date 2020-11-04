@@ -34,6 +34,7 @@ import java.util.UUID;
  * @version 1.0, 2020-10-17
  */
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/userSpace")
 public class UserSpaceController {
