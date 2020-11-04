@@ -1,5 +1,6 @@
 package edu.zju.gis.dldsj.server.utils.fs;
 
+import edu.zju.gis.dldsj.server.entity.vo.FileInfo;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
 import org.apache.hadoop.io.IOUtils;
@@ -336,5 +337,20 @@ public abstract class FsManipulator implements Closeable {
         if (!isSingleton) {   // 只有不是单例对象才能关闭hdfs
             fs.close();
         }
+    }
+
+    /**
+     * 临时增加 获取文件/目录信息
+     * @param path 路径
+     * @return 文件/目录信息
+     * @throws IOException io
+     */
+    public FileInfo getFileInfo(Path path) throws IOException {
+        FileStatus status = fs.getFileStatus(path);
+        FileInfo fileInfo = new FileInfo(path.getName(), path.toString(), isFile(path), 0L, new Date(status.getModificationTime()));
+        if (fileInfo.getIsFile()) {
+            fileInfo.setSize(status.getLen());
+        }
+        return fileInfo;
     }
 }

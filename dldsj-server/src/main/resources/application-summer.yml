@@ -32,6 +32,7 @@ settings:
   jarPath: ${settings.parallelFilePath}/jar
   xmlPath: ${settings.parallelFilePath}/xml
   picPath: ${settings.nginxPath}/bigGeoPlatform/modelImages
+  downloadTempDirectory: /opt/3S/download/template
   eduCasePath: /home/data/images/3S/educase
   eduCaseNginxPath: /images/3S/educase
   geoDataPath: /3S/geoData

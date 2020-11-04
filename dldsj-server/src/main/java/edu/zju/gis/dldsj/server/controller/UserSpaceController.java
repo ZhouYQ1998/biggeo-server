@@ -3,6 +3,7 @@ package edu.zju.gis.dldsj.server.controller;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.config.CommonSetting;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
+import edu.zju.gis.dldsj.server.entity.vo.FileInfo;
 import edu.zju.gis.dldsj.server.utils.LoadUtils;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulator;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulatorFactory;
@@ -10,11 +11,15 @@ import edu.zju.gis.dldsj.server.utils.fs.HdfsManipulator;
 import edu.zju.gis.dldsj.server.utils.fs.LocalFsManipulator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.fs.Path;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -59,6 +64,133 @@ public class UserSpaceController {
             log.error(e.getMessage());
             return result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("全部文件返回失败");
         }
+    }
+
+    /**
+     * 获取文件信息
+     * @param userId 用户ID
+     * @param requestBody 请求体
+     * @return 标准结果体
+     */
+    @PostMapping("/getFileInfoList")
+    public Result<List<FileInfo>> getFileInfoList(@SessionAttribute("userId") String userId, @RequestBody String requestBody) {
+        Result<List<FileInfo>> result = new Result<>();
+        List<FileInfo> fileList = new ArrayList<>();
+        FsManipulator fsManipulator = FsManipulatorFactory.create(setting.getHdFsUri());
+        try {
+            String userRoot = Paths.get(setting.getUserSpaceRootPath(), userId).toString();
+            if (!fsManipulator.exists(userRoot)) {
+                fsManipulator.mkdirs(userRoot);
+            }
+            JSONObject inputs = new JSONObject(requestBody);
+            String userPath = inputs.optString("path", "/");
+            String path = Paths.get(userRoot, userPath).toString();
+            Path[] paths = fsManipulator.listFiles(path);
+            for (Path filePath : paths) {
+                FileInfo fileInfo = fsManipulator.getFileInfo(filePath);
+                fileInfo.setPath(fileInfo.getPath().replace(setting.getHdFsUri() + userRoot, ""));
+                fileList.add(fileInfo);
+            }
+            return result.setCode(CodeConstants.SUCCESS).setBody(fileList).setMessage("文件列表返回成功");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("文件列表返回失败");
+        }
+    }
+
+    /**
+     * 创建目录
+     * @param userId 用户ID
+     * @param requestBody 请求体
+     * @return 标准结果体
+     */
+    @PostMapping("/mkdir")
+    public Result<String> makeDir(@SessionAttribute("userId") String userId, @RequestBody String requestBody) {
+        Result<String> result = new Result<>();
+        FsManipulator fsManipulator = FsManipulatorFactory.create(setting.getHdFsUri());
+        try {
+            JSONObject inputs = new JSONObject(requestBody);
+            String userPath = inputs.getString("path");
+            String currentPath = Paths.get(setting.getUserSpaceRootPath(), userId, userPath).toString();
+            if (!fsManipulator.exists(currentPath)) {
+                fsManipulator.mkdirs(currentPath);
+                result.setCode(CodeConstants.SUCCESS).setMessage("目录创建成功").setBody("SUCCESS");
+            } else {
+                result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("目录已存在").setBody("ERROR");
+            }
+        } catch (Exception e) {
+            result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("目录创建失败").setBody("ERROR");
+        }
+        return result;
+    }
+
+    /**
+     * 上传文件
+     * @param userId 用户ID
+     * @param request 请求体
+     * @return 标注结果体
+     */
+    @PostMapping("/upload")
+    public Result<String> uploadFiles(@SessionAttribute("userId") String userId, HttpServletRequest request) {
+        Result<String> result = new Result<>();
+        // 如果请求数据中不包括文件
+        if (!ServletFileUpload.isMultipartContent(request)) {   // 判断是否是包含文件的表单数据
+            return result.setCode(CodeConstants.VALIDATE_ERROR).setBody("ERROR").setMessage("尚未选择文件");
+        }
+        List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
+        String userPath = request.getParameter("path");
+        String currentPath = Paths.get(setting.getUserSpaceRootPath(), userId, userPath).toString();
+        FsManipulator lfsManipulator = FsManipulatorFactory.create();
+        HdfsManipulator hdfsManipulator = (HdfsManipulator) FsManipulatorFactory.create(setting.getHdFsUri());
+        String tmpPath = Paths.get(setting.getTemplatePath(), UUID.randomUUID().toString()).toString();
+        try {
+            lfsManipulator.mkdirs(tmpPath);
+            for (MultipartFile file : files) {
+                file.transferTo(new File(Paths.get(tmpPath, file.getName()).toString()));
+            }
+            Path[] paths = lfsManipulator.listFiles(tmpPath);
+            for (Path path : paths) {
+                hdfsManipulator.uploadFromLocal(path.toString(), currentPath);
+            }
+            result.setCode(CodeConstants.SUCCESS).setBody("SUCCESS").setMessage("文件上传成功");
+        } catch (Exception e) {
+            result.setCode(CodeConstants.SYSTEM_ERROR).setBody("ERROR").setMessage("文件上传失败");
+        } finally {
+            try {
+                if (lfsManipulator.exists(tmpPath)) {
+                    lfsManipulator.deleteDir(tmpPath);
+                }
+            } catch (IOException e) {
+                result.setMessage(result.getMessage() + "#临时文件清除失败");
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 删除文件/目录
+     * @param userId 用户ID
+     * @param requestBody 请求体
+     * @return 标准结果体
+     */
+    @DeleteMapping("/delete")
+    public Result<String> delete(@SessionAttribute("userId") String userId, @RequestBody String requestBody) {
+        Result<String> result = new Result<>();
+        try {
+            JSONObject inputs = new JSONObject(requestBody);
+            String userPath = inputs.getString("path");
+            String currentPath = Paths.get(setting.getUserSpaceRootPath(), userId, userPath).toString();
+            FsManipulator fsManipulator = FsManipulatorFactory.create(setting.getHdFsUri());
+            if (fsManipulator.exists(currentPath)) {
+                fsManipulator.deleteDir(currentPath);
+                result.setCode(CodeConstants.SUCCESS).setMessage("文件删除成功").setBody("SUCCESS");
+            } else {
+                result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("文件不存在").setBody("ERROR");
+            }
+        } catch (Exception e) {
+            result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("文件删除失败").setBody("ERROR");
+        }
+        return result;
     }
 
     /**
