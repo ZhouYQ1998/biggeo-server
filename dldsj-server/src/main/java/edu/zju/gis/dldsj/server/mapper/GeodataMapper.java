@@ -2,43 +2,33 @@ package edu.zju.gis.dldsj.server.mapper;
 
 import edu.zju.gis.dldsj.server.base.BaseMapper;
 import edu.zju.gis.dldsj.server.entity.Geodata;
+import edu.zju.gis.dldsj.server.entity.GeodataItem;
 
 import java.util.List;
 
 /**
- * @author Jiarui
- * @date 2020/8/26
- * @author: zjh
- * @date: 20201012
+ * @author Jiarui 2020/8/26
+ * @author zjh 2020/10/12
+ * @update zyq 2020/11/4
  */
 public interface GeodataMapper extends BaseMapper<Geodata, String> {
 
-    // 数据目录功能，根据type、uploader、source或useName等目录字段，返回数据(单选)
+    // 数据目录功能：根据type字段返回数据
     List<Geodata> selectByType1(String type1);
 
     List<Geodata> selectByType2(String type2);
 
-    List<Geodata> selectByUploader(String uploader);
-
-    List<Geodata> selectBySource(String source);
-
-    List<Geodata> selectByUserName(String userName);
-
-
-    // 根据输入字段名称，返回结果的唯一不同值与对应数量
-    // 查询出有哪些不重复的字段
+    // 数据目录功能：根据type字段返回唯一不同值与对应数量
+    // 查询出唯一值
     List<Geodata> getDistinctField(String field);
 
-    // 计算该字段共有多少条数据
+    // 查询该值数据量
     String getCountOfField(String field, String field2);
 
-    // 下载次数+1
-    void downloadTimesPlus(String id);
-
-    // 下载量最多的5条数据
+    // 查询下载数量最多的5条数据
     List<Geodata> getPopularData();
 
-    // 插入并上传文件
-    int insertAndUp2hdfs(Geodata t);
+    // 访问次数+1
+    void viewTimesPlus(String id);
 
 }

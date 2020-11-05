@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.GeodataItemMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.GeodataItem">
+        <result column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="DATASET" jdbcType="VARCHAR" property="dataset"/>
+        <result column="TITLE" jdbcType="VARCHAR" property="title"/>
+        <result column="FORMAT" jdbcType="VARCHAR" property="format"/>
+        <result column="RAM" jdbcType="VARCHAR" property="ram"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID, DATASET, TITLE, FORMAT, RAM
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_geographic_dataitem
+    </sql>
+
+    <!-- 查询数据集详情 -->
+    <select id="getDatail" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="TABLE_NAME"/>
+        WHERE DATASET = #{_parameter,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

@@ -48,30 +48,26 @@
 - 插入和更新的批量操作返回值的body值包括“t”（实体）和“message”（实体操作结果），下同
 - PageNo默认为1，PageSize默认为20，下同
 
-## 2 tb_geographic_data
+## 2 tb_geographic_dataset
 
 ### 2.1 Table
 
-| Column            | Description  | Type    | Remark                            |
-| ----------------- | ------------ | ------- | --------------------------------- |
-| ID                | 主键（编号） | String  | Primary Key, Auto Create          |
-| TITLE             | 标题         | String  | Not Null                          |
-| UPLOADED          | 作者         | String  |                                   |
-| userName          | 上传用户     | String  | Not Null, "manager" or "userName" |
-| downloadAuthority | 下载权限     | Boolean | Default 1                         |
-| TIME              | 时间         | Date    |                                   |
-| TYPE_1            | 类型一       | String  | Not Null                          |
-| TYPE_2            | 类型二       | String  |                                   |
-| KEYWORDS          | 关键词       | String  |                                   |
-| ABSTRACT          | 摘要         | String  |                                   |
-| REFRENCE          | 参考文献     | String  |                                   |
-| PICTURE           | 图片         | String  |                                   |
-| OLD_FILENAME      | 中文名称     | String  |                                   |
-| NEW_FILENAME      | 英文名称     | String  |                                   |
-| FORMAT            | 数据格式     | String  |                                   |
-| PATH              | 路径         | String  | Not Null                          |
-| RAM               | 数据大小     | String  |                                   |
-| DOWNLOAD_TIM      | 下载数量     | Int     |                                   |
+| Column     | Description  | Type   | Remark                   |
+| ---------- | ------------ | ------ | ------------------------ |
+| ID         | 主键（编号） | String | Primary Key, Auto Create |
+| TITLE      | 数据集标题   | String | Not Null                 |
+| AUTHOR     | 作者         | String |                          |
+| RE_TIME    | 时间         | Date   |                          |
+| TYPE_1     | 类型一       | String | Not Null                 |
+| TYPE_2     | 类型二       | String | Not Null                 |
+| KEYWORDS   | 关键词       | String |                          |
+| ABSTRACT   | 摘要         | String |                          |
+| REFRENCE   | 参考文献     | String |                          |
+| PICTURE    | 图片         | String |                          |
+| FORMAT     | 数据格式     | String | Not Null                 |
+| PATH       | 路径         | String | Not Null                 |
+| RAM        | 数据大小     | String | Not Null                 |
+| VIEW_TIMES | 访问数量     | Int    | Not Null                 |
 
 ### 2.2 URL
 
@@ -84,26 +80,29 @@
 | /geodata/select/{id}        | 查询数据             | GET    |                                | {code,body,message} |        |
 | /geodata/batchseletct/{ids} | 批量查询             | GET    |                                | {code,body,message} |        |
 | /geodata/allselect          | 全部查询             | GET    |                                | {code,body,message} |        |
-| /geodata/fuzzyname/{key}    | 模糊查询             | GET    | [pageNo,pageSize]              | {code,body,message} |        |
-| /geodata/byuserName         | 名字查询             | GET    | userName,[pageNo,pageSize]]    | {code,body,message} |        |
 | /geodata/update             | 更新数据             | POST   | id[...]                        | {code,body,message} |        |
 | /geodata/batchupdate        | 批量更新             | POST   | Geodata[,Geodata...]           | {code,body,message} |        |
 | /geodata/bytype1            | 一级分类             | GET    | type,[pageNo,pageSize]]        | {code,body,message} |        |
 | /geodata/bytype2            | 二级分类             | GET    | type,[pageNo,pageSize]]        | {code,body,message} |        |
 | /geodata/dis                | 字段唯一不同值与数量 | GET    | field,[pageNo,pageSize]]       | {code,body,message} |        |
-| /geodata/downloadplus       | 更新下载次数         | GET    | id                             | {code,body,message} |        |
 | /geodata/populardata        | 查询最多下载         | GET    |                                | {code,body,message} |        |
-| /geodata/insertByForm            | 上传             | POST   | title,userName,type1,path[...] | {code,body,message} |                  |
-| /geodata/downloadByid            | 下载                     | POST   | id               | {code,body,message} | body为下载内容 |
-| /geodata/uploadFromLocal         | 上传               | GET    | filePath          | {code,body,message} |                |
-| /geodata/downloadFromHDFS        | 下载                   | GET    | hdfsPath,fileDirectory | {code,body,message} |    |
+| /geodata/detail/{id}        | 查询数据集详情       | GET    |                                | {code,body,message} |        |
 
-- fileDirectory为本地保存路径（不包括文件名）
-- filePath为本地上传路径
-
-## 3 tb_student_paper
+## 3 tb_geographic_data
 
 ### 3.1 Table
+
+| Column  | Description  | Type   | Remark                   |
+| ------- | ------------ | ------ | ------------------------ |
+| ID      | 主键（编号） | String | Primary Key, Auto Create |
+| TITLE   | 标题         | String | Not Null                 |
+| DATASET | 数据集       | String | Not Null, Foreign Key    |
+| FORMAT  | 数据格式     | String | Not Null                 |
+| RAM     | 数据大小     | String | Not Null                 |
+
+## 4 tb_student_paper
+
+### 4.1 Table
 
 | Column          | Description   | Type   | Remark                                       |
 | --------------- | ------------- | ------ | -------------------------------------------- |
@@ -119,7 +118,7 @@
 | ABSTRACT        | 摘要          | String |                                              |
 | URL             | 链接          | String | Unique                                       |
 
-### 3.2 URL
+### 4.2 URL
 
 | URL                              | FUNCTION | METHOD | PARAM                               | RESULT              | REMARK |
 | -------------------------------- | -------- | ------ | ----------------------------------- | ------------------- | ------ |
@@ -132,9 +131,9 @@
 | /studentpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                   | {code,body,message} |        |
 | /studentpaper/update             | 更新论文 | POST   | id[...]                             | {code,body,message} |        |
 
-## 4 tb_academic_paper
+## 5 tb_academic_paper
 
-### 4.1 Table
+### 5.1 Table
 
 | Column             | Description   | Type   | Remark                              |
 | ------------------ | ------------- | ------ | ----------------------------------- |
@@ -153,7 +152,7 @@
 | ABSTRACT           | 摘要          | String |                                     |
 | URL                | 链接          | String | Not Null                            |
 
-### 4.2 URL
+### 5.2 URL
 
 | URL                               | FUNCTION | METHOD | PARAM                                   | RESULT              | REMARK |
 | --------------------------------- | -------- | ------ | --------------------------------------- | ------------------- | ------ |
@@ -166,9 +165,9 @@
 | /academicpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                       | {code,body,message} |        |
 | /academicpaper/update             | 更新论文 | POST   | id[...]                                 | {code,body,message} |        |
 
-## 5 tb_lectures
+## 6 tb_lectures
 
-### 5.1 Table
+### 6.1 Table
 
 | Column      | Description  | Type   | Remark                   |
 | ----------- | ------------ | ------ | ------------------------ |
@@ -180,25 +179,26 @@
 | DETAIL_TIME | 详细时间     | String |                          |
 | URL         | 链接         | String |                          |
 
-### 5.2 URL
+### 6.2 URL
 
-| URL                         | FUNCTION | METHOD | PARAM             | RESULT              | REMARK |
-| --------------------------- | -------- | ------ | ----------------- | ------------------- | ------ |
-| /lecture/insert             | 插入讲座 | PUT    | name[...]         | {code,body,message} |        |
-| /lecture/delete/{id}        | 删除讲座 | DELETE |                   | {code,body,message} |        |
-| /lecture/select/{id}        | 查询讲座 | GET    |                   | {code,body,message} |        |
-| /lecture/selectnew          | 查询最新 | GET    |                   | {code,body,message} |        |
-| /lecture/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize] | {code,body,message} |        |
-| /lecture/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize] | {code,body,message} |        |
-| /lecture/allselect          | 查询讲座 | GET    | [pageNo,pageSize] | {code,body,message} |        |
-| /lecture/update             | 更新讲座 | POST   | id[...]           | {code,body,message} |        |
-| /lecture/crawl              | 爬取讲座 | GET    |                   | {code,body,message} |        |
+| URL                         | FUNCTION | METHOD | PARAM                   | RESULT              | REMARK                     |
+| --------------------------- | -------- | ------ | ----------------------- | ------------------- | -------------------------- |
+| /lecture/insert             | 插入讲座 | PUT    | name[...]               | {code,body,message} |                            |
+| /lecture/delete/{id}        | 删除讲座 | DELETE |                         | {code,body,message} |                            |
+| /lecture/select/{id}        | 查询讲座 | GET    |                         | {code,body,message} |                            |
+| /lecture/selectnew          | 查询最新 | GET    |                         | {code,body,message} |                            |
+| /lecture/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]       | {code,body,message} |                            |
+| /lecture/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]       | {code,body,message} |                            |
+| /lecture/allselect          | 查询讲座 | GET    | [pageNo,pageSize]       | {code,body,message} |                            |
+| /lecture/allselectorder     | 查询讲座 | GET    | order[,pageNo,pageSize] | {code,body,message} | order为必要值（desc或asc） |
+| /lecture/update             | 更新讲座 | POST   | id[...]                 | {code,body,message} |                            |
+| /lecture/crawl              | 爬取讲座 | GET    |                         | {code,body,message} |                            |
 
 - 爬取讲座：删除已有讲座公告，爬取地球科学学院官网最新3页讲座
 
-## 6 tb_online_tools
+## 7 tb_online_tools
 
-### 6.1 Table
+### 7.1 Table
 
 | Column   | Description  | Type   | Remark                   |
 | -------- | ------------ | ------ | ------------------------ |
@@ -208,7 +208,7 @@
 | PICTURE  | 图片         | String |                          |
 | URL      | 链接         | String | Not Null, Unique         |
 
-### 6.2 URL
+### 7.2 URL
 
 - 基础：增删改查及批量操作
 
@@ -224,9 +224,9 @@
 | /onlinetools/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]          | {code,body,message} |        |
 | /onlinetools/update             | 更新     | POST   | id[...]                    | {code,body,message} |        |
 
-## 7 tb_map_servers
+## 8 tb_map_servers
 
-### 7.1 Table
+### 8.1 Table
 
 | Column      | Description  | Type   | Remark                    |
 | ----------- | ------------ | ------ | ------------------------- |
@@ -240,7 +240,7 @@
 | DESCRIPTION | 描述         | String |                           |
 | URL         | 链接         | String | Not Null, Unique          |
 
-### 7.2 URL
+### 8.2 URL
 
 - 基础：增删改查及批量操作
 
@@ -256,9 +256,9 @@
 | /mapservice/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]            | {code,body,message} |        |
 | /mapservice/update             | 更新     | POST   | id[...]                      | {code,body,message} |        |
 
-## 8 tb_group_member
+## 9 tb_group_member
 
-### 8.1 Table
+### 9.1 Table
 
 | Column  | Description  | Type   | Remark                                         |
 | ------- | ------------ | ------ | ---------------------------------------------- |
@@ -269,7 +269,7 @@
 | ROLE    | 角色         | String | Not Null, "instructor" or "leader" or "member" |
 | EMAIL   | 邮箱         | String |                                                |
 | PHOTO   | 照片         | String |                                                |
-### 8.2 URL
+### 9.2 URL
 
 | URL                     | FUNCTION       | METHOD | PARAM                         | RESULT      | REMARK |
 | ----------------------- | -------------- | ------ | ----------------------------- | ----------- | ------ |
@@ -278,9 +278,9 @@
 | /member/selectbyversion | 查询开发者     | GET    | version,[PageNo,PageSize]     | {code,body} |        |
 | /member/selectbyteam    | 查询开发者     | GET    | version,team[PageNo,PageSize] | {code,body} |        |
 
-## 9 tb_log
+## 10 tb_log
 
-### 9.1 Table
+### 10.1 Table
 
 | Column   | Description  | Type      | Remark                   |
 | -------- | ------------ | --------- | ------------------------ |
@@ -292,7 +292,7 @@
 | OBJECTID | 操作数据id   | String    | Not Null                 |
 | TYPE     | 操作类型     | String    | Not Null                 |
 
-### 9.2 URL
+### 10.2 URL
 
 | URL                        | FUNCTION | METHOD | PARAM                                      | RESULT              | REMARK |
 | -------------------------- | -------- | ------ | ------------------------------------------ | ------------------- | ------ |
@@ -301,11 +301,11 @@
 | /log//selectbytime         | 查询日志 | GET    | startTime,endTime                          | {code,body,message} |        |
 | /log/allselect             | 查询日志 | GET    | [pageNo,pageSize]                          | {code,body,message} |        |
 
-## 10 tb_teach_model
+## 11 tb_teach_model
 
 - 该部分由 **邵剑**、**王泺棋** 负责
 
-### 10.1 Table
+### 11.1 Table
 
 | **Column**    | **Description**    | **Type**  | **Remark**               |
 | ------------- | ------------------ | :-------- | :----------------------- |
@@ -322,7 +322,7 @@
 | PIC_PATH      | 案例图片样式       | String    |                          |
 | FILE_TYPE     | 案例文件类型       | String    | Not Null                 |
 
-### 10.2 URL
+### 11.2 URL
 
 | **URL**                              | **FUNCTION**                         | **REMARK**       | **METHOD** | **PARAM**                                             | **RESULT**            |
 | ------------------------------------ | ------------------------------------ | ---------------- | ---------- | ----------------------------------------------------- | --------------------- |
