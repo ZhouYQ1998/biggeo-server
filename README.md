@@ -181,20 +181,22 @@
 
 ### 6.2 URL
 
-| URL                         | FUNCTION | METHOD | PARAM                   | RESULT              | REMARK                     |
-| --------------------------- | -------- | ------ | ----------------------- | ------------------- | -------------------------- |
-| /lecture/insert             | 插入讲座 | PUT    | name[...]               | {code,body,message} |                            |
-| /lecture/delete/{id}        | 删除讲座 | DELETE |                         | {code,body,message} |                            |
-| /lecture/select/{id}        | 查询讲座 | GET    |                         | {code,body,message} |                            |
-| /lecture/selectnew          | 查询最新 | GET    |                         | {code,body,message} |                            |
-| /lecture/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]       | {code,body,message} |                            |
-| /lecture/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]       | {code,body,message} |                            |
-| /lecture/allselect          | 查询讲座 | GET    | [pageNo,pageSize]       | {code,body,message} |                            |
-| /lecture/allselectorder     | 查询讲座 | GET    | order[,pageNo,pageSize] | {code,body,message} | order为必要值（desc或asc） |
-| /lecture/update             | 更新讲座 | POST   | id[...]                 | {code,body,message} |                            |
-| /lecture/crawl              | 爬取讲座 | GET    |                         | {code,body,message} |                            |
+| URL                           | FUNCTION | METHOD | PARAM                   | RESULT              | REMARK |
+| ----------------------------- | -------- | ------ | ----------------------- | ------------------- | ------ |
+| /lecture/insert               | 插入讲座 | PUT    | name[...]               | {code,body,message} |        |
+| /lecture/delete/{id}          | 删除讲座 | DELETE |                         | {code,body,message} |        |
+| /lecture/select/{id}          | 查询讲座 | GET    |                         | {code,body,message} |        |
+| /lecture/selectnew            | 查询最新 | GET    |                         | {code,body,message} |        |
+| /lecture/fuzzyname/{key}      | 模糊查询 | GET    | [pageNo,pageSize]       | {code,body,message} |        |
+| /lecture/fuzzynameorder/{key} | 模糊查询 | GET    | order[,pageNo,pageSize] | {code,body,message} |        |
+| /lecture/batchseletct/{ids}   | 批量查询 | GET    | [pageNo,pageSize]       | {code,body,message} |        |
+| /lecture/allselect            | 查询讲座 | GET    | [pageNo,pageSize]       | {code,body,message} |        |
+| /lecture/allselectorder       | 查询讲座 | GET    | order[,pageNo,pageSize] | {code,body,message} |        |
+| /lecture/update               | 更新讲座 | POST   | id[...]                 | {code,body,message} |        |
+| /lecture/crawl                | 爬取讲座 | GET    |                         | {code,body,message} |        |
 
 - 爬取讲座：删除已有讲座公告，爬取地球科学学院官网最新3页讲座
+- order为必要值（desc或asc）
 
 ## 7 tb_online_tools
 

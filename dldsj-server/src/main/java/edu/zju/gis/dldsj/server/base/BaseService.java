@@ -66,6 +66,11 @@ public interface BaseService<T extends Base<ID>, ID extends Serializable> {
     Result<Page<T>> selectFuzzyName(String key, Page<T> page);
 
     /**
+     * 查询实体（模糊排序）
+     */
+    Result<Page<T>> selectFuzzyNameOrder(String key, Page<T> page, String order);
+
+    /**
      * 更新实体
      */
     Result<T> update(T t);

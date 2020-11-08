@@ -278,6 +278,28 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
     };
 
     /**
+     * 查询实体（模糊排序）
+     */
+    public Result<Page<T>> selectFuzzyNameOrder(String key, Page<T> page, String order){
+        Result<Page<T>> result = new Result<>();
+        try {
+            key = "%" + key + "%";
+            PageHelper.startPage(page.getPageNo(), page.getPageSize());
+            List<T> newT = mapper.selectFuzzyNameOrder(key, order);
+            Page<T> pageResult = new Page<T>(newT);
+            if(newT.size() != 0){
+                result.setCode(CodeConstants.SUCCESS).setBody(pageResult).setMessage("查询成功");
+            }
+            else{
+                result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("查询失败：无实体");
+            }
+        } catch (RuntimeException e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
+        }
+        return result;
+    }
+
+    /**
      * 更新实体
      * @param t T
      */

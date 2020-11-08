@@ -57,6 +57,11 @@ public interface BaseMapper<T extends Base, ID extends Serializable> {
     List<T> selectFuzzyName(String key);
 
     /**
+     * 查询实体（模糊搜索）
+     */
+    List<T> selectFuzzyNameOrder(String key, String order);
+
+    /**
      * 根据参数查询对象
      */
     List<T> search(BaseFilter<ID> params);

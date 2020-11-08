@@ -132,6 +132,17 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
         return service.selectFuzzyName(key, page);
     }
 
+    /***
+     * 查询实体（模糊搜索）
+     * @param key String
+     * @return result
+     */
+    @RequestMapping(value = "/fuzzynameorder/{key}", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<Page<T>> selectFuzzyNameOrder(@PathVariable String key, String order, Page<T> page) {
+        return service.selectFuzzyNameOrder(key, page, order);
+    }
+
     /**
      * 更新实例
      * @param t T

@@ -124,6 +124,13 @@
         from <include refid="TABLE_NAME"/>
         where NAME like #{key,jdbcType=VARCHAR}
     </select>
+    <select id="selectFuzzyNameOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where NAME like #{param1,jdbcType=VARCHAR}
+        order by TIME ${param2}
+    </select>
     <delete id="allDelete">
         delete
         from <include refid="TABLE_NAME"/>
