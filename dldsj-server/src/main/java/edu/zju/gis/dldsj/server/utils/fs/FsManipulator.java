@@ -8,14 +8,15 @@ import org.apache.hadoop.io.compress.CompressionCodec;
 import org.apache.hadoop.io.compress.CompressionCodecFactory;
 import org.apache.hadoop.io.compress.CompressionOutputStream;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 文件系统操作抽象类
@@ -315,6 +316,34 @@ public abstract class FsManipulator implements Closeable {
 
     public String size(String file) throws IOException {
         return this.size(new Path(file));
+    }
+
+    /**
+     * 从文件中按行读取文本
+     * @param filename 文件路径
+     * @param size 读取行数
+     * @param charset 解码字符集
+     * @return 文本列表
+     * @throws IOException io
+     */
+    public List<String> readToText(String filename, int size, int offset, Charset charset) throws IOException {
+        List<String> lines = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(this.read(filename), charset));
+        String line;
+        int i = 0;
+        while ((line = reader.readLine()) != null && i++ < size + offset) {
+            if (i <= offset) continue;
+            lines.add(line);
+        }
+        return lines;
+    }
+
+    public List<String> readToText(String filename, int size, int offset) throws IOException {
+        return this.readToText(filename, size, offset, StandardCharsets.UTF_8);
+    }
+
+    public List<String> readToText(String filename) throws IOException {
+        return this.readToText(filename, 10, 0);
     }
 
     /**

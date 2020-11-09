@@ -4,6 +4,8 @@ import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.config.CommonSetting;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
 import edu.zju.gis.dldsj.server.entity.vo.FileInfo;
+import edu.zju.gis.dldsj.server.entity.vo.VizData;
+import edu.zju.gis.dldsj.server.utils.GeometryUtil;
 import edu.zju.gis.dldsj.server.utils.LoadUtils;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulator;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulatorFactory;
@@ -219,9 +221,9 @@ public class UserSpaceController {
                 files[i] = Paths.get(tmpPath, new File(fileListArray.getString(i)).getName()).toString();
             }
             // 压缩文件
-            String zipFile = Paths.get(tmpPath, "results.zip").toString();
+            String zipFile = Paths.get(tmpPath, "files.zip").toString();
             localFsManipulator.compress(files, zipFile);
-            LoadUtils.download(localFsManipulator, zipFile, "results.zip", res);
+            LoadUtils.download(localFsManipulator, zipFile, "files.zip", res);
             localFsManipulator.deleteDir(tmpPath);
             return null;
         } catch (Exception e) {
@@ -229,6 +231,72 @@ public class UserSpaceController {
             Result<String> result = new Result<>();
             return result.setCode(CodeConstants.SYSTEM_ERROR).setBody("ERROR").setMessage("全部文件返回失败");
         }
+    }
+
+    /**
+     * 用户个人空间文本类型文件预览 (同时用作结果预览)
+     * @param userId 用户ID
+     * @param vizType 预览类型 table/map
+     * @param requestBody 请求体
+     * @return 标准结果体
+     */
+    @PostMapping("/preview/{vizType}")
+    public Result<VizData> preview(@SessionAttribute("userId") String userId, @PathVariable String vizType, @RequestBody String requestBody) {
+        FsManipulator fsManipulator = FsManipulatorFactory.create(setting.getHdFsUri());
+        Result<VizData> result = new Result<>();
+        try {
+            JSONObject requestJSON = new JSONObject(requestBody);
+            String path = requestJSON.getString("path");
+            String currentPath = Paths.get(setting.getUserSpaceRootPath(), userId, path).toString();
+            int size = requestJSON.optInt("size", 2000);
+            int offset = requestJSON.optInt("offset", 0);
+            if (fsManipulator.isFile(currentPath)) {
+                List<String> lines = fsManipulator.readToText(currentPath, size, offset);
+                if (lines == null || lines.size() <= 0) {
+                    throw new RuntimeException("空文件无法预览");
+                }
+                String sep = lines.get(0).contains("\t") ? "\t" : ",";
+                StringBuilder builder = new StringBuilder();
+                VizData vizData;
+                switch (vizType) {
+                    case "table":
+                        builder.append("{\"table\": [");
+                        for (String line : lines) {
+                            String[] items = line.split(sep);
+                            builder.append("{");
+                            for (int i = 0; i < items.length; i++) {
+                                builder.append("\"COL_").append(i).append("\": \"").append(items[i]).append("\",");
+                            }
+                            builder.deleteCharAt(builder.length() - 1);
+                            builder.append("},");
+                        }
+                        builder.deleteCharAt(builder.length() - 1);
+                        builder.append("]}");
+                        vizData = new VizData(builder.toString());
+                        result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取表格成功");
+                        break;
+                    case "map":
+                        int geomIndex = requestJSON.optInt("geomIndex", 0);
+                        List<String> wktList = new ArrayList<>();
+                        for (String line : lines) {
+                            String[] items = line.split(sep);
+                            wktList.add(items[geomIndex]);
+                        }
+                        vizData = new VizData(GeometryUtil.getGeomTypeByWkt(wktList.get(0)), GeometryUtil.wktToGeoJson(wktList));
+                        GeometryUtil.getBboxOfWkt(wktList, vizData.getBbox());
+                        result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取GeoJson成功");
+                        break;
+                    default:
+                        result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("未知预览类型").setBody(null);
+                }
+            } else {
+                throw new RuntimeException("目录路径无法预览");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("文件预览失败").setBody(null);
+        }
+        return result;
     }
 
     private List<Path> getAllFilesRecursion(FsManipulator fsManipulator, String rootPath) throws IOException {
