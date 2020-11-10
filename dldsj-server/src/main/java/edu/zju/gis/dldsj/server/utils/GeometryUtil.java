@@ -25,23 +25,32 @@ public final class GeometryUtil {
      * @throws IOException io
      * @throws ParseException WKT解析异常
      */
-    public static String wktToGeoJson(List<String> wktList) throws IOException, ParseException {
+    public static String wktToGeoJson(List<String> wktList, List<List<String>> propList) throws IOException, ParseException {
         if (wktList == null || wktList.isEmpty())
             return EMPTY_GeoJSON;
         WKTReader wktReader = new WKTReader();
         StringWriter writer = new StringWriter();
         GeometryJSON geometryJSON = new GeometryJSON(20);
         Geometry geometry = wktReader.read(wktList.get(0));
-        writer.append("{\"type\": \"Feature\",\"properties\": {},\"geometry\":");
+        writer.append(String.format("{\"type\": \"Feature\",\"properties\": {%s},\"geometry\":", getPropJson(propList.get(0))));
         geometryJSON.write(geometry, writer);
         writer.append("}");
         for (int i = 1; i < wktList.size(); i++) {
-            writer.append(", {\"type\": \"Feature\",\"properties\": {},\"geometry\":");
+            writer.append(String.format(", {\"type\": \"Feature\",\"properties\": {%s},\"geometry\":", getPropJson(propList.get(i))));
             geometry = wktReader.read(wktList.get(i));
             geometryJSON.write(geometry, writer);
             writer.append("}");
         }
         return String.format("{\"type\":\"FeatureCollection\",\"features\":[%s]}", writer.toString());
+    }
+
+    private static String getPropJson(List<String> prop) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < prop.size(); i++) {
+            builder.append("\"COL_").append(i).append("\": \"").append(prop.get(i)).append("\",");
+        }
+        builder.deleteCharAt(builder.length() - 1);
+        return builder.toString();
     }
 
     /**

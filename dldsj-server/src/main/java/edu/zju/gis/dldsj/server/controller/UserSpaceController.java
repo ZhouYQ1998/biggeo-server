@@ -5,6 +5,7 @@ import edu.zju.gis.dldsj.server.config.CommonSetting;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
 import edu.zju.gis.dldsj.server.entity.vo.FileInfo;
 import edu.zju.gis.dldsj.server.entity.vo.VizData;
+import edu.zju.gis.dldsj.server.service.GeodataService;
 import edu.zju.gis.dldsj.server.utils.GeometryUtil;
 import edu.zju.gis.dldsj.server.utils.LoadUtils;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulator;
@@ -42,6 +43,9 @@ import java.util.UUID;
 public class UserSpaceController {
     @Autowired
     private CommonSetting setting;
+
+    @Autowired
+    private GeodataService geodataService;
 
     /**
      * 获取路径下全部的文件
@@ -246,48 +250,65 @@ public class UserSpaceController {
         Result<VizData> result = new Result<>();
         try {
             JSONObject requestJSON = new JSONObject(requestBody);
-            String path = requestJSON.getString("path");
-            String currentPath = Paths.get(setting.getUserSpaceRootPath(), userId, path).toString();
+            String path = requestJSON.optString("path", "");
+            String currentPath;
+            if (path.isEmpty()) {
+                currentPath = geodataService.getWholePathOfDataItem(requestJSON.getString("dataId")).replace(setting.getHdFsUri(), "");
+            } else {
+                currentPath = Paths.get(setting.getUserSpaceRootPath(), userId, path).toString();
+            }
             int size = requestJSON.optInt("size", 2000);
             int offset = requestJSON.optInt("offset", 0);
             if (fsManipulator.isFile(currentPath)) {
-                List<String> lines = fsManipulator.readToText(currentPath, size, offset);
-                if (lines == null || lines.size() <= 0) {
-                    throw new RuntimeException("空文件无法预览");
-                }
-                String sep = lines.get(0).contains("\t") ? "\t" : ",";
-                StringBuilder builder = new StringBuilder();
-                VizData vizData;
-                switch (vizType) {
-                    case "table":
-                        builder.append("{\"table\": [");
-                        for (String line : lines) {
-                            String[] items = line.split(sep);
-                            builder.append("{");
-                            for (int i = 0; i < items.length; i++) {
-                                builder.append("\"COL_").append(i).append("\": \"").append(items[i]).append("\",");
+                if (currentPath.endsWith(".shp")) {
+                    // todo
+                    result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("暂时不支持shp文件预览").setBody(null);
+                } else {
+                    List<String> lines = fsManipulator.readToText(currentPath, size, offset);
+                    if (lines == null || lines.size() <= 0) {
+                        throw new RuntimeException("空文件无法预览");
+                    }
+                    String sep = lines.get(0).contains("\t") ? "\t" : ",";
+                    VizData vizData;
+                    switch (vizType) {
+                        case "table":
+                            StringBuilder builder = new StringBuilder();
+                            builder.append("{\"table\": [");
+                            for (String line : lines) {
+                                String[] items = line.split(sep);
+                                builder.append("{");
+                                for (int i = 0; i < items.length; i++) {
+                                    builder.append("\"COL_").append(i).append("\": \"").append(items[i]).append("\",");
+                                }
+                                builder.deleteCharAt(builder.length() - 1);
+                                builder.append("},");
                             }
                             builder.deleteCharAt(builder.length() - 1);
-                            builder.append("},");
-                        }
-                        builder.deleteCharAt(builder.length() - 1);
-                        builder.append("]}");
-                        vizData = new VizData(builder.toString());
-                        result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取表格成功");
-                        break;
-                    case "map":
-                        int geomIndex = requestJSON.optInt("geomIndex", 0);
-                        List<String> wktList = new ArrayList<>();
-                        for (String line : lines) {
-                            String[] items = line.split(sep);
-                            wktList.add(items[geomIndex]);
-                        }
-                        vizData = new VizData(GeometryUtil.getGeomTypeByWkt(wktList.get(0)), GeometryUtil.wktToGeoJson(wktList));
-                        GeometryUtil.getBboxOfWkt(wktList, vizData.getBbox());
-                        result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取GeoJson成功");
-                        break;
-                    default:
-                        result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("未知预览类型").setBody(null);
+                            builder.append("]}");
+                            vizData = new VizData(builder.toString());
+                            result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取表格成功");
+                            break;
+                        case "map":
+                            int geomIndex = requestJSON.optInt("geomIndex", 0);
+                            List<String> wktList = new ArrayList<>();
+                            List<List<String>> propList = new ArrayList<>();
+                            for (String line : lines) {
+                                String[] items = line.split(sep);
+                                wktList.add(items[geomIndex]);
+                                List<String> prop = new ArrayList<>();
+                                for (int i = 0; i < items.length; i++) {
+                                    if (i == geomIndex) continue;
+                                    prop.add(items[i]);
+                                }
+                                propList.add(prop);
+                            }
+                            vizData = new VizData(GeometryUtil.getGeomTypeByWkt(wktList.get(0)), GeometryUtil.wktToGeoJson(wktList, propList));
+                            GeometryUtil.getBboxOfWkt(wktList, vizData.getBbox());
+                            result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取GeoJson成功");
+                            break;
+                        default:
+                            result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("未知预览类型").setBody(null);
+                    }
                 }
             } else {
                 throw new RuntimeException("目录路径无法预览");

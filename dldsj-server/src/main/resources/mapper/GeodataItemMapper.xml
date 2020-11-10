@@ -15,6 +15,14 @@
         tb_geographic_dataitem
     </sql>
 
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
     <!-- 查询数据集详情 -->
     <select id="getDatail" resultMap="BaseResultMap">
         SELECT

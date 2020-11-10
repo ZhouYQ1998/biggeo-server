@@ -138,4 +138,11 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
         return result;
     }
 
+    @Override
+    public String getWholePathOfDataItem(String id) {
+        GeodataItem geodataItem = geodataItemMapper.selectByPrimaryKey(id);
+        Geodata geodata = geodataMapper.selectByPrimaryKey(geodataItem.getDataset());
+        return geodata.getPath() + "/" + geodataItem.getTitle() + geodataItem.getFormat();
+    }
+
 }

@@ -30,4 +30,6 @@ public interface GeodataService extends BaseService<Geodata, String> {
     // 查询数据集详情
     Result<List<GeodataItem>> getDatail(String id);
 
+    String getWholePathOfDataItem(String id);
+
 }
