@@ -131,7 +131,7 @@ public class UserSpaceController {
      * 上传文件
      * @param userId 用户ID
      * @param request 请求体
-     * @return 标注结果体
+     * @return 标准结果体
      */
     @PostMapping("/upload")
     public Result<String> uploadFiles(@SessionAttribute("userId") String userId, HttpServletRequest request) {

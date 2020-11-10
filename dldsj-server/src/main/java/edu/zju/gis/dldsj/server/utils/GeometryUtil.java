@@ -32,11 +32,14 @@ public final class GeometryUtil {
         StringWriter writer = new StringWriter();
         GeometryJSON geometryJSON = new GeometryJSON(20);
         Geometry geometry = wktReader.read(wktList.get(0));
+        writer.append("{\"type\": \"Feature\",\"properties\": {},\"geometry\":");
         geometryJSON.write(geometry, writer);
+        writer.append("}");
         for (int i = 1; i < wktList.size(); i++) {
-            writer.append(", ");
+            writer.append(", {\"type\": \"Feature\",\"properties\": {},\"geometry\":");
             geometry = wktReader.read(wktList.get(i));
             geometryJSON.write(geometry, writer);
+            writer.append("}");
         }
         return String.format("{\"type\":\"FeatureCollection\",\"features\":[%s]}", writer.toString());
     }
