@@ -244,8 +244,10 @@ public class WorkFlowController {
                     String path = node.getParams().get(i).getValue();
                     if (path.startsWith("ES:"))
                         node.getParams().get(i).setValue(path.replace("ES:", ""));
+                    else if (path.startsWith("public:"))
+                        node.getParams().get(i).setValue(setting.getHdFsUri() + Paths.get("/3S/geodata", path.replace("public:", "")));
                     else
-                        node.getParams().get(i).setValue(Paths.get(setting.getUserSpaceRootPath(), userId, path).toString());
+                        node.getParams().get(i).setValue(setting.getHdFsUri() + Paths.get(setting.getUserSpaceRootPath(), userId, path).toString());
                 }
                 if (obj.has("tag")) {
                     String val = node.getParams().get(i).getValue();
