@@ -52,6 +52,7 @@ public class CommonSetting {
     private List<String> frontEndRegionList;
     private String sessionMaxAge;
     private String userSpaceRootPath;
+    private String publicDataRootPath;
     private String calculateDataNameSpace;
     private String selfDataNameSpace;
     private String systemPublicAccount;
