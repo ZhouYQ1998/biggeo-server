@@ -29,7 +29,7 @@ public class myCORSFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String myOrigin = request.getHeader("Origin");
         boolean isValid = whiteList.contains(myOrigin);
-        response.setHeader("Access-Control-Allow-Origin", isValid ? myOrigin : "null");
+        response.setHeader("Access-Control-Allow-Origin", isValid ? myOrigin : "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", setting.getSessionMaxAge());
         response.setHeader("Access-Control-Allow-Headers", " Origin, X-Requested-With, Content-Type, Accept, Authorization");
