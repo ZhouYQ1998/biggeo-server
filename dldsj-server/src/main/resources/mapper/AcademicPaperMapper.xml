@@ -4,7 +4,6 @@
     <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.AcademicPaper">
         <id column="ID" jdbcType="VARCHAR" property="id"/>
         <result column="TITLE" jdbcType="VARCHAR" property="title"/>
-        <result column="ENGLISH_TITLE" jdbcType="VARCHAR" property="englishTitle"/>
         <result column="AUTHOR" jdbcType="VARCHAR" property="author"/>
         <result column="AUTHOR_AFFILIATION" jdbcType="VARCHAR" property="authorAffiliation"/>
         <result column="YEAR" jdbcType="VARCHAR" property="year"/>
@@ -17,7 +16,7 @@
         <result column="URL" jdbcType="VARCHAR" property="url"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID, TITLE, ENGLISH_TITLE, TYPE, AUTHOR, AUTHOR_AFFILIATION, YEAR, SOURCE_NAME, VOLUME, ISSUE, PAGES, KEYWORDS, ABSTRACT, URL
+        ID, TITLE, TYPE, AUTHOR, AUTHOR_AFFILIATION, YEAR, SOURCE_NAME, VOLUME, ISSUE, PAGES, KEYWORDS, ABSTRACT, URL
     </sql>
     <sql id="TABLE_NAME">
         tb_academic_paper
@@ -27,7 +26,6 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             ID,
             TITLE,
-            ENGLISH_TITLE,
             TYPE,
             AUTHOR,
             URL,
@@ -59,7 +57,6 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             #{id,jdbcType=VARCHAR},
             #{title,jdbcType=VARCHAR},
-            #{englishTitle,jdbcType=VARCHAR},
             #{type,jdbcType=VARCHAR},
             #{author,jdbcType=VARCHAR},
             #{url,jdbcType=VARCHAR},
@@ -119,9 +116,6 @@
         <set>
             <if test="title!= null">
                 TITLE = #{title,jdbcType=VARCHAR},
-            </if>
-            <if test="englishTitle != null">
-                ENGLISH_TITLE = #{englishTitle,jdbcType=VARCHAR},
             </if>
             <if test="type != null">
                 TYPE = #{type,jdbcType=VARCHAR},
