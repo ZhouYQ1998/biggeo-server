@@ -5,6 +5,7 @@ import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
+import edu.zju.gis.dldsj.server.constant.TimeConstants;
 import edu.zju.gis.dldsj.server.entity.Log;
 import edu.zju.gis.dldsj.server.mapper.LogMapper;
 import edu.zju.gis.dldsj.server.service.LogService;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,9 +28,7 @@ public class LogServiceImpl extends BaseServiceImpl<LogMapper, Log, String> impl
     private LogMapper logMapper;
 
     public int autoDelete(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE,-7);
-        Timestamp time = new Timestamp(calendar.getTimeInMillis());
+        Timestamp time = new Timestamp(new Date().getTime() - TimeConstants.LogReserveTime);
         return logMapper.deleteBeforeTime(time);
     }
 

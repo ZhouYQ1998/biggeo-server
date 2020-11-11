@@ -3,6 +3,8 @@ package edu.zju.gis.dldsj.server.mapper;
 import edu.zju.gis.dldsj.server.base.BaseMapper;
 import edu.zju.gis.dldsj.server.entity.Lecture;
 
+import java.util.Date;
+
 /**
  * @author zyq
  * @date 2020/10/23
@@ -10,6 +12,8 @@ import edu.zju.gis.dldsj.server.entity.Lecture;
 
 public interface LectureMapper extends BaseMapper<Lecture,String> {
 
-    int allDelete();
+    int deleteBeforeTime(Date date);
+
+    Lecture selectByName(String name);
 
 }

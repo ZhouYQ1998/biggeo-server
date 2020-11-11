@@ -88,7 +88,7 @@
 | /geodata/populardata        | 查询最多下载         | GET    |                                | {code,body,message} |        |
 | /geodata/detail/{id}        | 查询数据集详情       | GET    |                                | {code,body,message} |        |
 
-## 3 tb_geographic_data
+## 3 tb_geographic_dataitem
 
 ### 3.1 Table
 
@@ -139,7 +139,6 @@
 | ------------------ | ------------- | ------ | ----------------------------------- |
 | ID                 | 主键（编号）  | String | Primary Key, Auto Create            |
 | TITLE              | 标题          | String | Not Null, Unique                    |
-| ENGLISH_TITLE      | 标题（英文）  | String |                                     |
 | TYPE               | 文章类型      | String | Not Null, "conference" or "journal" |
 | AUTHOR             | 作者          | String | Not Null                            |
 | AUTHOR_AFFILIATION | 所在单位/学校 | String |                                     |
@@ -154,16 +153,16 @@
 
 ### 5.2 URL
 
-| URL                               | FUNCTION | METHOD | PARAM                                   | RESULT              | REMARK |
-| --------------------------------- | -------- | ------ | --------------------------------------- | ------------------- | ------ |
-| /academicpaper/insert             | 插入论文 | PUT    | title,englishTitle,type,author,url[...] | {code,body,message} |        |
-| /academicpaper/delete/{id}        | 删除论文 | DELETE |                                         | {code,body,message} |        |
-| /academicpaper/select/{id}        | 查询论文 | GET    |                                         | {code,body,message} |        |
-| /academicpaper/selectnew          | 查询最新 | GET    |                                         | {code,body,message} |        |
-| /academicpaper/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]                       | {code,body,message} |        |
-| /academicpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]                       | {code,body,message} |        |
-| /academicpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]                       | {code,body,message} |        |
-| /academicpaper/update             | 更新论文 | POST   | id[...]                                 | {code,body,message} |        |
+| URL                               | FUNCTION | METHOD | PARAM                      | RESULT              | REMARK |
+| --------------------------------- | -------- | ------ | -------------------------- | ------------------- | ------ |
+| /academicpaper/insert             | 插入论文 | PUT    | title,type,author,url[...] | {code,body,message} |        |
+| /academicpaper/delete/{id}        | 删除论文 | DELETE |                            | {code,body,message} |        |
+| /academicpaper/select/{id}        | 查询论文 | GET    |                            | {code,body,message} |        |
+| /academicpaper/selectnew          | 查询最新 | GET    |                            | {code,body,message} |        |
+| /academicpaper/fuzzyname/{key}    | 模糊查询 | GET    | [pageNo,pageSize]          | {code,body,message} |        |
+| /academicpaper/batchseletct/{ids} | 批量查询 | GET    | [pageNo,pageSize]          | {code,body,message} |        |
+| /academicpaper/allselect          | 查询论文 | GET    | [pageNo,pageSize]          | {code,body,message} |        |
+| /academicpaper/update             | 更新论文 | POST   | id[...]                    | {code,body,message} |        |
 
 ## 6 tb_lectures
 

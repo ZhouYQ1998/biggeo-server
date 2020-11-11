@@ -13,7 +13,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class AcademicPaper extends Base<String> {
     private String title;
-    private String englishTitle;
     private String type;
     private String author;
     private String authorAffiliation;
