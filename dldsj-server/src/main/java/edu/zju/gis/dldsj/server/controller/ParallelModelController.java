@@ -191,7 +191,9 @@ public class ParallelModelController {
                 fsManipulator.deleteFiles(model.getJarPath().split(","));
                 fsManipulator.deleteFile(model.getXmlPath());
                 String picPath = setting.getNginxPath() + model.getPicPath().substring(setting.getNginxUrl().length());
-                fsManipulator.deleteFile(picPath);
+                if (fsManipulator.exists(picPath) && fsManipulator.isFile(picPath) && !picPath.endsWith("universal-model.jpg")) {
+                    fsManipulator.deleteFile(picPath);
+                }
                 result.setCode(CodeConstants.SUCCESS).setBody("SUCCESS").setMessage("模型注销成功");
             } else {
                 result.setCode(CodeConstants.USER_PERMISSION_ERROR).setBody("ERROR").setMessage("不能删除他人的模型");
