@@ -2,6 +2,7 @@ package edu.zju.gis.dldsj.server.interceptor;
 
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
@@ -19,6 +20,7 @@ import java.io.IOException;
  * @version 1.0 2018/08/15
  */
 @Configuration
+@Slf4j
 public class WebConfig implements WebMvcConfigurer {
     private final static String SESSION_KEY = "userName";
 
@@ -31,19 +33,60 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration addInterceptor = registry.addInterceptor(getSecurityInterceptor());
 
-        addInterceptor.excludePathPatterns("/error");
-        addInterceptor.excludePathPatterns("/user/login**");
-        addInterceptor.excludePathPatterns("/user/register");
+        String[] excludePaths = new String[]{
+                "/user/login",
+                "/user/loginstatus",
+                "/user/insert",
+                "/user/check/**",
+                "/user/checkbyname/**",
+                "/user/statistic",
+                "/geodata/allselect",
+                "/geodata/bytype1",
+                "/geodata/bytype2",
+                "/geodata/dis",
+                "/geodata/populardata",
+                "/geodata/detail/**",
+                "/studentpapaer/selectnew",
+                "/studentpapaer/fuzzyname/**",
+                "/studentpapaer/allselect",
+                "/academicpaper/selectnew",
+                "/academicpaper/fuzzyname/**",
+                "/academicpaper/allselect",
+                "/lecture/selectnew",
+                "/lecture/fuzzyname/**",
+                "/lecture/fuzzynameorder/**",
+                "/lecture/allselect",
+                "/lecture/allselectorder",
+                "/onlinetools/allselect",
+                "/onlinetools/fuzzyname/**",
+                "/mapservice/allselect",
+                "/mapservice/fuzzyname/**",
+                "/member/**"
+        };
+
+        for (String path: excludePaths){
+            addInterceptor.excludePathPatterns(path);
+        }
+
         addInterceptor.addPathPatterns("/**");
+
     }
 
     private static class SecurityInterceptor extends HandlerInterceptorAdapter {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
             HttpSession session = request.getSession();
+//            session.setAttribute("userId", "c1749c11-1299-11eb-afac-0242ac110002");
+//            session.setAttribute("userName", "zyq");
+//            session.setAttribute("password", "zyq000000");
+//            session.setAttribute("phone", "18916097713");
+//            session.setAttribute("email", "471420883@qq.com");
+//            session.setAttribute("role", "manager");
             if (session.getAttribute("userId") != null) {
+                log.warn("SUCCESS [session:" + session.getId() + ", user:" + session.getAttribute("userId").toString() + "]");
                 return true;
             } else {
+                log.warn("FAILURE: [session:" + session.getId() + "]");
                 Result<String> result = new Result<String>(CodeConstants.VALIDATE_ERROR, "用户登陆状态已过期，请重新登陆。");
                 result.setBody("");
                 response.setContentType("application/json;charset=utf-8");
