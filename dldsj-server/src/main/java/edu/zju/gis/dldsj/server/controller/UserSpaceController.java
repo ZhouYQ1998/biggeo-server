@@ -254,6 +254,8 @@ public class UserSpaceController {
             String currentPath;
             if (path.isEmpty()) {
                 currentPath = geodataService.getWholePathOfDataItem(requestJSON.getString("dataId")).replace(setting.getHdFsUri(), "");
+            } else if (path.startsWith("public:")){
+                currentPath = "/3S/geodata" + path.replace("public:", "");
             } else {
                 currentPath = Paths.get(setting.getUserSpaceRootPath(), userId, path).toString();
             }
