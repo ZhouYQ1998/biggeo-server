@@ -153,7 +153,7 @@ public class UserSpaceController {
         try {
             lfsManipulator.mkdirs(tmpPath);
             for (MultipartFile file : files) {
-                file.transferTo(new File(Paths.get(tmpPath, file.getName()).toString()));
+                file.transferTo(new File(Paths.get(tmpPath, file.getOriginalFilename()).toString()));
             }
             Path[] paths = lfsManipulator.listFiles(tmpPath);
             for (Path path : paths) {
