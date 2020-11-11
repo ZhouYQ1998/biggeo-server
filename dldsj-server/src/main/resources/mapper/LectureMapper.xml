@@ -68,6 +68,12 @@
         from <include refid="TABLE_NAME"/>
         where ID = #{id,jdbcType=VARCHAR}
     </select>
+    <select id="selectByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where Name = #{name,jdbcType=VARCHAR}
+    </select>
     <select id="batchSelect" parameterType="java.util.List" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -131,8 +137,9 @@
         where NAME like #{param1,jdbcType=VARCHAR}
         order by TIME ${param2}
     </select>
-    <delete id="allDelete">
-        delete
-        from <include refid="TABLE_NAME"/>
+    <!-- 按照日期自动删除 -->
+    <delete id="deleteBeforeTime">
+        delete from <include refid="TABLE_NAME"/>
+        where TIME <![CDATA[ <= ]]> #{time,jdbcType=TIMESTAMP}
     </delete>
 </mapper>

@@ -4,6 +4,7 @@ import edu.zju.gis.dldsj.server.base.BaseController;
 import edu.zju.gis.dldsj.server.base.BaseFilter;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.constant.CrawlerConstants;
+import edu.zju.gis.dldsj.server.constant.TimeConstants;
 import edu.zju.gis.dldsj.server.entity.Batch;
 import edu.zju.gis.dldsj.server.entity.Lecture;
 import edu.zju.gis.dldsj.server.service.LectureService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,8 +44,13 @@ public class LectureController extends BaseController<Lecture, LectureService, S
     @RequestMapping(value = "/crawl", method = RequestMethod.GET)
     @ResponseBody
     public Result<List<Batch<Lecture>>> crawl() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd yyyy-MM");
+        // 删除过期讲座
+        Date now = new Date();
+        lectureService.deleteBeforeTime(new Date(now.getTime() - TimeConstants.LectureReserveTime));
+        // 爬取讲座
         String[] htmls = CrawlerUtil.crawl(CrawlerConstants.LectureUrls, CrawlerConstants.UserAgent);
+        // 格式化讲座
+        SimpleDateFormat sdf = new SimpleDateFormat("dd yyyy-MM");
         List<Lecture> lectures = new ArrayList<>();
         for(String html: htmls){
             Document document = Jsoup.parse(html);
@@ -72,8 +79,17 @@ public class LectureController extends BaseController<Lecture, LectureService, S
                 }
             }
         }
-        if(lectures.size() != 0) lectureService.allDelete();
-        return lectureService.batchInsert(lectures);
+        // 筛选讲座
+        List<Lecture> filter1 = new ArrayList<>();
+        for(Lecture lecture: lectures){
+            if(lecture.getTime().getTime() >= now.getTime() - TimeConstants.LectureReserveTime) filter1.add(lecture);
+        }
+        List<Lecture> filter2 = new ArrayList<>();
+        for(Lecture lecture: filter1){
+            if(lectureService.selectByName(lecture.getName()) == null) filter2.add(lecture);
+        }
+
+        return lectureService.batchInsert(filter2);
     }
 
 }

@@ -7,6 +7,8 @@ import edu.zju.gis.dldsj.server.service.LectureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * @author zyq
  * @date 2020/10/23
@@ -19,8 +21,13 @@ public class LecturesServiceImpl extends BaseServiceImpl<LectureMapper, Lecture,
     private LectureMapper lectureMapper;
 
     @Override
-    public int allDelete(){
-        return lectureMapper.allDelete();
+    public int deleteBeforeTime(Date date){
+        return lectureMapper.deleteBeforeTime(date);
     }
+
+    @Override
+    public Lecture selectByName(String name){
+        return lectureMapper.selectByName(name);
+    };
 
 }

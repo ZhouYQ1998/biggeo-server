@@ -88,7 +88,7 @@
 | /geodata/populardata        | 查询最多下载         | GET    |                                | {code,body,message} |        |
 | /geodata/detail/{id}        | 查询数据集详情       | GET    |                                | {code,body,message} |        |
 
-## 3 tb_geographic_data
+## 3 tb_geographic_dataitem
 
 ### 3.1 Table
 
