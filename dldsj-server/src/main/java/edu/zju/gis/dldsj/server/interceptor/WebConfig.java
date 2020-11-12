@@ -37,6 +37,8 @@ public class WebConfig implements WebMvcConfigurer {
                 "/user/login",
                 "/user/loginstatus",
                 "/user/insert",
+                "/user/update",
+                "/user/selectbyname/**",
                 "/user/check/**",
                 "/user/checkbyname/**",
                 "/user/statistic",
