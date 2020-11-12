@@ -29,8 +29,8 @@ import java.util.Map;
  * @author Jiarui 2020/8/26
  * @author zjh 2020/10/12
  * @update zyq 2020/11/4
+ * @update Keran Sun (katus) 2020/11/12
  */
-
 @Controller
 @CrossOrigin
 @RequestMapping("/geodata")
@@ -40,17 +40,11 @@ public class GeodataController extends BaseController<Geodata, GeodataService, S
     @Autowired
     private GeodataService geodataService;
 
-    @Value("${settings.hdFsUri}")
-    private String hdfsUri;
-
-    @Value("${settings.lFsUri}")
-    private String lfsUri;
-
     @Autowired
     private CommonSetting setting;
+
     /**
-     * 获取文件信息
-     * @param userId 用户ID
+     * 根据文件系统目录树获取公共数据文件信息
      * @param requestBody 请求体
      * @return 标准结果体
      */
@@ -59,19 +53,16 @@ public class GeodataController extends BaseController<Geodata, GeodataService, S
     public Result<List<FileInfo>> getFileInfoList(@RequestBody String requestBody) {
         Result<List<FileInfo>> result = new Result<>();
         List<FileInfo> fileList = new ArrayList<>();
-        FsManipulator fsManipulator = FsManipulatorFactory.create(setting.getHdFsUri());
+        FsManipulator fsManipulator = FsManipulatorFactory.create();
         try {
-            String publicRoot = Paths.get(setting.getPublicDataRootPath()).toString();
-            if (!fsManipulator.exists(publicRoot)) {
-                fsManipulator.mkdirs(publicRoot);
-            }
+            String publicRoot = setting.getPublicDataRootPath();
             JSONObject inputs = new JSONObject(requestBody);
-            String userPath = inputs.optString("path", "/");
-            String path = Paths.get(publicRoot, userPath).toString();
+            String publicPath = inputs.optString("path", "/");
+            String path = Paths.get(publicRoot, publicPath).toString();
             Path[] paths = fsManipulator.listFiles(path);
             for (Path filePath : paths) {
                 FileInfo fileInfo = fsManipulator.getFileInfo(filePath);
-                fileInfo.setPath(fileInfo.getPath().replace(setting.getHdFsUri() + publicRoot, ""));
+                fileInfo.setPath(fileInfo.getPath().replace(setting.getLFsUri() + publicRoot.substring(0, publicRoot.length()-1), ""));
                 fileList.add(fileInfo);
             }
             return result.setCode(CodeConstants.SUCCESS).setBody(fileList).setMessage("文件列表返回成功");
@@ -80,6 +71,7 @@ public class GeodataController extends BaseController<Geodata, GeodataService, S
             return result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("文件列表返回失败");
         }
     }
+
     /**
      * 数据目录功能：按照type1 第一级目录分类
      *

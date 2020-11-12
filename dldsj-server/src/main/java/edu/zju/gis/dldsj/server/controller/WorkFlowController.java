@@ -30,11 +30,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @author Jiarui
- * @date 2020/9/24
+ * @author Jiarui 2020/9/24
+ * @update Keran Sun (katus) 2020/11/12
  */
-
-
 @Slf4j
 @CrossOrigin
 @Controller
@@ -48,7 +46,6 @@ public class WorkFlowController {
     private WorkFlowService workFlowService;
     @Autowired
     private MonitorTasks monitorTasks;
-
 
     /**
      * 已保存工作流模版列表
@@ -66,7 +63,6 @@ public class WorkFlowController {
         else
             return Result.error();
     }
-
 
     /**
      * 单工作流模版详情
@@ -93,7 +89,6 @@ public class WorkFlowController {
         else
             return Result.error();
     }
-
 
     /**
      * 保存工作流模版
@@ -146,7 +141,6 @@ public class WorkFlowController {
         else
             return Result.error().setMessage("工作流删除失败.");
     }
-
 
     /**
      *获取工作流任务列表
@@ -221,8 +215,6 @@ public class WorkFlowController {
             return Result.error();
     }
 
-
-
     //提交工作流任务
     @RequestMapping(value = "/tasks/submit", method = RequestMethod.POST)
     @ResponseBody
@@ -245,9 +237,9 @@ public class WorkFlowController {
                     if (path.startsWith("ES:"))
                         node.getParams().get(i).setValue(path.replace("ES:", ""));
                     else if (path.startsWith("public:"))
-                        node.getParams().get(i).setValue(setting.getHdFsUri() + Paths.get("/3S/geodata", path.replace("public:", "")));
+                        node.getParams().get(i).setValue(setting.getLFsUri() + Paths.get(setting.getPublicDataRootPath(), path.replace("public:", "")));
                     else
-                        node.getParams().get(i).setValue(setting.getHdFsUri() + Paths.get(setting.getUserSpaceRootPath(), userId, path).toString());
+                        node.getParams().get(i).setValue(setting.getLFsUri() + Paths.get(setting.getUserSpaceRootPath(), userId, path).toString());
                 }
                 if (obj.has("tag")) {
                     String val = node.getParams().get(i).getValue();
@@ -407,7 +399,6 @@ public class WorkFlowController {
  //       return Result.success();
     }
 
-
     private boolean BuildDag(Path filePath, String userId, WorkFlowParam workFlowParam, List<JobNodeConfig> nodeConfigs) {
         List<String> content = new ArrayList<>();
         try {
@@ -463,8 +454,4 @@ public class WorkFlowController {
                 "    default_args=default_args\n" +
                 ")\n\n", user, dependsOnPast ? "True" : "False", retries, dagId);
     }
-
-
-
-
 }
