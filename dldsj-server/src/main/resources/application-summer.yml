@@ -27,12 +27,12 @@ spring:
 settings:
   nginxUrl: http://10.79.231.81:90
   nginxPath: /home/data
-  parallelFilePath: /opt/3S/upload
+  parallelFilePath: /nas/3S/upload
   templatePath: ${settings.parallelFilePath}/template
   jarPath: ${settings.parallelFilePath}/jar
   xmlPath: ${settings.parallelFilePath}/xml
   picPath: ${settings.nginxPath}/bigGeoPlatform/modelImages
-  downloadTempDirectory: /opt/3S/download/template
+  downloadTempDirectory: /nas/3S/download/template
   eduCasePath: /home/data/images/3S/educase
   eduCaseNginxPath: /images/3S/educase
   geoDataPath: /3S/geoData
@@ -41,9 +41,9 @@ settings:
     - http://10.79.231.81:8082
     - http://td1:8082
   sessionMaxAge: 36000
-  mapfileSavepath: opt/3S
-  userSpaceRootPath: /3S/userSpace/
-  publicDataRootPath: /3S/geodata/
+  mapfileSavepath: ${settings.parallelFilePath}/template
+  userSpaceRootPath: /nas/3S/userSpace
+  publicDataRootPath: /nas/3S/geodata/
   nameNode: 10.79.231.81
   username: root
   password: 0922jtbr

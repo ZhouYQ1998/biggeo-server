@@ -10,7 +10,6 @@ import edu.zju.gis.dldsj.server.utils.GeometryUtil;
 import edu.zju.gis.dldsj.server.utils.LoadUtils;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulator;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulatorFactory;
-import edu.zju.gis.dldsj.server.utils.fs.HdfsManipulator;
 import edu.zju.gis.dldsj.server.utils.fs.LocalFsManipulator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.fs.Path;
@@ -34,7 +33,7 @@ import java.util.UUID;
 
 /**
  * @author Keran Sun (katus)
- * @version 1.0, 2020-10-17
+ * @version 2.0, 2020-10-17
  */
 @Slf4j
 @CrossOrigin
@@ -57,14 +56,14 @@ public class UserSpaceController {
     public Result<List<String>> getAllFiles(@SessionAttribute("userId") String userId, @RequestBody String requestBody) {
         Result<List<String>> result = new Result<>();
         List<String> fileList = new ArrayList<>();
-        HdfsManipulator hdfsManipulator = (HdfsManipulator)FsManipulatorFactory.create(setting.getHdFsUri());
+        FsManipulator fsManipulator = FsManipulatorFactory.create();
         try {
             JSONObject inputs = new JSONObject(requestBody);
             String userPath = inputs.optString("path", "/");
             String path = Paths.get(setting.getUserSpaceRootPath(), userId, userPath).toString();
-            List<Path> filePaths = getAllFilesRecursion(hdfsManipulator, path);
+            List<Path> filePaths = getAllFilesRecursion(fsManipulator, path);
             for (Path filePath : filePaths) {
-                fileList.add(filePath.toString().replace(setting.getHdFsUri() + path, ""));
+                fileList.add(filePath.toString().replace(setting.getLFsUri() + path, ""));
             }
             return result.setCode(CodeConstants.SUCCESS).setBody(fileList).setMessage("全部文件返回成功");
         } catch (Exception e) {
@@ -83,7 +82,7 @@ public class UserSpaceController {
     public Result<List<FileInfo>> getFileInfoList(@SessionAttribute("userId") String userId, @RequestBody String requestBody) {
         Result<List<FileInfo>> result = new Result<>();
         List<FileInfo> fileList = new ArrayList<>();
-        FsManipulator fsManipulator = FsManipulatorFactory.create(setting.getHdFsUri());
+        FsManipulator fsManipulator = FsManipulatorFactory.create();
         try {
             String userRoot = Paths.get(setting.getUserSpaceRootPath(), userId).toString();
             if (!fsManipulator.exists(userRoot)) {
@@ -95,7 +94,7 @@ public class UserSpaceController {
             Path[] paths = fsManipulator.listFiles(path);
             for (Path filePath : paths) {
                 FileInfo fileInfo = fsManipulator.getFileInfo(filePath);
-                fileInfo.setPath(fileInfo.getPath().replace(setting.getHdFsUri() + userRoot, ""));
+                fileInfo.setPath(fileInfo.getPath().replace(setting.getLFsUri() + userRoot, ""));
                 fileList.add(fileInfo);
             }
             return result.setCode(CodeConstants.SUCCESS).setBody(fileList).setMessage("文件列表返回成功");
@@ -114,7 +113,7 @@ public class UserSpaceController {
     @PostMapping("/mkdir")
     public Result<String> makeDir(@SessionAttribute("userId") String userId, @RequestBody String requestBody) {
         Result<String> result = new Result<>();
-        FsManipulator fsManipulator = FsManipulatorFactory.create(setting.getHdFsUri());
+        FsManipulator fsManipulator = FsManipulatorFactory.create();
         try {
             JSONObject inputs = new JSONObject(requestBody);
             String userPath = inputs.getString("path");
@@ -147,29 +146,13 @@ public class UserSpaceController {
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
         String userPath = request.getParameter("path");
         String currentPath = Paths.get(setting.getUserSpaceRootPath(), userId, userPath).toString();
-        FsManipulator lfsManipulator = FsManipulatorFactory.create();
-        HdfsManipulator hdfsManipulator = (HdfsManipulator) FsManipulatorFactory.create(setting.getHdFsUri());
-        String tmpPath = Paths.get(setting.getTemplatePath(), UUID.randomUUID().toString()).toString();
         try {
-            lfsManipulator.mkdirs(tmpPath);
             for (MultipartFile file : files) {
-                file.transferTo(new File(Paths.get(tmpPath, file.getOriginalFilename()).toString()));
-            }
-            Path[] paths = lfsManipulator.listFiles(tmpPath);
-            for (Path path : paths) {
-                hdfsManipulator.uploadFromLocal(path.toString(), currentPath);
+                file.transferTo(new File(Paths.get(currentPath, file.getOriginalFilename()).toString()));
             }
             result.setCode(CodeConstants.SUCCESS).setBody("SUCCESS").setMessage("文件上传成功");
         } catch (Exception e) {
             result.setCode(CodeConstants.SYSTEM_ERROR).setBody("ERROR").setMessage("文件上传失败");
-        } finally {
-            try {
-                if (lfsManipulator.exists(tmpPath)) {
-                    lfsManipulator.deleteDir(tmpPath);
-                }
-            } catch (IOException e) {
-                result.setMessage(result.getMessage() + "#临时文件清除失败");
-            }
         }
         return result;
     }
@@ -187,7 +170,7 @@ public class UserSpaceController {
             JSONObject inputs = new JSONObject(requestBody);
             String userPath = inputs.getString("path");
             String currentPath = Paths.get(setting.getUserSpaceRootPath(), userId, userPath).toString();
-            FsManipulator fsManipulator = FsManipulatorFactory.create(setting.getHdFsUri());
+            FsManipulator fsManipulator = FsManipulatorFactory.create();
             if (fsManipulator.exists(currentPath)) {
                 fsManipulator.deleteDir(currentPath);
                 result.setCode(CodeConstants.SUCCESS).setMessage("文件删除成功").setBody("SUCCESS");
@@ -209,7 +192,6 @@ public class UserSpaceController {
      */
     @PostMapping("/download")
     public Result<String> downloadFiles(@SessionAttribute("userId") String userId, @RequestBody String requestBody, HttpServletResponse res) {
-        HdfsManipulator hdfsManipulator = (HdfsManipulator)FsManipulatorFactory.create(setting.getHdFsUri());
         LocalFsManipulator localFsManipulator = (LocalFsManipulator)FsManipulatorFactory.create(setting.getLFsUri());
         try {
             JSONObject inputs = new JSONObject(requestBody);
@@ -221,8 +203,7 @@ public class UserSpaceController {
             String prefix = Paths.get(setting.getUserSpaceRootPath(), userId).toString();
             String[] files = new String[fileListArray.length()];
             for (int i = 0; i < fileListArray.length(); i++) {
-                hdfsManipulator.downloadToLocal(Paths.get(prefix, fileListArray.getString(i)).toString(), tmpPath);
-                files[i] = Paths.get(tmpPath, new File(fileListArray.getString(i)).getName()).toString();
+                files[i] = Paths.get(prefix, new File(fileListArray.getString(i)).getName()).toString();
             }
             // 压缩文件
             String zipFile = Paths.get(tmpPath, "files.zip").toString();
@@ -246,7 +227,7 @@ public class UserSpaceController {
      */
     @PostMapping("/preview/{vizType}")
     public Result<VizData> preview(@SessionAttribute("userId") String userId, @PathVariable String vizType, @RequestBody String requestBody) {
-        FsManipulator fsManipulator = FsManipulatorFactory.create(setting.getHdFsUri());
+        FsManipulator fsManipulator = FsManipulatorFactory.create();
         Result<VizData> result = new Result<>();
         try {
             JSONObject requestJSON = new JSONObject(requestBody);
@@ -255,7 +236,7 @@ public class UserSpaceController {
             if (path.isEmpty()) {
                 currentPath = geodataService.getWholePathOfDataItem(requestJSON.getString("dataId")).replace(setting.getHdFsUri(), "");
             } else if (path.startsWith("public:")){
-                currentPath = "/3S/geodata" + path.replace("public:", "");
+                currentPath = Paths.get(setting.getPublicDataRootPath(), path.replace("public:", "")).toString();
             } else {
                 currentPath = Paths.get(setting.getUserSpaceRootPath(), userId, path).toString();
             }
