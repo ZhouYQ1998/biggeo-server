@@ -65,7 +65,8 @@ public class WebConfig implements WebMvcConfigurer {
                 "/onlinetools/fuzzyname/**",
                 "/mapservice/allselect",
                 "/mapservice/fuzzyname/**",
-                "/member/**"
+                "/member/**",
+                "/run"
         };
 
         for (String path: excludePaths){
