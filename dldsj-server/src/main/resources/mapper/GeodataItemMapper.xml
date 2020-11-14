@@ -7,9 +7,10 @@
         <result column="TITLE" jdbcType="VARCHAR" property="title"/>
         <result column="FORMAT" jdbcType="VARCHAR" property="format"/>
         <result column="RAM" jdbcType="VARCHAR" property="ram"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ID, DATASET, TITLE, FORMAT, RAM
+        ID, DATASET, TITLE, FORMAT, RAM, REMARK
     </sql>
     <sql id="TABLE_NAME">
         tb_geographic_dataitem
@@ -22,6 +23,40 @@
         <include refid="TABLE_NAME"/>
         where ID = #{id,jdbcType=VARCHAR}
     </select>
+
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.GeodataItem">
+        insert into
+        <include refid="TABLE_NAME"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            DATASET,
+            TITLE,
+            FORMAT,
+            RAM,
+            <if test="remark != null">REMARK</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=VARCHAR},
+            #{dataset,jdbcType=VARCHAR},
+            #{title,jdbcType=VARCHAR},
+            #{format,jdbcType=VARCHAR},
+            #{ram,jdbcType=VARCHAR},
+            <if test="remark != null">#{remark,jdbcType=VARCHAR}</if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.GeodataItem">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="dataset != null">DATASET = #{dataset,jdbcType=VARCHAR},</if>
+            <if test="title != null">TITLE = #{title,jdbcType=VARCHAR},</if>
+            <if test="format != null">FORMAT = #{format,jdbcType=TIMESTAMP},</if>
+            <if test="ram != null">RAM = #{ram,jdbcType=VARCHAR},</if>
+            <if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR},</if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
 
     <!-- 查询数据集详情 -->
     <select id="getDatail" resultMap="BaseResultMap">

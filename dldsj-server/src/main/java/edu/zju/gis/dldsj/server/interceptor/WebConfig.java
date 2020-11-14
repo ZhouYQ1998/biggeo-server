@@ -22,7 +22,6 @@ import java.io.IOException;
 @Configuration
 @Slf4j
 public class WebConfig implements WebMvcConfigurer {
-    private final static String SESSION_KEY = "userName";
 
     @Bean
     public SecurityInterceptor getSecurityInterceptor() {
@@ -81,12 +80,7 @@ public class WebConfig implements WebMvcConfigurer {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
             HttpSession session = request.getSession();
-//            session.setAttribute("userId", "c1749c11-1299-11eb-afac-0242ac110002");
-//            session.setAttribute("userName", "zyq");
-//            session.setAttribute("password", "zyq000000");
-//            session.setAttribute("phone", "18916097713");
-//            session.setAttribute("email", "471420883@qq.com");
-//            session.setAttribute("role", "manager");
+            session.setAttribute("userId", "test");
             if (session.getAttribute("userId") != null) {
                 log.warn("SUCCESS [session:" + session.getId() + ", user:" + session.getAttribute("userId").toString() + "]");
                 return true;
@@ -98,7 +92,6 @@ public class WebConfig implements WebMvcConfigurer {
                 response.getWriter().write(result.toString());
                 return false;
             }
-//            return true;
         }
     }
 }

@@ -71,22 +71,28 @@
 
 ### 2.2 URL
 
-| URL                         | FUNCTION             | METHOD | PARAM                          | RESULT              | REMARK |
-| --------------------------- | -------------------- | ------ | ------------------------------ | ------------------- | ------ |
-| /geodata/insert             | 插入数据             | PUT    | title,userName,type1,path[...] | {code,body,message} |        |
-| /geodata/batchinsert        | 批量插入             | PUT    | Geodata[,Geodata...]           | {code,body,message} |        |
-| /geodata/delete/{id}        | 删除数据             | DELETE |                                | {code,body,message} |        |
-| /geodata//batchdelete/{ids} | 批量删除             | DELETE |                                | {code,body,message} |        |
-| /geodata/select/{id}        | 查询数据             | GET    |                                | {code,body,message} |        |
-| /geodata/batchseletct/{ids} | 批量查询             | GET    |                                | {code,body,message} |        |
-| /geodata/allselect          | 全部查询             | GET    |                                | {code,body,message} |        |
-| /geodata/update             | 更新数据             | POST   | id[...]                        | {code,body,message} |        |
-| /geodata/batchupdate        | 批量更新             | POST   | Geodata[,Geodata...]           | {code,body,message} |        |
-| /geodata/bytype1            | 一级分类             | GET    | type,[pageNo,pageSize]]        | {code,body,message} |        |
-| /geodata/bytype2            | 二级分类             | GET    | type,[pageNo,pageSize]]        | {code,body,message} |        |
-| /geodata/dis                | 字段唯一不同值与数量 | GET    | field,[pageNo,pageSize]]       | {code,body,message} |        |
-| /geodata/populardata        | 查询最多下载         | GET    |                                | {code,body,message} |        |
-| /geodata/detail/{id}        | 查询数据集详情       | GET    |                                | {code,body,message} |        |
+| URL                         | FUNCTION             | METHOD | PARAM                              | RESULT              | REMARK         |
+| --------------------------- | -------------------- | ------ | ---------------------------------- | ------------------- | -------------- |
+| /geodata/insert             | 插入数据             | PUT    | title,type1,type2,format,path[...] | {code,body,message} |                |
+| /geodata/delete/{id}        | 删除数据             | DELETE |                                    | {code,body,message} |                |
+| /geodata/select/{id}        | 查询数据             | GET    |                                    | {code,body,message} |                |
+| /geodata/batchseletct/{ids} | 批量查询             | GET    |                                    | {code,body,message} |                |
+| /geodata/allselect          | 全部查询             | GET    |                                    | {code,body,message} |                |
+| /geodata/update             | 更新数据             | POST   | id[...]                            | {code,body,message} |                |
+| /geodata/bytype1            | 一级分类             | GET    | type,[pageNo,pageSize]]            | {code,body,message} |                |
+| /geodata/bytype2            | 二级分类             | GET    | type,[pageNo,pageSize]]            | {code,body,message} |                |
+| /geodata/dis                | 字段唯一不同值与数量 | GET    | field,[pageNo,pageSize]]           | {code,body,message} |                |
+| /geodata/populardata        | 查询最多下载         | GET    |                                    | {code,body,message} |                |
+| /geodata/detail/{id}        | 查询数据集详情       | GET    |                                    | {code,body,message} |                |
+| /geodata/upload/{dataset}   | 上传数据             | POST   | format                             | {code,body,message} | body为dataitem |
+
+- delete同时删除文件系统中的数据，请谨慎操作！
+
+### 2.3 Upload Geodata
+
+1. 选择 / 新建数据集
+2. 上传数据
+3. 修改csv格式数据的remark属性
 
 ## 3 tb_geographic_dataitem
 
@@ -99,6 +105,39 @@
 | DATASET | 数据集       | String | Not Null, Foreign Key    |
 | FORMAT  | 数据格式     | String | Not Null                 |
 | RAM     | 数据大小     | String | Not Null                 |
+| REMARK  | 备注         | String |                          |
+
+- csv格式数据的remark为json格式的元数据信息
+
+  ```json
+  // 例
+  {
+  	"type": "trajectory", // 分为 wkt 和 trajectory（轨迹点）
+  	"head": "1", // 是否有文件头
+  	"cols": [{
+  		"name": "order_id", // 列名
+  		"type": "int" // 列类型（text / int / decimal）
+  	}, {
+  		"name": "timestamp",
+  		"type": "text"
+  	}, {
+  		"name": "status",
+  		"type": "text"
+  	}, {
+  		"name": "rider_id",
+  		"type": "int"
+  	}, {
+  		"name": "latitude",
+  		"type": "decimal"
+  	}, {
+  		"name": "longitude",
+  		"type": "decimal"
+  	}],
+  	"wkt": "-1", // wkt 列号（若为trajectory数据，此处值为-1）
+  	"lon": "4", // longitude 列号（若为wkt数据，此处值为-1，latitude同理）
+  	"lat": "5" // latitude 列号
+  }
+  ```
 
 ## 4 tb_student_paper
 
@@ -347,14 +386,3 @@
 | SSO_TOKEN_ERROR            | 2001      | TOKEN未授权或已过期 |
 | SSO_PERMISSION_ERROR       | 2002      | 没有访问权限        |
 | QUEUE_ERROR                | 8001      | 队列溢出错误        |
-
-# Task Division
-
-| Name   | Task                                                         |
-| ------ | ------------------------------------------------------------ |
-| 周育全 | base类设计及实现，tb_user、tb_student_paper、tb_academic_paper、tb_lectures、tb_group_member设计及实现，数据整理 |
-| 张郑良 | tb_log设计及实现                                             |
-| 赵佳晖 | tb_geographic_data、tb_online_tools、tb_map_servers设计及实现，数据整理 |
-| 张家瑞 | tb_teaching_cases设计及实现                                  |
-| 冯瀑霏 | 数据收集及入库                                               |
-| 陈柠檬 | 数据收集及入库                                               |
