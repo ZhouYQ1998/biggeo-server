@@ -80,7 +80,6 @@ public class WebConfig implements WebMvcConfigurer {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
             HttpSession session = request.getSession();
-            session.setAttribute("userId", "test");
             if (session.getAttribute("userId") != null) {
                 log.warn("SUCCESS [session:" + session.getId() + ", user:" + session.getAttribute("userId").toString() + "]");
                 return true;
