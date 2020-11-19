@@ -71,6 +71,7 @@ public class UserController extends BaseController<User, UserService, String, Ba
             session.setAttribute("phone", user.getPhone());
             session.setAttribute("email", user.getEmail());
             session.setAttribute("role", user.getRole());
+            log.warn("LOGIN: [session:" + session.getId() + ", user:" + session.getAttribute("userId").toString() + "]");
             result.setCode(CodeConstants.SUCCESS).setBody(user).setMessage("登录成功");
         }
         else{
