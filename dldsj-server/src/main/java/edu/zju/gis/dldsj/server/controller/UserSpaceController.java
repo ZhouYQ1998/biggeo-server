@@ -8,6 +8,7 @@ import edu.zju.gis.dldsj.server.entity.vo.VizData;
 import edu.zju.gis.dldsj.server.service.GeodataService;
 import edu.zju.gis.dldsj.server.utils.GeometryUtil;
 import edu.zju.gis.dldsj.server.utils.LoadUtils;
+import edu.zju.gis.dldsj.server.utils.ShpUtil;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulator;
 import edu.zju.gis.dldsj.server.utils.fs.FsManipulatorFactory;
 import edu.zju.gis.dldsj.server.utils.fs.LocalFsManipulator;
@@ -26,10 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Keran Sun (katus)
@@ -235,24 +233,50 @@ public class UserSpaceController {
             String currentPath;
             if (path.isEmpty()) {
                 currentPath = geodataService.getWholePathOfDataItem(requestJSON.getString("dataId")).replace(setting.getHdFsUri(), "");
-            } else if (path.startsWith("public:")){
+            } else if (path.startsWith("public:")) {
                 currentPath = Paths.get(setting.getPublicDataRootPath(), path.replace("public:", "")).toString();
             } else {
                 currentPath = Paths.get(setting.getUserSpaceRootPath(), userId, path).toString();
             }
-            int size = requestJSON.optInt("size", 2000);
-            int offset = requestJSON.optInt("offset", 0);
+            int size = Math.max(Math.min(requestJSON.optInt("size", 2000), 100000), 0);
+            int offset = Math.max(requestJSON.optInt("offset", 0), 0);
             if (fsManipulator.isFile(currentPath)) {
+                VizData vizData;
                 if (currentPath.endsWith(".shp")) {
-                    // todo
-                    result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("暂时不支持shp文件预览").setBody(null);
+                    switch (vizType) {
+                        case "table":
+                            String[] fieldNames = ShpUtil.getFieldNames(currentPath);
+                            List<Map<String, Object>> attributes = ShpUtil.getAttributes(currentPath, size, offset);
+                            StringBuilder builder = new StringBuilder();
+                            builder.append("{\"table\": [");
+                            for (Map<String, Object> attribute : attributes) {
+                                builder.append("{");
+                                for (String fieldName : fieldNames) {
+                                    builder.append("\"").append(fieldName).append("\": \"").append(attribute.get(fieldName)).append("\",");
+                                }
+                                if (fieldNames.length > 0) builder.deleteCharAt(builder.length() - 1);
+                                builder.append("},");
+                            }
+                            if (attributes.size() > 0) builder.deleteCharAt(builder.length() - 1);
+                            builder.append("]}");
+                            vizData = new VizData(builder.toString());
+                            result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取表格成功");
+                            break;
+                        case "map":
+                            List<String> wktList = ShpUtil.getGeometriesWkt(currentPath, size, offset);
+                            vizData = new VizData(GeometryUtil.getGeomTypeByWkt(wktList.get(0)), GeometryUtil.wktToGeoJson(wktList, null));
+                            GeometryUtil.getBboxOfWkt(wktList, vizData.getBbox());
+                            result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取GeoJson成功");
+                            break;
+                        default:
+                            result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("未知预览类型").setBody(null);
+                    }
                 } else {
                     List<String> lines = fsManipulator.readToText(currentPath, size, offset);
                     if (lines == null || lines.size() <= 0) {
-                        throw new RuntimeException("空文件无法预览");
+                        throw new RuntimeException("无内容可预览");
                     }
                     String sep = lines.get(0).contains("\t") ? "\t" : ",";
-                    VizData vizData;
                     switch (vizType) {
                         case "table":
                             StringBuilder builder = new StringBuilder();
@@ -263,7 +287,7 @@ public class UserSpaceController {
                                 for (int i = 0; i < items.length; i++) {
                                     builder.append("\"COL_").append(i).append("\": \"").append(items[i]).append("\",");
                                 }
-                                builder.deleteCharAt(builder.length() - 1);
+                                if (items.length > 0) builder.deleteCharAt(builder.length() - 1);
                                 builder.append("},");
                             }
                             builder.deleteCharAt(builder.length() - 1);

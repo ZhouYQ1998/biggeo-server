@@ -32,11 +32,19 @@ public final class GeometryUtil {
         StringWriter writer = new StringWriter();
         GeometryJSON geometryJSON = new GeometryJSON(20);
         Geometry geometry = wktReader.read(wktList.get(0));
-        writer.append(String.format("{\"type\": \"Feature\",\"properties\": {%s},\"geometry\":", getPropJson(propList.get(0))));
+        if (propList == null) {
+            writer.append("{\"type\": \"Feature\",\"properties\": {},\"geometry\":");
+        } else {
+            writer.append(String.format("{\"type\": \"Feature\",\"properties\": {%s},\"geometry\":", getPropJson(propList.get(0))));
+        }
         geometryJSON.write(geometry, writer);
         writer.append("}");
         for (int i = 1; i < wktList.size(); i++) {
-            writer.append(String.format(", {\"type\": \"Feature\",\"properties\": {%s},\"geometry\":", getPropJson(propList.get(i))));
+            if (propList == null) {
+                writer.append(", {\"type\": \"Feature\",\"properties\": {},\"geometry\":");
+            } else {
+                writer.append(String.format(", {\"type\": \"Feature\",\"properties\": {%s},\"geometry\":", getPropJson(propList.get(i))));
+            }
             geometry = wktReader.read(wktList.get(i));
             geometryJSON.write(geometry, writer);
             writer.append("}");
