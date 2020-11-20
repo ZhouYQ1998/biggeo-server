@@ -22,7 +22,6 @@ import java.io.IOException;
 @Configuration
 @Slf4j
 public class WebConfig implements WebMvcConfigurer {
-    private final static String SESSION_KEY = "userName";
 
     @Bean
     public SecurityInterceptor getSecurityInterceptor() {
@@ -37,18 +36,22 @@ public class WebConfig implements WebMvcConfigurer {
                 "/user/login",
                 "/user/loginstatus",
                 "/user/insert",
+                "/user/update",
+                "/user/selectbyname/**",
                 "/user/check/**",
                 "/user/checkbyname/**",
                 "/user/statistic",
+                "/geodata/select/**",
                 "/geodata/allselect",
                 "/geodata/bytype1",
                 "/geodata/bytype2",
                 "/geodata/dis",
                 "/geodata/populardata",
                 "/geodata/detail/**",
-                "/studentpapaer/selectnew",
-                "/studentpapaer/fuzzyname/**",
-                "/studentpapaer/allselect",
+                "/studentpaper/selectnew",
+                "/studentpaper/selectnew",
+                "/studentpaper/fuzzyname/**",
+                "/studentpaper/allselect",
                 "/academicpaper/selectnew",
                 "/academicpaper/fuzzyname/**",
                 "/academicpaper/allselect",
@@ -61,7 +64,8 @@ public class WebConfig implements WebMvcConfigurer {
                 "/onlinetools/fuzzyname/**",
                 "/mapservice/allselect",
                 "/mapservice/fuzzyname/**",
-                "/member/**"
+                "/member/**",
+                "/run"
         };
 
         for (String path: excludePaths){
@@ -76,12 +80,6 @@ public class WebConfig implements WebMvcConfigurer {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
             HttpSession session = request.getSession();
-//            session.setAttribute("userId", "c1749c11-1299-11eb-afac-0242ac110002");
-//            session.setAttribute("userName", "zyq");
-//            session.setAttribute("password", "zyq000000");
-//            session.setAttribute("phone", "18916097713");
-//            session.setAttribute("email", "471420883@qq.com");
-//            session.setAttribute("role", "manager");
             if (session.getAttribute("userId") != null) {
                 log.warn("SUCCESS [session:" + session.getId() + ", user:" + session.getAttribute("userId").toString() + "]");
                 return true;
@@ -93,7 +91,6 @@ public class WebConfig implements WebMvcConfigurer {
                 response.getWriter().write(result.toString());
                 return false;
             }
-//            return true;
         }
     }
 }

@@ -18,5 +18,6 @@ public class GeodataItem extends Base<String> {
     private String title;
     private String format;
     private String ram;
+    private String remark;
 
 }
