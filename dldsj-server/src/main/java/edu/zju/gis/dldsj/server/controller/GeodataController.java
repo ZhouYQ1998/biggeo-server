@@ -63,6 +63,8 @@ public class GeodataController extends BaseController<Geodata, GeodataService, S
             for (Path filePath : paths) {
                 FileInfo fileInfo = fsManipulator.getFileInfo(filePath);
                 fileInfo.setPath(fileInfo.getPath().replace(setting.getLFsUri() + publicRoot.substring(0, publicRoot.length()-1), ""));
+                String slm=fileInfo.getName().substring(fileInfo.getName().lastIndexOf("."));
+                if(!(slm.equals(".prj")||slm.equals(".cpg")||slm.equals(".shx")||slm.equals(".dbf")))
                 fileList.add(fileInfo);
             }
             return result.setCode(CodeConstants.SUCCESS).setBody(fileList).setMessage("文件列表返回成功");
