@@ -27,7 +27,6 @@ public class myCORSFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         List<String> whiteList = setting.getFrontEndRegionList();
-        log.warn("WHITE: " + whiteList.toString());
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String myOrigin = request.getHeader("Origin");

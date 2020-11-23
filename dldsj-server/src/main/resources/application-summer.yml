@@ -1,5 +1,5 @@
 server:
-  port: 13000
+  port: 15000
   tomcat:
     uri-encoding: UTF-8
   servlet:
@@ -37,11 +37,14 @@ settings:
   eduCaseNginxPath: /images/3S/educase
   geoDataPath: /3S/geoData
   frontEndRegionList:
+    - http://10.79.231.81
+    - http://biggeo.zju.edu.cn
     - http://localhost:8082
     - http://10.79.231.81:8082
     - http://td1:8082
     - http://tdex1:8082
     - http://tdex1.gis.zju:8082
+    - http://biggeo.zju.edu.cn:8082
   sessionMaxAge: 36000
   mapfileSavepath: ${settings.parallelFilePath}/template
   userSpaceRootPath: /nas/3S/userSpace
