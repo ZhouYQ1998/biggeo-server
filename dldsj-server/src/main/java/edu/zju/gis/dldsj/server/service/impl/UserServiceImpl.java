@@ -3,7 +3,7 @@ package edu.zju.gis.dldsj.server.service.impl;
 import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
-import edu.zju.gis.dldsj.server.mapper.UserMapper;
+import edu.zju.gis.dldsj.server.mapper.mysql.UserMapper;
 import edu.zju.gis.dldsj.server.entity.User;
 import edu.zju.gis.dldsj.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

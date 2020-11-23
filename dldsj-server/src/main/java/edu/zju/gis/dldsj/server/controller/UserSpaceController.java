@@ -242,6 +242,7 @@ public class UserSpaceController {
             int offset = Math.max(requestJSON.optInt("offset", 0), 0);
             if (fsManipulator.isFile(currentPath)) {
                 VizData vizData;
+                // 直接读取文件
                 if (currentPath.endsWith(".shp")) {
                     switch (vizType) {
                         case "table":
@@ -263,9 +264,13 @@ public class UserSpaceController {
                             result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取表格成功");
                             break;
                         case "map":
-                            List<String> wktList = ShpUtil.getGeometriesWkt(currentPath, size, offset);
-                            vizData = new VizData(GeometryUtil.getGeomTypeByWkt(wktList.get(0)), GeometryUtil.wktToGeoJson(wktList, null));
-                            GeometryUtil.getBboxOfWkt(wktList, vizData.getBbox());
+                            vizData = geodataService.initVizData(currentPath);
+                            if (!vizData.isTile()) {
+                                List<String> wktList = ShpUtil.getGeometriesWkt(currentPath, size, offset);
+                                vizData.setGeomType(GeometryUtil.getGeomTypeByWkt(wktList.get(0)));
+                                vizData.setGeomData(GeometryUtil.wktToGeoJson(wktList, null));
+                                GeometryUtil.getBboxOfWkt(wktList, vizData.getBbox());
+                            }
                             result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取GeoJson成功");
                             break;
                         default:
@@ -309,8 +314,12 @@ public class UserSpaceController {
                                 }
                                 propList.add(prop);
                             }
-                            vizData = new VizData(GeometryUtil.getGeomTypeByWkt(wktList.get(0)), GeometryUtil.wktToGeoJson(wktList, propList));
-                            GeometryUtil.getBboxOfWkt(wktList, vizData.getBbox());
+                            vizData = geodataService.initVizData(currentPath);
+                            if (!vizData.isTile()) {
+                                vizData.setGeomType(GeometryUtil.getGeomTypeByWkt(wktList.get(0)));
+                                vizData.setGeomData(GeometryUtil.wktToGeoJson(wktList, propList));
+                                GeometryUtil.getBboxOfWkt(wktList, vizData.getBbox());
+                            }
                             result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取GeoJson成功");
                             break;
                         default:

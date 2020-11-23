@@ -15,6 +15,13 @@ public class VizData {
     private String geomData;
     private String structuredData;
     private Double[] bbox;
+    private String link;
+    private String tileType;
+    private String layerName;
+
+    public VizData() {
+        this("Unknown", "");
+    }
 
     public VizData(String geomType, String geomData) {
         this(geomType, geomData, "{\"table\": []}");
@@ -25,9 +32,20 @@ public class VizData {
     }
 
     public VizData(String geomType, String geomData, String structuredData) {
+        this(geomType, geomData, structuredData, new Double[4], "", "", "");
+    }
+
+    public VizData(String geomType, String geomData, String structuredData, Double[] bbox, String link, String tileType, String layerName) {
         this.geomType = geomType;
         this.geomData = geomData;
         this.structuredData = structuredData;
-        this.bbox = new Double[4];
+        this.bbox = bbox;
+        this.link = link;
+        this.tileType = tileType;
+        this.layerName = layerName;
+    }
+
+    public boolean isTile() {
+        return !link.isEmpty();
     }
 }

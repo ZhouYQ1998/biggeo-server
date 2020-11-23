@@ -3,7 +3,7 @@ package edu.zju.gis.dldsj.server.service.impl;
 import com.github.pagehelper.PageHelper;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.workflow.*;
-import edu.zju.gis.dldsj.server.mapper.*;
+import edu.zju.gis.dldsj.server.mapper.mysql.*;
 import edu.zju.gis.dldsj.server.service.WorkFlowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

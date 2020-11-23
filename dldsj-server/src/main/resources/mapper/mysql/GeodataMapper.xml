@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.mysql.GeodataMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.Geodata">
+        <result column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="TITLE" jdbcType="VARCHAR" property="title"/>
+        <result column="AUTHOR" jdbcType="VARCHAR" property="author"/>
+        <result column="RE_TIME" jdbcType="TIMESTAMP" property="time"/>
+        <result column="TYPE_1" jdbcType="VARCHAR" property="type1"/>
+        <result column="TYPE_2" jdbcType="VARCHAR" property="type2"/>
+        <result column="KEYWORDS" jdbcType="VARCHAR" property="keywords"/>
+        <result column="ABSTRACT" jdbcType="VARCHAR" property="abstractInfo"/>
+        <result column="REFERENCE" jdbcType="VARCHAR" property="reference"/>
+        <result column="PICTURE" jdbcType="VARCHAR" property="picture"/>
+        <result column="FORMAT" jdbcType="VARCHAR" property="format"/>
+        <result column="PATH" jdbcType="VARCHAR" property="path"/>
+        <result column="RAM" jdbcType="VARCHAR" property="ram"/>
+        <result column="VIEW_TIMES" jdbcType="INTEGER" property="viewTimes"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID, TITLE, AUTHOR, RE_TIME, TYPE_1, TYPE_2, KEYWORDS, ABSTRACT, REFERENCE, PICTURE, FORMAT, PATH, RAM, VIEW_TIMES
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_geographic_dataset
+    </sql>
+
+    <!-- CRUD -->
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.Geodata">
+        insert into
+        <include refid="TABLE_NAME"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            TITLE,
+            <if test="author != null">AUTHOR,</if>
+            <if test="time != null">RE_TIME,</if>
+            TYPE_1,
+            TYPE_2,
+            <if test="keywords != null">KEYWORDS,</if>
+            <if test="abstractInfo != null">ABSTRACT,</if>
+            <if test="reference != null">REFERENCE,</if>
+            <if test="picture != null">PICTURE,</if>
+            FORMAT,
+            PATH,
+            RAM,
+            VIEW_TIMES
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=VARCHAR},
+            #{title,jdbcType=VARCHAR},
+            <if test="author != null">#{author,jdbcType=VARCHAR},</if>
+            <if test="time != null">#{time,jdbcType=TIMESTAMP},</if>
+            #{type1,jdbcType=VARCHAR},
+            #{type2,jdbcType=VARCHAR},
+            <if test="keywords != null">#{keywords,jdbcType=VARCHAR},</if>
+            <if test="abstractInfo != null">#{abstractInfo,jdbcType=VARCHAR},</if>
+            <if test="reference != null">#{reference,jdbcType=VARCHAR},</if>
+            <if test="picture != null">#{picture,jdbcType=VARCHAR},</if>
+            #{format,jdbcType=VARCHAR},
+            #{path,jdbcType=VARCHAR},
+            #{ram,jdbcType=VARCHAR},
+            #{viewTimes,jdbcType=INTEGER}
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from
+        <include refid="TABLE_NAME"/>
+        where ID = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.Geodata">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="title != null">TITLE = #{title,jdbcType=VARCHAR},</if>
+            <if test="author != null">AHTHOR = #{author,jdbcType=VARCHAR},</if>
+            <if test="time != null">RE_TIME = #{time,jdbcType=TIMESTAMP},</if>
+            <if test="type1 != null">TYPE_1 = #{type1,jdbcType=VARCHAR},</if>
+            <if test="type2 != null">TYPE_2 = #{type2,jdbcType=VARCHAR},</if>
+            <if test="keywords != null">KEYWORDS = #{keywords,jdbcType=VARCHAR},</if>
+            <if test="abstractInfo != null">ABSTRACT = #{abstractInfo,jdbcType=VARCHAR},</if>
+            <if test="reference != null">REFERENCE = #{reference,jdbcType=VARCHAR},</if>
+            <if test="picture != null">PICTURE = #{picture,jdbcType=VARCHAR},</if>
+            <if test="format != null">FORMAT = #{format,jdbcType=VARCHAR},</if>
+            <if test="path != null">PATH = #{path,jdbcType=VARCHAR},</if>
+            <if test="ram != null">RAM = #{ram,jdbcType=VARCHAR},</if>
+            <if test="viewTimes != null">VIEW_TIMES = #{viewTimes,jdbcType=VARCHAR},</if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="batchSelect" parameterType="java.util.List" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from <include refid="TABLE_NAME"></include>
+        where ID in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="allSelect" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="TABLE_NAME"/>
+    </select>
+    <!-- CRUD end -->
+
+    <!--  数据目录功能：根据type字段返回数据  -->
+    <select id="selectByType1" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where TYPE_1 = #{type1,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByType2" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where TYPE_2 = #{type2,jdbcType=VARCHAR}
+    </select>
+
+    <!--  查询出唯一值  -->
+    <select id="getDistinctField" parameterType="java.lang.String" resultMap="BaseResultMap" statementType="STATEMENT">
+        SELECT DISTINCT
+        ${_parameter}
+        FROM
+        <include refid="TABLE_NAME"/>
+    </select>
+
+    <!--  查询该值数据量  -->
+    <select id="getCountOfField" parameterType="String" resultType="String" statementType="STATEMENT">
+        SELECT COUNT(*)
+        FROM
+        <include refid="TABLE_NAME"/>
+        WHERE ${arg0} = '${arg1}'
+    </select>
+
+    <!-- 查询下载数量最多的5条数据 -->
+    <select id="getPopularData" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="TABLE_NAME"/>
+        order by VIEW_TIMES desc
+        limit 5
+    </select>
+
+    <!-- 访问次数+1 -->
+    <update id="viewTimesPlus" parameterType="String">
+        UPDATE
+        <include refid="TABLE_NAME"/>
+        SET VIEW_TIMES = VIEW_TIMES + 1
+        WHERE ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getByPath" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="TABLE_NAME"/>
+        WHERE PATH = #{path,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

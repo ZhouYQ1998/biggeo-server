@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.mysql.UserMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.User">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="PASSWORD" jdbcType="VARCHAR" property="password"/>
+        <result column="PHONE" jdbcType="VARCHAR" property="phone"/>
+        <result column="EMAIL" jdbcType="VARCHAR" property="email"/>
+        <result column="ICON" jdbcType="VARCHAR" property="icon"/>
+        <result column="COUNTRY" jdbcType="VARCHAR" property="country"/>
+        <result column="INSTITUTE" jdbcType="VARCHAR" property="institute"/>
+        <result column="INSTITUTETYPE" jdbcType="VARCHAR" property="institutetype"/>
+        <result column="FIELD" jdbcType="VARCHAR" property="field"/>
+        <result column="PURPOSE" jdbcType="VARCHAR" property="purpose"/>
+        <result column="ROLE" jdbcType="VARCHAR" property="role"/>
+        <result column="SIGN_COUNT" jdbcType="INTEGER" property="signCount"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID, NAME, PASSWORD, PHONE, EMAIL, ICON, COUNTRY, INSTITUTE, INSTITUTETYPE, FIELD, PURPOSE, ROLE, SIGN_COUNT
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_user
+    </sql>
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.User">
+        insert into <include refid="TABLE_NAME"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            NAME,
+            PASSWORD,
+            PHONE,
+            EMAIL,
+            ROLE,
+            <if test="icon != null">
+                ICON,
+            </if>
+            <if test="country != null">
+                COUNTRY,
+            </if>
+            <if test="institute != null">
+                INSTITUTE,
+            </if>
+            <if test="institutetype != null">
+                INSTITUTETYPE,
+            </if>
+            <if test="field != null">
+                FIELD,
+            </if>
+            <if test="purpose != null">
+                PURPOSE
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=VARCHAR},
+            #{name,jdbcType=VARCHAR},
+            #{password,jdbcType=VARCHAR},
+            #{phone,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR},
+            #{role,jdbcType=VARCHAR},
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="institute != null">
+                #{institute,jdbcType=VARCHAR},
+            </if>
+            <if test="institutetype != null">
+                #{institutetype,jdbcType=VARCHAR},
+            </if>
+            <if test="field != null">
+                #{field,jdbcType=VARCHAR},
+            </if>
+            <if test="purpose != null">
+                #{purpose,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from <include refid="TABLE_NAME"/>
+        where ID = #{id,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByName" parameterType="java.lang.String">
+        delete
+        from <include refid="TABLE_NAME"/>
+        where NAME = #{name,jdbcType=VARCHAR}
+    </delete>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where NAME = #{name,jdbcType=VARCHAR}
+    </select>
+    <select id="batchSelect" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where ID in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+    <select id="allSelect" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+    </select>
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.User">
+        update <include refid="TABLE_NAME"/>
+        <set>
+            <if test="name!= null">
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                PASSWORD = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                PHONE = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                ICON = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                COUNTRY = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="institute != null">
+                INSTITUTE = #{institute,jdbcType=VARCHAR},
+            </if>
+            <if test="institutetype != null">
+                INSTITUTETYPE = #{institutetype,jdbcType=VARCHAR},
+            </if>
+            <if test="field != null">
+                FIELD = #{field,jdbcType=VARCHAR},
+            </if>
+            <if test="purpose != null">
+                PURPOSE = #{purpose,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                ROLE = #{role,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="addSign" parameterType="java.lang.String">
+        update <include refid="TABLE_NAME"/>
+        <set>
+            SIGN_COUNT = SIGN_COUNT + 1
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="selectAllSign" resultType="java.lang.Integer">
+        select
+        sum(SIGN_COUNT)
+        from <include refid="TABLE_NAME"/>
+    </select>
+    <select id="selectByCountry" resultType="java.util.Map">
+        select
+        COUNTRY as country, sum(SIGN_COUNT) as `count`
+        from <include refid="TABLE_NAME"/>
+        group by COUNTRY
+    </select>
+</mapper>

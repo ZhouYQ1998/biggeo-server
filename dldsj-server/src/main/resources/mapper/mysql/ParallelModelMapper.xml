@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.mysql.ParallelModelMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.ParallelModel">
+        <id column="ARTIFACT_ID" jdbcType="VARCHAR" property="artifactId"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="USAGES" jdbcType="VARCHAR" property="usages"/>
+        <result column="MAIN_CLASS" jdbcType="VARCHAR" property="mainClass"/>
+        <result column="FRAMEWORK_TYPE" jdbcType="VARCHAR" property="frameworkType"/>
+        <result column="DATE" jdbcType="VARCHAR" property="date"/>
+        <result column="VERSION_ID" jdbcType="VARCHAR" property="versionId"/>
+        <result column="KEYWORDS" jdbcType="VARCHAR" property="keywords"/>
+        <result column="GROUP_ID" jdbcType="VARCHAR" property="groupId"/>
+        <result column="AUTHOR_ID" jdbcType="VARCHAR" property="authorId"/>
+        <result column="EMAIL" jdbcType="VARCHAR" property="email"/>
+        <result column="JAR_PATH" jdbcType="VARCHAR" property="jarPath"/>
+        <result column="XML_PATH" jdbcType="VARCHAR" property="xmlPath"/>
+        <result column="PIC_PATH" jdbcType="VARCHAR" property="picPath"/>
+        <result column="NUM_EXECUTORS" jdbcType="INTEGER" property="numExecutors"/>
+        <result column="DRIVER_MEMORY" jdbcType="VARCHAR" property="driverMemory"/>
+        <result column="EXECUTOR_MEMORY" jdbcType="VARCHAR" property="executorMemory"/>
+        <result column="EXECUTOR_CORES" jdbcType="INTEGER" property="executorCores"/>
+        <result column="PARALLELISM" jdbcType="INTEGER" property="parallelism"/>
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+        <result column="IS_PUBLIC" jdbcType="BOOLEAN" property="isPublic"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="edu.zju.gis.dldsj.server.entity.ParallelModelWithBLOBs">
+        <result column="ALGO" jdbcType="VARCHAR" property="algo"/>
+        <result column="INPUT" jdbcType="LONGVARCHAR" property="input"/>
+        <result column="OUTPUT" jdbcType="LONGVARCHAR" property="out"/>
+        <result column="PARAMETERS" jdbcType="LONGVARCHAR" property="parameters"/>
+        <result column="PACKAGES" jdbcType="LONGVARCHAR" property="packages"/>
+        <result column="INTERFACES" jdbcType="LONGVARCHAR" property="interfaces"/>
+        <result column="TEST" jdbcType="LONGVARCHAR" property="test"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ARTIFACT_ID, NAME, DESCRIPTION, USAGES, MAIN_CLASS, FRAMEWORK_TYPE, DATE, VERSION_ID,
+        KEYWORDS, GROUP_ID, AUTHOR_ID, EMAIL, JAR_PATH, XML_PATH, PIC_PATH, NUM_EXECUTORS, DRIVER_MEMORY,
+        EXECUTOR_MEMORY, EXECUTOR_CORES, PARALLELISM, USER_ID, IS_PUBLIC
+    </sql>
+    <sql id="Blob_Column_List">
+        ALGO, INPUT, OUTPUT, PARAMETERS, PACKAGES, INTERFACES, TEST
+    </sql>
+    <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        ARTIFACT_ID, NAME, DESCRIPTION, USAGES, FRAMEWORK_TYPE, DATE, VERSION_ID,
+        KEYWORDS, GROUP_ID, AUTHOR_ID, EMAIL, PIC_PATH, IS_PUBLIC
+        from tb_paralleltool
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+        union
+        select
+        ARTIFACT_ID, NAME, DESCRIPTION, USAGES, FRAMEWORK_TYPE, DATE, VERSION_ID,
+        KEYWORDS, GROUP_ID, AUTHOR_ID, EMAIL, PIC_PATH, IS_PUBLIC
+        from tb_raster_tool
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectPublicModel" parameterType="java.lang.Boolean" resultMap="BaseResultMap">
+        select
+        ARTIFACT_ID, NAME, DESCRIPTION, USAGES, FRAMEWORK_TYPE, DATE, VERSION_ID,
+        KEYWORDS, GROUP_ID, AUTHOR_ID, EMAIL, PIC_PATH
+        from tb_paralleltool
+        where IS_PUBLIC = true
+        union
+        select
+        ARTIFACT_ID, NAME, DESCRIPTION, USAGES, FRAMEWORK_TYPE, DATE, VERSION_ID,
+        KEYWORDS, GROUP_ID, AUTHOR_ID, EMAIL, PIC_PATH
+        from tb_raster_tool
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tb_paralleltool
+        where ARTIFACT_ID = #{artifactId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByIdList" parameterType="collection" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_raster_tool
+        where ARTIFACT_ID IN
+        <foreach collection="collection" item="id" open="(" separator="," close=")">#{id}</foreach>
+        union
+        select
+        <include refid="Base_Column_List"/>
+        from tb_paralleltool
+        where ARTIFACT_ID IN
+        <foreach collection="collection" item="id" open="(" separator="," close=")">#{id}</foreach>
+    </select>
+    <select id="getIdList" resultType="java.lang.String">
+        select
+        ARTIFACT_ID
+        from tb_paralleltool,sys_role_model
+        where tb_paralleltool.ARTIFACT_ID = sys_role_model.MODEL_ID
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from tb_paralleltool
+        where ARTIFACT_ID = #{artifactId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.ParallelModelWithBLOBs">
+        insert into tb_paralleltool (ARTIFACT_ID,
+                                     NAME,
+                                     DESCRIPTION,
+                                     ALGO,
+                                     USAGES,
+                                     MAIN_CLASS,
+                                     FRAMEWORK_TYPE,
+                                     DATE,
+                                     VERSION_ID,
+                                     KEYWORDS,
+                                     GROUP_ID,
+                                     AUTHOR_ID,
+                                     EMAIL,
+                                     JAR_PATH,
+                                     XML_PATH,
+                                     PIC_PATH,
+                                     NUM_EXECUTORS,
+                                     DRIVER_MEMORY,
+                                     EXECUTOR_MEMORY,
+                                     EXECUTOR_CORES,
+                                     PARALLELISM,
+                                     INPUT,
+                                     OUTPUT,
+                                     PARAMETERS,
+                                     PACKAGES,
+                                     INTERFACES,
+                                     TEST,
+                                     USER_ID,
+                                     IS_PUBLIC)
+        values (#{artifactId,jdbcType=VARCHAR},
+                #{name,jdbcType=VARCHAR},
+                #{description,jdbcType=VARCHAR},
+                #{algo,jdbcType=VARCHAR},
+                #{usages,jdbcType=VARCHAR},
+                #{mainClass,jdbcType=VARCHAR},
+                #{frameworkType,jdbcType=VARCHAR},
+                #{date,jdbcType=VARCHAR},
+                #{versionId,jdbcType=VARCHAR},
+                #{keywords,jdbcType=VARCHAR},
+                #{groupId,jdbcType=VARCHAR},
+                #{authorId,jdbcType=VARCHAR},
+                #{email,jdbcType=VARCHAR},
+                #{jarPath,jdbcType=VARCHAR},
+                #{xmlPath,jdbcType=VARCHAR},
+                #{picPath,jdbcType=VARCHAR},
+                #{numExecutors,jdbcType=INTEGER},
+                #{driverMemory,jdbcType=VARCHAR},
+                #{executorMemory,jdbcType=VARCHAR},
+                #{executorCores,jdbcType=INTEGER},
+                #{parallelism,jdbcType=INTEGER},
+                #{input,jdbcType=LONGVARCHAR},
+                #{out,jdbcType=LONGVARCHAR},
+                #{parameters,jdbcType=LONGVARCHAR},
+                #{packages,jdbcType=LONGVARCHAR},
+                #{interfaces,jdbcType=LONGVARCHAR},
+                #{test,jdbcType=LONGVARCHAR},
+                #{userId,jdbcType=VARCHAR},
+                #{isPublic,jdbcType=BOOLEAN})
+    </insert>
+    <insert id="insertSelective" parameterType="edu.zju.gis.dldsj.server.entity.ParallelModelWithBLOBs">
+        insert into tb_paralleltool
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="artifactId != null">
+                ARTIFACT_ID,
+            </if>
+            <if test="name != null">
+                NAME,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="algo != null">
+                ALGO,
+            </if>
+            <if test="usages != null">
+                USAGES,
+            </if>
+            <if test="mainClass != null">
+                MAIN_CLASS,
+            </if>
+            <if test="frameworkType != null">
+                FRAMEWORK_TYPE,
+            </if>
+            <if test="date != null">
+                DATE,
+            </if>
+            <if test="versionId != null">
+                VERSION_ID,
+            </if>
+            <if test="keywords != null">
+                KEYWORDS,
+            </if>
+            <if test="groupId != null">
+                GROUP_ID,
+            </if>
+            <if test="authorId != null">
+                AUTHOR_ID,
+            </if>
+            <if test="email != null">
+                EMAIL,
+            </if>
+            <if test="jarPath != null">
+                JAR_PATH,
+            </if>
+            <if test="xmlPath != null">
+                XML_PATH,
+            </if>
+            <if test="picPath != null">
+                PIC_PATH,
+            </if>
+            <if test="numExecutors != null">
+                NUM_EXECUTORS,
+            </if>
+            <if test="driverMemory != null">
+                DRIVER_MEMORY,
+            </if>
+            <if test="executorMemory != null">
+                EXECUTOR_MEMORY,
+            </if>
+            <if test="executorCores != null">
+                EXECUTOR_CORES,
+            </if>
+            <if test="parallelism != null">
+                PARALLELISM,
+            </if>
+            <if test="input != null">
+                INPUT,
+            </if>
+            <if test="out != null">
+                OUTPUT,
+            </if>
+            <if test="parameters != null">
+                PARAMETERS,
+            </if>
+            <if test="packages != null">
+                PACKAGES,
+            </if>
+            <if test="interfaces != null">
+                INTERFACES,
+            </if>
+            <if test="test != null">
+                TEST,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="isPublic != null">
+                IS_PUBLIC,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="artifactId != null">
+                #{artifactId,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="algo != null">
+                #{algo,jdbcType=VARCHAR},
+            </if>
+            <if test="usages != null">
+                #{usages,jdbcType=VARCHAR},
+            </if>
+            <if test="mainClass != null">
+                #{mainClass,jdbcType=VARCHAR},
+            </if>
+            <if test="frameworkType != null">
+                #{frameworkType,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=VARCHAR},
+            </if>
+            <if test="versionId != null">
+                #{versionId,jdbcType=VARCHAR},
+            </if>
+            <if test="keywords != null">
+                #{keywords,jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=VARCHAR},
+            </if>
+            <if test="authorId != null">
+                #{authorId,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="jarPath != null">
+                #{jarPath,jdbcType=VARCHAR},
+            </if>
+            <if test="xmlPath != null">
+                #{xmlPath,jdbcType=VARCHAR},
+            </if>
+            <if test="picPath != null">
+                #{picPath,jdbcType=VARCHAR},
+            </if>
+            <if test="numExecutors != null">
+                #{numExecutors,jdbcType=INTEGER},
+            </if>
+            <if test="driverMemory != null">
+                #{driverMemory,jdbcType=VARCHAR},
+            </if>
+            <if test="executorMemory != null">
+                #{executorMemory,jdbcType=VARCHAR},
+            </if>
+            <if test="executorCores != null">
+                #{executorCores,jdbcType=INTEGER},
+            </if>
+            <if test="parallelism != null">
+                #{parallelism,jdbcType=INTEGER},
+            </if>
+            <if test="input != null">
+                #{input,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="out != null">
+                #{out,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="parameters != null">
+                #{parameters,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="packages != null">
+                #{packages,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="interfaces != null">
+                #{interfaces,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="test != null">
+                #{test,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="isPublic != null">
+                #{isPublic,jdbcType=BOOLEAN},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="edu.zju.gis.dldsj.server.entity.ParallelModelWithBLOBs">
+        update tb_paralleltool
+        <set>
+            <if test="name != null">
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="algo != null">
+                ALGO = #{algo,jdbcType=VARCHAR},
+            </if>
+            <if test="usages != null">
+                USAGES = #{usages,jdbcType=VARCHAR},
+            </if>
+            <if test="mainClass != null">
+                MAIN_CLASS = #{mainClass,jdbcType=VARCHAR},
+            </if>
+            <if test="frameworkType != null">
+                FRAMEWORK_TYPE = #{frameworkType,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                DATE = #{date,jdbcType=VARCHAR},
+            </if>
+            <if test="versionId != null">
+                VERSION_ID = #{versionId,jdbcType=VARCHAR},
+            </if>
+            <if test="keywords != null">
+                KEYWORDS = #{keywords,jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                GROUP_ID = #{groupId,jdbcType=VARCHAR},
+            </if>
+            <if test="authorId != null">
+                AUTHOR_ID = #{authorId,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="jarPath != null">
+                JAR_PATH = #{jarPath,jdbcType=VARCHAR},
+            </if>
+            <if test="xmlPath != null">
+                XML_PATH = #{xmlPath,jdbcType=VARCHAR},
+            </if>
+            <if test="picPath != null">
+                PIC_PATH = #{picPath,jdbcType=VARCHAR},
+            </if>
+            <if test="numExecutors != null">
+                NUM_EXECUTORS = #{numExecutors,jdbcType=INTEGER},
+            </if>
+            <if test="driverMemory != null">
+                DRIVER_MEMORY = #{driverMemory,jdbcType=VARCHAR},
+            </if>
+            <if test="executorMemory != null">
+                EXECUTOR_MEMORY = #{executorMemory,jdbcType=VARCHAR},
+            </if>
+            <if test="executorCores != null">
+                EXECUTOR_CORES = #{executorCores,jdbcType=INTEGER},
+            </if>
+            <if test="parallelism != null">
+                PARALLELISM = #{parallelism,jdbcType=INTEGER},
+            </if>
+            <if test="input != null">
+                INPUT = #{input,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="out != null">
+                OUTPUT = #{out,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="parameters != null">
+                PARAMETERS = #{parameters,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="packages != null">
+                PACKAGES = #{packages,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="interfaces != null">
+                INTERFACES = #{interfaces,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="test != null">
+                TEST = #{test,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="isPublic != null">
+                IS_PUBLIC = #{isPublic,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where ARTIFACT_ID = #{artifactId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.zju.gis.dldsj.server.entity.ParallelModelWithBLOBs">
+        update tb_paralleltool
+        set NAME            = #{name,jdbcType=VARCHAR},
+            DESCRIPTION     = #{description,jdbcType=VARCHAR},
+            ALGO            = #{algo,jdbcType=VARCHAR},
+            USAGES          = #{usages,jdbcType=VARCHAR},
+            MAIN_CLASS      = #{mainClass,jdbcType=VARCHAR},
+            FRAMEWORK_TYPE  = #{frameworkType,jdbcType=VARCHAR},
+            DATE            = #{date,jdbcType=VARCHAR},
+            VERSION_ID      = #{versionId,jdbcType=VARCHAR},
+            KEYWORDS        = #{keywords,jdbcType=VARCHAR},
+            GROUP_ID        = #{groupId,jdbcType=VARCHAR},
+            AUTHOR_ID       = #{authorId,jdbcType=VARCHAR},
+            EMAIL           = #{email,jdbcType=VARCHAR},
+            JAR_PATH        = #{jarPath,jdbcType=VARCHAR},
+            XML_PATH        = #{xmlPath,jdbcType=VARCHAR},
+            PIC_PATH        = #{picPath,jdbcType=VARCHAR},
+            NUM_EXECUTORS   = #{numExecutors,jdbcType=INTEGER},
+            DRIVER_MEMORY   = #{driverMemory,jdbcType=VARCHAR},
+            EXECUTOR_MEMORY = #{executorMemory,jdbcType=VARCHAR},
+            EXECUTOR_CORES  = #{executorCores,jdbcType=INTEGER},
+            PARALLELISM     = #{parallelism,jdbcType=INTEGER},
+            INPUT           = #{input,jdbcType=LONGVARCHAR},
+            OUTPUT          = #{out,jdbcType=LONGVARCHAR},
+            PARAMETERS      = #{parameters,jdbcType=LONGVARCHAR},
+            PACKAGES        = #{packages,jdbcType=LONGVARCHAR},
+            INTERFACES      = #{interfaces,jdbcType=LONGVARCHAR},
+            TEST            = #{test,jdbcType=LONGVARCHAR},
+            USER_ID         = #{userId,jdbcType=VARCHAR},
+            IS_PUBLIC       = #{isPublic,jdbcType=BOOLEAN}
+        where ARTIFACT_ID = #{artifactId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.ParallelModel">
+        update tb_paralleltool
+        set NAME            = #{name,jdbcType=VARCHAR},
+            DESCRIPTION     = #{description,jdbcType=VARCHAR},
+            ALGO            = #{algo,jdbcType=VARCHAR},
+            USAGES          = #{usages,jdbcType=VARCHAR},
+            MAIN_CLASS      = #{mainClass,jdbcType=VARCHAR},
+            FRAMEWORK_TYPE  = #{frameworkType,jdbcType=VARCHAR},
+            DATE            = #{date,jdbcType=VARCHAR},
+            VERSION_ID      = #{versionId,jdbcType=VARCHAR},
+            KEYWORDS        = #{keywords,jdbcType=VARCHAR},
+            GROUP_ID        = #{groupId,jdbcType=VARCHAR},
+            AUTHOR_ID       = #{authorId,jdbcType=VARCHAR},
+            EMAIL           = #{email,jdbcType=VARCHAR},
+            JAR_PATH        = #{jarPath,jdbcType=VARCHAR},
+            XML_PATH        = #{xmlPath,jdbcType=VARCHAR},
+            PIC_PATH        = #{picPath,jdbcType=VARCHAR},
+            NUM_EXECUTORS   = #{numExecutors,jdbcType=INTEGER},
+            DRIVER_MEMORY   = #{driverMemory,jdbcType=VARCHAR},
+            EXECUTOR_MEMORY = #{executorMemory,jdbcType=VARCHAR},
+            EXECUTOR_CORES  = #{executorCores,jdbcType=INTEGER},
+            PARALLELISM     = #{parallelism,jdbcType=INTEGER},
+            USER_ID         = #{userId,jdbcType=INTEGER},
+            IS_PUBLIC       = #{isPublic,jdbcType=VARCHAR}
+        where ARTIFACT_ID = #{artifactId,jdbcType=VARCHAR}
+    </update>
+    <select id="search" resultMap="BaseResultMap">
+        select
+        ARTIFACT_ID, NAME, PIC_PATH,DATE,KEYWORDS,
+        <if test="artifactId != null">
+            DESCRIPTION,USAGES, MAIN_CLASS, FRAMEWORK_TYPE, VERSION_ID,
+            GROUP_ID, AUTHOR_ID, EMAIL, JAR_PATH, XML_PATH, NUM_EXECUTORS, DRIVER_MEMORY,
+            EXECUTOR_MEMORY, EXECUTOR_CORES, PARALLELISM, USER_ID, IS_PUBLIC
+        </if>
+        from tb_paralleltool
+        <where>
+            <if test="artifactId != null">
+                ARTIFACT_ID = #{artifactId,jdbcType=VARCHAR}
+            </if>
+            <!--            <if test="userid != null">-->
+            <!--                and userId = #{userid,jdbcType=VARCHAR}-->
+            <!--            </if>-->
+        </where>
+    </select>
+
+    <select id="selectByKeywords" resultMap="BaseResultMap">
+        select
+        ARTIFACT_ID, NAME ,DATE, KEYWORDS,
+        DESCRIPTION,USAGES, MAIN_CLASS, FRAMEWORK_TYPE, VERSION_ID,
+        GROUP_ID, AUTHOR_ID, EMAIL, JAR_PATH, XML_PATH, NUM_EXECUTORS, DRIVER_MEMORY,
+        EXECUTOR_MEMORY, EXECUTOR_CORES, PARALLELISM, USER_ID, IS_PUBLIC
+        from tb_paralleltool
+        where (USER_ID = #{arg0,jdbcType=VARCHAR} OR IS_PUBLIC = true) and (ARTIFACT_ID like "%${arg1}%" OR NAME like "%${arg1}%")
+    </select>
+
+    <select id="selectPublicByKeyword" resultMap="BaseResultMap">
+        select
+        ARTIFACT_ID, NAME ,DATE, KEYWORDS,
+        DESCRIPTION,USAGES, MAIN_CLASS, FRAMEWORK_TYPE, VERSION_ID,
+        GROUP_ID, AUTHOR_ID, EMAIL, JAR_PATH, XML_PATH, NUM_EXECUTORS, DRIVER_MEMORY,
+        EXECUTOR_MEMORY, EXECUTOR_CORES, PARALLELISM, USER_ID, IS_PUBLIC
+        from tb_paralleltool
+        where NAME like CONCAT('%', #{value}, '%')
+    </select>
+
+    <select id="searchByKeywords" parameterType="java.util.List" resultMap="BaseResultMap">
+        select * from tb_paralleltool where
+        <foreach collection="list" item="keyword" separator=" OR ">
+            ARTIFACT_ID LIKE #{keyword} OR NAME LIKE #{keyword} OR DESCRIPTION LIKE #{keyword}
+        </foreach>
+    </select>
+
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.mysql.GroupMemberMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.GroupMember">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="VERSION" jdbcType="VARCHAR" property="version"/>
+        <result column="TEAM" jdbcType="VARCHAR" property="team"/>
+        <result column="ROLE" jdbcType="VARCHAR" property="role"/>
+        <result column="EMAIL" jdbcType="VARCHAR" property="email"/>
+        <result column="PHOTO" jdbcType="VARCHAR" property="photo"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID, NAME, VERSION, TEAM, ROLE, EMAIL, PHOTO
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_group_member
+    </sql>
+    <select id="allSelect" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+    </select>
+    <select id="selectTeachers" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where ROLE = 'instructor'
+    </select>
+    <select id="selectByVersion" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where VERSION = #{version, jdbcType=VARCHAR}
+    </select>
+    <select id="selectByTeam" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where VERSION = #{version, jdbcType=VARCHAR} and TEAM = #{team, jdbcType=VARCHAR}
+    </select>
+</mapper>

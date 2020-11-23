@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.mysql.WorkFlowDagMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowDag">
+        <id column="DAG_ID" property="id" jdbcType="VARCHAR"/>
+        <result column="DAG_NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR"/>
+        <result column="CONNECTIONS" property="connections" jdbcType="VARCHAR"/>
+        <result column="NODES" property="nodes" jdbcType="VARCHAR"/>
+        <result column="STYLE" property="style" jdbcType="VARCHAR"/>
+        <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="LAST_MODIFY_TIME" property="lastModifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        DAG_ID, DAG_NAME, DESCRIPTION, USER_ID, CONNECTIONS, NODES, STYLE, CREATED_TIME, LAST_MODIFY_TIME
+    </sql>
+    <sql id="TABLE_NAME">
+        tb_workflow_dag
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where DAG_ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByNameAndUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where DAG_NAME = #{arg0,jdbcType=VARCHAR}
+        and USER_ID = #{arg1,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from <include refid="TABLE_NAME"/>
+    where DAG_ID = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteByNameAndUserId" parameterType="java.lang.String">
+        delete from <include refid="TABLE_NAME"/>
+        where DAG_NAME = #{arg0,jdbcType=VARCHAR}
+        and USER_ID = #{arg1,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowDag">
+    insert into <include refid="TABLE_NAME"/>
+    (<include refid="Base_Column_List"/>)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+      #{userId,jdbcType=VARCHAR}, #{connections,jdbcType=VARCHAR}, #{nodes,jdbcType=VARCHAR},
+      #{style,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{lastModifyTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowDag">
+        insert into <include refid="TABLE_NAME"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                DAG_ID,
+            </if>
+            <if test="name != null">
+                DAG_NAME,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="connections != null">
+                CONNECTIONS,
+            </if>
+            <if test="nodes != null">
+                NODES,
+            </if>
+            <if test="style != null">
+                STYLE,
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME,
+            </if>
+            <if test="lastModifyTime != null">
+                LAST_MODIFY_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="connections != null">
+                #{connections,jdbcType=VARCHAR},
+            </if>
+            <if test="nodes != null">
+                #{nodes,jdbcType=VARCHAR},
+            </if>
+            <if test="style != null">
+                #{style,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastModifyTime != null">
+                #{lastModifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowDag">
+        update <include refid="TABLE_NAME"/>
+        <set>
+            <if test="name != null">
+                DAG_NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="connections != null">
+                CONNECTIONS = #{connections,jdbcType=VARCHAR},
+            </if>
+            <if test="nodes != null">
+                NODES = #{nodes,jdbcType=VARCHAR},
+            </if>
+            <if test="style != null">
+                STYLE = #{style,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastModifyTime != null">
+                LAST_MODIFY_TIME = #{lastModifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where DAG_ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowDag">
+    update <include refid="TABLE_NAME"/>
+    set DAG_NAME = #{name,jdbcType=VARCHAR},
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+        USER_ID = #{userId,jdbcType=VARCHAR},
+        CONNECTIONS = #{connections,jdbcType=VARCHAR},
+        NODES = #{nodes,jdbcType=VARCHAR},
+        STYLE = #{style,jdbcType=VARCHAR},
+        CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+        LAST_MODIFY_TIME = #{lastModifyTime,jdbcType=TIMESTAMP}
+    where DAG_ID = #{id,jdbcType=VARCHAR}
+  </update>
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where USER_ID = #{userId,jdbcType=VARCHAR} ORDER BY LAST_MODIFY_TIME DESC
+    </select>
+    <select id="selectInfoByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where DAG_ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <!--  查找功能 search  -->
+    <select id="searchByDagName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="TABLE_NAME"/>
+        <where>
+            <if test="name!=null and name.length() &gt; 0">AND DAG_NAME like "%${name}%"</if>
+        </where>
+    </select>
+
+</mapper>

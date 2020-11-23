@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.Monitor;
 import edu.zju.gis.dldsj.server.entity.TaskRecord;
-import edu.zju.gis.dldsj.server.mapper.TaskRecordMapper;
+import edu.zju.gis.dldsj.server.mapper.mysql.TaskRecordMapper;
 import edu.zju.gis.dldsj.server.service.TaskRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

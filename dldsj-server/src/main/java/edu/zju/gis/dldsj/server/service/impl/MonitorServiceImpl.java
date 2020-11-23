@@ -1,7 +1,7 @@
 package edu.zju.gis.dldsj.server.service.impl;
 
 import edu.zju.gis.dldsj.server.entity.Monitor;
-import edu.zju.gis.dldsj.server.mapper.MonitorMapper;
+import edu.zju.gis.dldsj.server.mapper.mysql.MonitorMapper;
 import edu.zju.gis.dldsj.server.service.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.mysql.TeachModelMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.TeachModel">
+        <id column="TEACHMODEL_ID" jdbcType="VARCHAR" property="id"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="DATE" jdbcType="TIMESTAMP" property="date"/>
+        <result column="KEYWORDS" jdbcType="VARCHAR" property="keywords"/>
+        <result column="GROUP_ID" jdbcType="VARCHAR" property="groupId"/>
+        <result column="AUTHOR_ID" jdbcType="VARCHAR" property="authorId"/>
+        <result column="EMAIL" jdbcType="VARCHAR" property="email"/>
+        <result column="FILE_TEMPLATE" jdbcType="VARCHAR" property="fileTemplate"/>
+        <result column="FILE_PATH" jdbcType="VARCHAR" property="filePath"/>
+        <result column="PIC_PATH" jdbcType="VARCHAR" property="picPath"/>
+        <result column="FILE_TYPE" jdbcType="VARCHAR" property="fileType"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        TEACHMODEL_ID, NAME, DESCRIPTION, DATE, KEYWORDS, GROUP_ID, AUTHOR_ID, EMAIL, FILE_TEMPLATE, FILE_PATH, PIC_PATH, FILE_TYPE
+    </sql>
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.TeachModel">
+        insert into tb_teach_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            TEACHMODEL_ID,
+            NAME,
+            DATE,
+            FILE_TEMPLATE,
+            FILE_PATH,
+            FILE_TYPE
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="keywords != null">
+                KEYWORDS,
+            </if>
+            <if test="groupId != null">
+                GROUP_ID
+            </if>
+            <if test="authorId != null">
+                AUTHOR_ID,
+            </if>
+            <if test="email != null">
+                EMAIL
+            </if>
+            <if test="picPath != null">
+                PIC_PATH
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=VARCHAR},
+            #{name,jdbcType=VARCHAR},
+            #{date ,jdbcType=TIMESTAMP},
+            #{fileTemplate,jdbcType=VARCHAR},
+            #{filePath,jdbcType=VARCHAR},
+            #{fileType,jdbcType=VARCHAR},
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="keywords != null">
+                #{keywords,jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=VARCHAR},
+            </if>
+            <if test="authorId != null">
+                #{authorId,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from tb_teach_model
+        where TEACHMODEL_ID = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_teach_model
+        where TEACHMODEL_ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="allSelect" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_teach_model
+    </select>
+
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.TeachModel">
+        update tb_teach_model
+        <set>
+            <if test="name!= null">
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                DATE = #{date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="keywords != null">
+                KEYWORDS = #{keywords,jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                GROUP_ID = #{groupId,jdbcType=VARCHAR},
+            </if>
+            <if test="authorId != null">
+                AUTHOR_ID = #{authorId,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null">
+                EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="fileTemplate != null">
+                FILE_TEMPLATE = #{fileTemplate,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                FILE_PATH = #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="picPath != null">
+                PIC_PATH = #{picPath,jdbcType=VARCHAR}
+            </if>
+            <if test="fileType != null">
+                FILE_TYPE = #{fileType,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where TEACHMODEL_ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+
+
+</mapper>

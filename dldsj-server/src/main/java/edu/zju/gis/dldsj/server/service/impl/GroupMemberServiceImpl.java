@@ -4,11 +4,9 @@ import com.github.pagehelper.PageHelper;
 import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
 import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.entity.GroupMember;
-import edu.zju.gis.dldsj.server.mapper.GroupMemberMapper;
+import edu.zju.gis.dldsj.server.mapper.mysql.GroupMemberMapper;
 import edu.zju.gis.dldsj.server.service.GroupMemberService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author Jiarui 2020/08/31

@@ -8,9 +8,11 @@ import edu.zju.gis.dldsj.server.config.CommonSetting;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
 import edu.zju.gis.dldsj.server.entity.Geodata;
 import edu.zju.gis.dldsj.server.entity.GeodataItem;
-import edu.zju.gis.dldsj.server.mapper.GeodataItemMapper;
-import edu.zju.gis.dldsj.server.mapper.GeodataMapper;
+import edu.zju.gis.dldsj.server.entity.vo.VizData;
+import edu.zju.gis.dldsj.server.mapper.mysql.GeodataItemMapper;
+import edu.zju.gis.dldsj.server.mapper.mysql.GeodataMapper;
 import edu.zju.gis.dldsj.server.service.GeodataService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -145,4 +147,34 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
         return geodata.getPath() + "/" + geodataItem.getTitle() + geodataItem.getFormat();
     }
 
+    @Override
+    public VizData initVizData(String path) {
+        String title = path.substring(path.lastIndexOf("/") + 1).replace("-", "_");
+        String setPath = path.substring(0, path.lastIndexOf("/"));
+        Geodata geodata = geodataMapper.getByPath(setPath).get(0);
+        GeodataItem geodataItem = geodataItemMapper.getItemBySetAndTitle(geodata.getId(), title).get(0);
+        JSONObject remark = new JSONObject(geodataItem.getRemark());
+        JSONObject tile = remark.optJSONObject("tile");
+        VizData vizData = new VizData();
+        if (tile != null) {
+            String type = tile.getString("type");
+            String link;
+            switch (type) {
+                case "pg":
+                    vizData.setTileType("vector");
+                    String tableName = tile.optString("tableName", "");
+                    String layerName = tile.optString("layerName", "");
+                    vizData.setLayerName(layerName);
+                    String geomName = tile.optString("geomName", "geom");
+                    link = "/tile/" + type + "/" + tableName + "/" + layerName + "/" + geomName + "/{z}/{x}/{y}";
+                    vizData.setLink(link);
+                case "cog":
+                    vizData.setTileType("raster");
+                    // todo: cog tiles
+                    link = "none";
+                    vizData.setLink(link);
+            }
+        }
+        return vizData;
+    }
 }

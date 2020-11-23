@@ -6,7 +6,7 @@ import edu.zju.gis.dldsj.server.config.CommonSetting;
 import edu.zju.gis.dldsj.server.entity.ParallelModel;
 import edu.zju.gis.dldsj.server.entity.ParallelModelUsage;
 import edu.zju.gis.dldsj.server.entity.ParallelModelWithBLOBs;
-import edu.zju.gis.dldsj.server.mapper.ParallelModelMapper;
+import edu.zju.gis.dldsj.server.mapper.mysql.ParallelModelMapper;
 import edu.zju.gis.dldsj.server.service.ParallelModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

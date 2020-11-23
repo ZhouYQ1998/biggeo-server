@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.zju.gis.dldsj.server.mapper.mysql.WorkFlowRunMapper">
+    <resultMap id="BaseResultMap" type="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowRun">
+        <id column="RUN_ID" property="runId" jdbcType="VARCHAR"/>
+        <result column="RUN_NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    RUN_ID, RUN_NAME, USER_ID, STATUS, START_TIME, END_TIME
+  </sql>
+    <sql id="TABLE_NAME">
+        tb_workflow_run
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where RUN_ID = #{runId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from <include refid="TABLE_NAME"/>
+    where RUN_ID = #{runId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowRun">
+    insert into <include refid="TABLE_NAME"/>
+        (<include refid="Base_Column_List"/>)
+        values (#{runId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowRun">
+        (insert into <include refid="TABLE_NAME"/>)
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="runId != null">
+                runId,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="starttime != null">
+                startTime,
+            </if>
+            <if test="endtime != null">
+                endTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="runId != null">
+                #{runId,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowRun">
+        update <include refid="TABLE_NAME"/>
+        <set>
+            <if test="name != null">
+                RUN_NAME = #{name,jdbcType=VARCHAR},
+            </if>
+
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                START_TIME = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                END_TIME = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where RUN_ID = #{runId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="edu.zju.gis.dldsj.server.entity.workflow.WorkFlowRun">
+    update <include refid="TABLE_NAME"/>
+    set NAME = #{name,jdbcType=VARCHAR},
+        USER_ID = #{userId,jdbcType=VARCHAR},
+        STATUS = #{status,jdbcType=VARCHAR},
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+        END_TIME = #{endTime,jdbcType=TIMESTAMP}
+    where RUN_ID = #{runId,jdbcType=VARCHAR}
+  </update>
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where USER_ID = #{userId,jdbcType=VARCHAR} ORDER BY START_TIME DESC
+    </select>
+</mapper>

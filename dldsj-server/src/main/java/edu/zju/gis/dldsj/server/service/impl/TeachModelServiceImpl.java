@@ -2,10 +2,9 @@ package edu.zju.gis.dldsj.server.service.impl;
 
 import edu.zju.gis.dldsj.server.base.BaseServiceImpl;
 import edu.zju.gis.dldsj.server.entity.TeachModel;
-import edu.zju.gis.dldsj.server.mapper.TeachModelMapper;
+import edu.zju.gis.dldsj.server.mapper.mysql.TeachModelMapper;
 import edu.zju.gis.dldsj.server.service.TeachModelService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**

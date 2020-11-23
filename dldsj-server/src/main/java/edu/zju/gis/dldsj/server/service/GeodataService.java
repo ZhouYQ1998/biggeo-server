@@ -5,6 +5,7 @@ import edu.zju.gis.dldsj.server.common.Page;
 import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.entity.Geodata;
 import edu.zju.gis.dldsj.server.entity.GeodataItem;
+import edu.zju.gis.dldsj.server.entity.vo.VizData;
 
 import java.util.List;
 import java.util.Map;
@@ -31,5 +32,8 @@ public interface GeodataService extends BaseService<Geodata, String> {
     Result<List<GeodataItem>> getDatail(String id);
 
     String getWholePathOfDataItem(String id);
+
+    // 根据公共数据全路径获取可能存在的切片链接
+    VizData initVizData(String path);
 
 }

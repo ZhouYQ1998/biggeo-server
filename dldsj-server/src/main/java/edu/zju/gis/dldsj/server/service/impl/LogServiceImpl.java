@@ -7,7 +7,7 @@ import edu.zju.gis.dldsj.server.common.Result;
 import edu.zju.gis.dldsj.server.constant.CodeConstants;
 import edu.zju.gis.dldsj.server.constant.TimeConstants;
 import edu.zju.gis.dldsj.server.entity.Log;
-import edu.zju.gis.dldsj.server.mapper.LogMapper;
+import edu.zju.gis.dldsj.server.mapper.mysql.LogMapper;
 import edu.zju.gis.dldsj.server.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
