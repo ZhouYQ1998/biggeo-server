@@ -1,11 +1,13 @@
 package edu.zju.gis.dldsj.server.mapper.pg;
 
 import edu.zju.gis.dldsj.server.entity.MvtTile;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author Keran Sun (katus)
  * @version 1.0, 2020-11-23
  */
 public interface TileMapper {
-    MvtTile getTile(String tableName, String layerName, String geomName, Double lonMin, Double latMin, Double lonMax, Double latMax);
+    MvtTile getTile(@Param("tableName") String tableName, @Param("layerName") String layerName, @Param("geomName") String geomName,
+                    @Param("lonMin") Double lonMin, @Param("latMin") Double latMin, @Param("lonMax") Double lonMax, @Param("latMax") Double latMax);
 }

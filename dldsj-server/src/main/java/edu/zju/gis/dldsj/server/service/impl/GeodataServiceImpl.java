@@ -149,7 +149,8 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
 
     @Override
     public VizData initVizData(String path) {
-        String title = path.substring(path.lastIndexOf("/") + 1).replace("-", "_");
+        String title = path.substring(path.lastIndexOf("/") + 1);
+        if (title.contains(".")) title = title.substring(0, title.lastIndexOf("."));
         String setPath = path.substring(0, path.lastIndexOf("/"));
         Geodata geodata = geodataMapper.getByPath(setPath).get(0);
         GeodataItem geodataItem = geodataItemMapper.getItemBySetAndTitle(geodata.getId(), title).get(0);
@@ -168,11 +169,12 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
                     String geomName = tile.optString("geomName", "geom");
                     link = "/tile/" + type + "/" + tableName + "/" + layerName + "/" + geomName + "/{z}/{x}/{y}";
                     vizData.setLink(link);
+                    break;
                 case "cog":
                     vizData.setTileType("raster");
-                    // todo: cog tiles
-                    link = "none";
+                    link = tile.optString("link", "");
                     vizData.setLink(link);
+                    break;
             }
         }
         return vizData;

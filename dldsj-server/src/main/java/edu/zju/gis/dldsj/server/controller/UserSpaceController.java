@@ -241,90 +241,90 @@ public class UserSpaceController {
             int size = Math.max(Math.min(requestJSON.optInt("size", 2000), 100000), 0);
             int offset = Math.max(requestJSON.optInt("offset", 0), 0);
             if (fsManipulator.isFile(currentPath)) {
-                VizData vizData;
-                // 直接读取文件
-                if (currentPath.endsWith(".shp")) {
-                    switch (vizType) {
-                        case "table":
-                            String[] fieldNames = ShpUtil.getFieldNames(currentPath);
-                            List<Map<String, Object>> attributes = ShpUtil.getAttributes(currentPath, size, offset);
-                            StringBuilder builder = new StringBuilder();
-                            builder.append("{\"table\": [");
-                            for (Map<String, Object> attribute : attributes) {
-                                builder.append("{");
-                                for (String fieldName : fieldNames) {
-                                    builder.append("\"").append(fieldName).append("\": \"").append(attribute.get(fieldName)).append("\",");
+                VizData vizData = geodataService.initVizData(currentPath);
+                if (!vizData.isTile() || vizType.equals("table")) {
+                    // 直接读取文件
+                    if (currentPath.endsWith(".shp")) {
+                        switch (vizType) {
+                            case "table":
+                                String[] fieldNames = ShpUtil.getFieldNames(currentPath);
+                                List<Map<String, Object>> attributes = ShpUtil.getAttributes(currentPath, size, offset);
+                                StringBuilder builder = new StringBuilder();
+                                builder.append("{\"table\": [");
+                                for (Map<String, Object> attribute : attributes) {
+                                    builder.append("{");
+                                    for (String fieldName : fieldNames) {
+                                        builder.append("\"").append(fieldName).append("\": \"").append(attribute.get(fieldName)).append("\",");
+                                    }
+                                    if (fieldNames.length > 0) builder.deleteCharAt(builder.length() - 1);
+                                    builder.append("},");
                                 }
-                                if (fieldNames.length > 0) builder.deleteCharAt(builder.length() - 1);
-                                builder.append("},");
-                            }
-                            if (attributes.size() > 0) builder.deleteCharAt(builder.length() - 1);
-                            builder.append("]}");
-                            vizData = new VizData(builder.toString());
-                            result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取表格成功");
-                            break;
-                        case "map":
-                            vizData = geodataService.initVizData(currentPath);
-                            if (!vizData.isTile()) {
+                                if (attributes.size() > 0) builder.deleteCharAt(builder.length() - 1);
+                                builder.append("]}");
+                                vizData.setStructuredData(builder.toString());
+                                result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取表格成功");
+                                break;
+                            case "map":
                                 List<String> wktList = ShpUtil.getGeometriesWkt(currentPath, size, offset);
                                 vizData.setGeomType(GeometryUtil.getGeomTypeByWkt(wktList.get(0)));
                                 vizData.setGeomData(GeometryUtil.wktToGeoJson(wktList, null));
                                 GeometryUtil.getBboxOfWkt(wktList, vizData.getBbox());
-                            }
-                            result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取GeoJson成功");
-                            break;
-                        default:
-                            result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("未知预览类型").setBody(null);
-                    }
-                } else {
-                    List<String> lines = fsManipulator.readToText(currentPath, size, offset);
-                    if (lines == null || lines.size() <= 0) {
-                        throw new RuntimeException("无内容可预览");
-                    }
-                    String sep = lines.get(0).contains("\t") ? "\t" : ",";
-                    switch (vizType) {
-                        case "table":
-                            StringBuilder builder = new StringBuilder();
-                            builder.append("{\"table\": [");
-                            for (String line : lines) {
-                                String[] items = line.split(sep);
-                                builder.append("{");
-                                for (int i = 0; i < items.length; i++) {
-                                    builder.append("\"COL_").append(i).append("\": \"").append(items[i]).append("\",");
+                                result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取GeoJson成功");
+                                break;
+                            default:
+                                result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("未知预览类型").setBody(null);
+                        }
+                    } else if (currentPath.endsWith(".csv") || currentPath.endsWith(".tsv") || currentPath.endsWith(".txt")) {
+                        List<String> lines = fsManipulator.readToText(currentPath, size, offset);
+                        if (lines == null || lines.size() <= 0) {
+                            throw new RuntimeException("无内容可预览");
+                        }
+                        String sep = lines.get(0).contains("\t") ? "\t" : ",";
+                        switch (vizType) {
+                            case "table":
+                                StringBuilder builder = new StringBuilder();
+                                builder.append("{\"table\": [");
+                                for (String line : lines) {
+                                    String[] items = line.split(sep);
+                                    builder.append("{");
+                                    for (int i = 0; i < items.length; i++) {
+                                        builder.append("\"COL_").append(i).append("\": \"").append(items[i]).append("\",");
+                                    }
+                                    if (items.length > 0) builder.deleteCharAt(builder.length() - 1);
+                                    builder.append("},");
                                 }
-                                if (items.length > 0) builder.deleteCharAt(builder.length() - 1);
-                                builder.append("},");
-                            }
-                            builder.deleteCharAt(builder.length() - 1);
-                            builder.append("]}");
-                            vizData = new VizData(builder.toString());
-                            result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取表格成功");
-                            break;
-                        case "map":
-                            int geomIndex = requestJSON.optInt("geomIndex", 0);
-                            List<String> wktList = new ArrayList<>();
-                            List<List<String>> propList = new ArrayList<>();
-                            for (String line : lines) {
-                                String[] items = line.split(sep);
-                                wktList.add(items[geomIndex]);
-                                List<String> prop = new ArrayList<>();
-                                for (int i = 0; i < items.length; i++) {
-                                    if (i == geomIndex) continue;
-                                    prop.add(items[i]);
+                                builder.deleteCharAt(builder.length() - 1);
+                                builder.append("]}");
+                                vizData.setStructuredData(builder.toString());
+                                result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取表格成功");
+                                break;
+                            case "map":
+                                int geomIndex = requestJSON.optInt("geomIndex", 0);
+                                List<String> wktList = new ArrayList<>();
+                                List<List<String>> propList = new ArrayList<>();
+                                for (String line : lines) {
+                                    String[] items = line.split(sep);
+                                    wktList.add(items[geomIndex]);
+                                    List<String> prop = new ArrayList<>();
+                                    for (int i = 0; i < items.length; i++) {
+                                        if (i == geomIndex) continue;
+                                        prop.add(items[i]);
+                                    }
+                                    propList.add(prop);
                                 }
-                                propList.add(prop);
-                            }
-                            vizData = geodataService.initVizData(currentPath);
-                            if (!vizData.isTile()) {
                                 vizData.setGeomType(GeometryUtil.getGeomTypeByWkt(wktList.get(0)));
                                 vizData.setGeomData(GeometryUtil.wktToGeoJson(wktList, propList));
                                 GeometryUtil.getBboxOfWkt(wktList, vizData.getBbox());
-                            }
-                            result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取GeoJson成功");
-                            break;
-                        default:
-                            result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("未知预览类型").setBody(null);
+                                result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取GeoJson成功");
+                                break;
+                            default:
+                                result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("未知预览类型").setBody(null);
+                        }
+                    } else {
+                        result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("未知文件类型, 暂时不支持预览").setBody(null);
                     }
+                } else {
+                    result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取切片链接成功");
                 }
             } else {
                 throw new RuntimeException("目录路径无法预览");

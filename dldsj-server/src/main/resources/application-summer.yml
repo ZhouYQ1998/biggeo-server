@@ -16,7 +16,7 @@ spring:
       password: 123456
     postgresql:
       driver-class-name: org.postgresql.Driver
-      jdbc-url: jdbc:mysql://10.79.231.81:5432/3s_postgis?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+      jdbc-url: jdbc:postgresql://10.79.231.81:5432/3s_postgis?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
       username: postgres
       password: postgres
   servlet:
