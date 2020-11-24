@@ -18,10 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.UUID;
@@ -86,10 +83,10 @@ public class TeachModelController extends BaseController<TeachModel, TeachModelS
             Process p = pb.start();
             try {
                 runningStatus = p.waitFor();
+                Thread.sleep(100);// 因为异步执行，此时需要等待shell退出
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
 
 //            Method 2
 //            try {
@@ -100,18 +97,18 @@ public class TeachModelController extends BaseController<TeachModel, TeachModelS
 //            }
 
             if (runningStatus != 0) {
-                //TODO 脚本运行存在问题
-                InputStream is = p.getInputStream();
-                byte[] buff = new byte[8 * 1024 * 1024];
-                int len = -1;
+                InputStream is = p.getErrorStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(is, "GBK"));
+                String line;
                 StringBuilder sb = new StringBuilder();
-                while((len = is.read(buff)) != -1) {
-                    String content = new String(buff, 0, len);
-                    sb.append(content);
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
                 }
-                String err = sb.toString();
+                br.close();
+                is.close();
+                String message = sb.toString();
                 return result.setCode(CodeConstants.VALIDATE_ERROR).setBody("ERROR")
-                        .setMessage("脚本运行错误");
+                        .setMessage("脚本运行错误:"+message);
             }
             String outputPath = setting.getEduCasePath()+"/"+folderName+"/"+folderName+".txt";
             //将传入的Docx文件转成Markdown并存入服务器对应文件夹当中
