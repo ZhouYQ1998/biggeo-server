@@ -125,8 +125,8 @@ public class TeachModelController extends BaseController<TeachModel, TeachModelS
             teachModel.setName(folderName);
             teachModel.setKeywords("markdown");
             teachModel.setFileType("1");
-            teachModel.setFilePath(setting.getEduCaseNginxPath()+"/"+folderName+".txt");
-            teachModel.setPicPath(setting.getEduCaseNginxPath()+"/pic0.png");
+            teachModel.setFilePath(setting.getEduCaseNginxPath()+"/"+folderName+"/"+folderName+".txt");
+            teachModel.setPicPath(setting.getEduCaseNginxPath()+"/"+folderName+"/pic0.png");
 
             int resNumber = teachModelService.insertwll(teachModel);
 //            Result<TeachModel> res = service.insert(teachModel);
