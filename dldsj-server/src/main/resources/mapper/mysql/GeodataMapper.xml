@@ -74,7 +74,7 @@
         <include refid="TABLE_NAME"/>
         <set>
             <if test="title != null">TITLE = #{title,jdbcType=VARCHAR},</if>
-            <if test="author != null">AHTHOR = #{author,jdbcType=VARCHAR},</if>
+            <if test="author != null">AUTHOR = #{author,jdbcType=VARCHAR},</if>
             <if test="time != null">RE_TIME = #{time,jdbcType=TIMESTAMP},</if>
             <if test="type1 != null">TYPE_1 = #{type1,jdbcType=VARCHAR},</if>
             <if test="type2 != null">TYPE_2 = #{type2,jdbcType=VARCHAR},</if>
