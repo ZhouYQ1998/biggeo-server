@@ -74,7 +74,7 @@ public class TeachModelController extends BaseController<TeachModel, TeachModelS
             FileInputStream docxIunputStream = DocxToMd.transferToFileInputStream(file);
 
             Enumeration<String> er = request.getParameterNames();
-            String folderName = request.getParameter("name");//TODO 从req中读取教学案例名;
+            String folderName = request.getParameter("name");
             String RUNNING_SHELL_FILE = "makeDir.sh";
             String SHELL_FILE_DIR = setting.getEduCasePath();
 
@@ -91,7 +91,7 @@ public class TeachModelController extends BaseController<TeachModel, TeachModelS
             }
 
 
-            //Method 2
+//            Method 2
 //            try {
 //                Process exec = Runtime.getRuntime().exec(SHELL_FILE_DIR + RUNNING_SHELL_FILE + " " + folderName);
 //                runningStatus = exec.waitFor();
@@ -124,12 +124,13 @@ public class TeachModelController extends BaseController<TeachModel, TeachModelS
             teachModel.setTeachmodelId(id);
             teachModel.setName(folderName);
             teachModel.setKeywords("markdown");
-            teachModel.setFilePath(setting.getEduCaseNginxPath()+"/"+folderName);
+            teachModel.setFileType("1");
+            teachModel.setFilePath(setting.getEduCaseNginxPath()+"/"+folderName+".txt");
             teachModel.setPicPath(setting.getEduCaseNginxPath()+"/pic0.png");
 
             int resNumber = teachModelService.insertwll(teachModel);
 //            Result<TeachModel> res = service.insert(teachModel);
-            return result.setCode(CodeConstants.SUCCESS).setBody(id).setMessage("模型注册成功");
+            return result.setCode(CodeConstants.SUCCESS).setBody(id).setMessage("案例上传成功");
         }
         else return Result.error();
     }

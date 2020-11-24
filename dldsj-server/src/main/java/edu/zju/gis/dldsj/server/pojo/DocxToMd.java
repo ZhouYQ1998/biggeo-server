@@ -78,7 +78,7 @@ public class DocxToMd {
                 imageOutput.write(data, 0, data.length);
                 imageOutput.close();
 
-                paragraphText.append("![image](").append("pic"+ picIndex + ".png").append(")");
+                paragraphText.append("![image](").append("pic"+ picIndex + ".png").append(")\n");
                 picIndex++;
             }
 
@@ -244,14 +244,14 @@ public class DocxToMd {
 
             if(BodyElementType.PARAGRAPH.equals(element.getElementType())){
                 List<XWPFRun> xwpfRuns = element.getBody().getParagraphArray(paragraphIndex).getRuns();
-                String paragraphText = paragraphTrans(xwpfRuns,paragraphIndex,pathPrefix);
+                String paragraphText = paragraphTrans(xwpfRuns,paragraphIndex,pathPrefix)+"\n";
                 System.out.print(paragraphText);
                 fos.write(paragraphText.getBytes());
                 fos.flush();
                 paragraphIndex++;
             }else if (BodyElementType.TABLE.equals(element.getElementType())){
                 XWPFTable xwpfTable = element.getBody().getTableArray(tableIndex);
-                String tableText = tableTrans(xwpfTable,tableIndex);
+                String tableText = tableTrans(xwpfTable,tableIndex)+"\n";
                 System.out.print(tableText);
                 fos.write(tableText.getBytes());
                 fos.flush();
