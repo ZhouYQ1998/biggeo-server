@@ -21,6 +21,7 @@ public class TileServiceImpl implements TileService {
         Double latMin = tile2Lat(y, z);
         Double lonMax = tile2Lon(x+1, z);
         Double latMax = tile2Lat(y+1, z);
+        layerName = "'" + layerName + "'";
         return tileMapper.getTile(tableName, layerName, geomName, lonMin, latMin, lonMax, latMax);
     }
 

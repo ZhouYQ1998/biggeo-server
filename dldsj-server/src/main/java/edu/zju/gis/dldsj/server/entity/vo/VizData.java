@@ -20,7 +20,7 @@ public class VizData {
     private String layerName;
 
     public VizData() {
-        this("Unknown", "");
+        this("Unknown", GeometryUtil.EMPTY_GeoJSON);
     }
 
     public VizData(String geomType, String geomData) {
