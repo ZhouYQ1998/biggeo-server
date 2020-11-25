@@ -15,6 +15,6 @@ import org.springframework.stereotype.Component;
 @Mapper
 public interface TeachModelMapper extends BaseMapper<TeachModel,String> {
 
-    @Insert({"insert into tb_teach_model(teachmodel_id,name,keywords,file_path,pic_path) values (#{teachmodelId},#{name},#{keywords},#{filePath},#{picPath})"})
+    @Insert({"insert into tb_teach_model(teachmodel_id,name,keywords,file_type,file_path,pic_path) values (#{teachmodelId},#{name},#{keywords},#{fileType},#{filePath},#{picPath})"})
     int insertwll(TeachModel teachmodel);
 }
