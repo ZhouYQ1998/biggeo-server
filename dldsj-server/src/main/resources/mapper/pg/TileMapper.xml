@@ -9,4 +9,11 @@
 	    FROM public.${tableName}
 	    WHERE st_intersects(${geomName}, ST_MakeEnvelope(#{lonMin, jdbcType=DOUBLE}, #{latMin, jdbcType=DOUBLE}, #{lonMax, jdbcType=DOUBLE}, #{latMax, jdbcType=DOUBLE}, 4326))) AS tile;
     </select>
+
+    <select id="getOneWkt" resultType="java.lang.String">
+        SELECT ST_AsText(${geomName}) as wkt
+        FROM public.${tableName}
+        WHERE ${geomName} IS NOT NULL
+        LIMIT 1
+    </select>
 </mapper>
