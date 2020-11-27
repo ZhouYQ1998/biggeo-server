@@ -154,7 +154,6 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
 
     @Override
     public VizData initVizData(String path) {
-        path = path.replace("\\", "/");
         String title = path.substring(path.lastIndexOf("/") + 1);
         if (title.contains(".")) title = title.substring(0, title.lastIndexOf("."));
         String setPath = path.substring(0, path.lastIndexOf("/"));
