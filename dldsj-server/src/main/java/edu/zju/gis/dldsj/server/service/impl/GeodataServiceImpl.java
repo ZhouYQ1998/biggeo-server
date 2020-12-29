@@ -154,34 +154,38 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
 
     @Override
     public VizData initVizData(String path) {
-        String title = path.substring(path.lastIndexOf("/") + 1);
-        if (title.contains(".")) title = title.substring(0, title.lastIndexOf("."));
-        String setPath = path.substring(0, path.lastIndexOf("/"));
-        Geodata geodata = geodataMapper.getByPath(setPath).get(0);
-        GeodataItem geodataItem = geodataItemMapper.getItemBySetAndTitle(geodata.getId(), title).get(0);
-        JSONObject remark = new JSONObject(geodataItem.getRemark());
-        JSONObject tile = remark.optJSONObject("tile");
         VizData vizData = new VizData();
-        if (tile != null) {
-            String type = tile.getString("type");
-            String link;
-            switch (type) {
-                case "pg":
-                    vizData.setTileType("vector");
-                    String tableName = tile.optString("tableName", "");
-                    String layerName = tile.optString("layerName", "");
-                    vizData.setLayerName(layerName);
-                    String geomName = tile.optString("geomName", "geom");
-                    link = "/tile/" + type + "/" + tableName + "/" + layerName + "/" + geomName + "/{z}/{x}/{y}";
-                    vizData.setLink(link);
-                    vizData.setGeomType(GeometryUtil.getGeomTypeByWkt(tileMapper.getOneWkt(tableName, geomName)));
-                    break;
-                case "cog":
-                    vizData.setTileType("raster");
-                    link = tile.optString("link", "");
-                    vizData.setLink(link);
-                    break;
+        try {
+            String title = path.substring(path.lastIndexOf("/") + 1);
+            if (title.contains(".")) title = title.substring(0, title.lastIndexOf("."));
+            String setPath = path.substring(0, path.lastIndexOf("/"));
+            Geodata geodata = geodataMapper.getByPath(setPath).get(0);
+            GeodataItem geodataItem = geodataItemMapper.getItemBySetAndTitle(geodata.getId(), title).get(0);
+            JSONObject remark = new JSONObject(geodataItem.getRemark());
+            JSONObject tile = remark.optJSONObject("tile");
+            if (tile != null) {
+                String type = tile.getString("type");
+                String link;
+                switch (type) {
+                    case "pg":
+                        vizData.setTileType("vector");
+                        String tableName = tile.optString("tableName", "");
+                        String layerName = tile.optString("layerName", "");
+                        vizData.setLayerName(layerName);
+                        String geomName = tile.optString("geomName", "geom");
+                        link = "/tile/" + type + "/" + tableName + "/" + layerName + "/" + geomName + "/{z}/{x}/{y}";
+                        vizData.setLink(link);
+                        vizData.setGeomType(GeometryUtil.getGeomTypeByWkt(tileMapper.getOneWkt(tableName, geomName)));
+                        break;
+                    case "cog":
+                        vizData.setTileType("raster");
+                        link = tile.optString("link", "");
+                        vizData.setLink(link);
+                        break;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return vizData;
     }
