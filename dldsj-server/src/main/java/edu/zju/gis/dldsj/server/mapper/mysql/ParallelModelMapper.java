@@ -3,6 +3,7 @@ package edu.zju.gis.dldsj.server.mapper.mysql;
 import edu.zju.gis.dldsj.server.entity.ParallelModel;
 import edu.zju.gis.dldsj.server.entity.ParallelModelUsage;
 import edu.zju.gis.dldsj.server.entity.ParallelModelWithBLOBs;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -16,14 +17,11 @@ public interface ParallelModelMapper {
 
     int deleteByPrimaryKey(String artifactId);
 
-    @Select("select * from tb_paralleltool")
     List<ParallelModel> selectAll();
 
-    @Select("select * from tb_paralleltool where USAGES = #{type}")
-    List<ParallelModel> selectByType(String type);
+    List<ParallelModel> selectByType(@Param("type") String type);
 
-    @Select("select * from tb_paralleltool where USER_ID = #{userId}")
-    List<ParallelModel> selectByUser(String userId);
+    List<ParallelModel> selectByUser(@Param("userId") String userId);
 
     //    @Select("select * from tb_paralleltool where ARTIFACT_ID LIKE #{keyword} OR NAME LIKE #{keyword} OR DESCRIPTION LIKE #{keyword}")
     List<ParallelModel> searchByKeywords(List<String> keywords);

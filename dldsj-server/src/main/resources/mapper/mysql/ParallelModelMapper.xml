@@ -535,4 +535,16 @@
         </foreach>
     </select>
 
+    <select id="selectByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from tb_paralleltool where USAGES = #{type, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from tb_paralleltool where USER_ID = #{userId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select * from tb_paralleltool
+    </select>
+
 </mapper>
