@@ -240,9 +240,9 @@ public class UserSpaceController {
             }
             int size = Math.max(Math.min(requestJSON.optInt("size", 2000), 100000), 0);
             int offset = Math.max(requestJSON.optInt("offset", 0), 0);
-            if (fsManipulator.isFile(currentPath)) {
-                VizData vizData = geodataService.initVizData(currentPath);
-                if (!vizData.isTile() || vizType.equals("table")) {
+            VizData vizData = geodataService.initVizData(currentPath);
+            if (!vizData.isTile() || vizType.equals("table")) {
+                if (fsManipulator.isFile(currentPath)) {
                     // 直接读取文件
                     if (currentPath.endsWith(".shp")) {
                         switch (vizType) {
@@ -324,10 +324,10 @@ public class UserSpaceController {
                         result.setCode(CodeConstants.SYSTEM_ERROR).setMessage("未知文件类型, 暂时不支持预览").setBody(null);
                     }
                 } else {
-                    result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取切片链接成功");
+                    throw new RuntimeException("目录路径无法预览");
                 }
             } else {
-                throw new RuntimeException("目录路径无法预览");
+                result.setCode(CodeConstants.SUCCESS).setBody(vizData).setMessage("获取切片链接成功");
             }
         } catch (Exception e) {
             e.printStackTrace();

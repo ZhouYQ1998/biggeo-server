@@ -11,7 +11,9 @@ import edu.zju.gis.dldsj.server.entity.GeodataItem;
 import edu.zju.gis.dldsj.server.entity.vo.VizData;
 import edu.zju.gis.dldsj.server.mapper.mysql.GeodataItemMapper;
 import edu.zju.gis.dldsj.server.mapper.mysql.GeodataMapper;
+import edu.zju.gis.dldsj.server.mapper.pg.TileMapper;
 import edu.zju.gis.dldsj.server.service.GeodataService;
+import edu.zju.gis.dldsj.server.utils.GeometryUtil;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,9 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
 
     @Autowired
     private GeodataItemMapper geodataItemMapper;
+
+    @Autowired
+    private TileMapper tileMapper;
 
     @Autowired
     private CommonSetting setting;
@@ -169,6 +174,7 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
                     String geomName = tile.optString("geomName", "geom");
                     link = "/tile/" + type + "/" + tableName + "/" + layerName + "/" + geomName + "/{z}/{x}/{y}";
                     vizData.setLink(link);
+                    vizData.setGeomType(GeometryUtil.getGeomTypeByWkt(tileMapper.getOneWkt(tableName, geomName)));
                     break;
                 case "cog":
                     vizData.setTileType("raster");

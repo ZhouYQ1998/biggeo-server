@@ -29,8 +29,8 @@ public class TileServiceImpl implements TileService {
         int n = 1 << z;
 //        lat_rad = math.atan(math.sinh(math.pi * (1 - 2 * ytile / n)))
 //        lat_deg = math.degrees(lat_rad)
-//        return 1.0 * y / n * 180 - 90;
-        return Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2.0*y / n))));
+        return 1.0 * y / n * 180 - 90;
+//        return Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2.0*y / n))));
     }
 
     private static double tile2Lon(int x, int z) {
