@@ -2,11 +2,17 @@ package edu.zju.gis.dldsj.server.constant;
 
 public class EmailConstants {
 
-    public static String EmailAccount = "dxdsj_admin@163.com";
+//    public static String EmailAccount = "dxdsj_admin@163.com";
 
-    public static String EmailPassword = "JPLGFRGKFPVJIXGU";
+//    public static String EmailPassword = "JPLGFRGKFPVJIXGU";
 
-    public static String EmailSMTPHost = "smtp.163.com";
+//    public static String EmailSMTPHost = "smtp.163.com";
+
+    public static String EmailAccount = "21938053@zju.edu.cn";
+
+    public static String EmailPassword = "f8e2jUJjaPs74pMB";
+
+    public static String EmailSMTPHost = "smtp.zju.edu.cn";
 
     public static String EmailContent(String code){
         return "<p>尊敬的用户：</p>\n" +
