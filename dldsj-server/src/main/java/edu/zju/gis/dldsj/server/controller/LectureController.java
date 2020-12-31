@@ -44,9 +44,7 @@ public class LectureController extends BaseController<Lecture, LectureService, S
     @RequestMapping(value = "/crawl", method = RequestMethod.GET)
     @ResponseBody
     public Result<List<Batch<Lecture>>> crawl() {
-        // 删除过期讲座
         Date now = new Date();
-        lectureService.deleteBeforeTime(new Date(now.getTime() - TimeConstants.LectureReserveTime));
         // 爬取讲座
         String[] htmls = CrawlerUtil.crawl(CrawlerConstants.LectureUrls, CrawlerConstants.UserAgent);
         // 格式化讲座
@@ -88,7 +86,8 @@ public class LectureController extends BaseController<Lecture, LectureService, S
         for(Lecture lecture: filter1){
             if(lectureService.selectByName(lecture.getName()) == null) filter2.add(lecture);
         }
-
+        // 删除过期讲座
+        if(filter2.size() != 0) lectureService.deleteBeforeTime(new Date(now.getTime() - TimeConstants.LectureReserveTime));
         return lectureService.batchInsert(filter2);
     }
 
