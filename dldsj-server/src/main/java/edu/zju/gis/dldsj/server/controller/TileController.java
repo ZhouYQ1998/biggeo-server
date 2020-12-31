@@ -4,10 +4,7 @@ import edu.zju.gis.dldsj.server.entity.MvtTile;
 import edu.zju.gis.dldsj.server.service.TileService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,6 +14,7 @@ import java.io.OutputStream;
  * @author Keran Sun (katus)
  * @version 1.0, 2020-11-23
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/tile")
 public class TileController {

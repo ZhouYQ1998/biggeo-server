@@ -65,7 +65,8 @@ public class WebConfig implements WebMvcConfigurer {
                 "/mapservice/allselect",
                 "/mapservice/fuzzyname/**",
                 "/member/**",
-                "/run"
+                "/run",
+                "/tile/**"
         };
 
         for (String path: excludePaths){
@@ -81,11 +82,11 @@ public class WebConfig implements WebMvcConfigurer {
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
             HttpSession session = request.getSession();
             if (session.getAttribute("userId") != null) {
-                log.warn("SUCCESS [session:" + session.getId() + ", user:" + session.getAttribute("userId").toString() + "]");
+                log.debug("SUCCESS [session:" + session.getId() + ", user:" + session.getAttribute("userId").toString() + "]");
                 return true;
             } else {
-                log.warn("FAILURE: [session:" + session.getId() + "]");
-                Result<String> result = new Result<String>(CodeConstants.VALIDATE_ERROR, "用户登陆状态已过期，请重新登陆。");
+                log.debug("FAILURE: [session:" + session.getId() + "]");
+                Result<String> result = new Result<>(CodeConstants.VALIDATE_ERROR, "用户登陆状态已过期，请重新登陆。");
                 result.setBody("");
                 response.setContentType("application/json;charset=utf-8");
                 response.getWriter().write(result.toString());
