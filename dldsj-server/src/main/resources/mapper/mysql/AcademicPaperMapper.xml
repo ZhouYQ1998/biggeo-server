@@ -165,4 +165,17 @@
         from <include refid="TABLE_NAME"/>
         where TITLE like #{key,jdbcType=VARCHAR}
     </select>
+    <select id="selectFuzzyKeywords" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where KEYWORDS like #{key,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectFuzzyAuthor" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where AUTHOR like #{key,jdbcType=VARCHAR}
+    </select>
 </mapper>

@@ -64,12 +64,15 @@ public interface BaseService<T extends Base<ID>, ID extends Serializable> {
      * 查询实体（模糊搜索）
      */
     Result<Page<T>> selectFuzzyName(String key, Page<T> page);
-
+    Result<Page<T>>  selectFuzzyAuthor(String key, Page<T> page);
+    Result<Page<T>>  selectFuzzyKeywords(String key, Page<T> page);
+    Result<Page<T>>   selectFuzzyTertiaryAuthor(String key, Page<T> page);
     /**
      * 查询实体（模糊排序）
      */
     Result<Page<T>> selectFuzzyNameOrder(String key, Page<T> page, String order);
-
+    Result<Page<T>> selectFuzzySpeakerOrder(String key,  Page<T> page,String order);
+    Result<Page<T>>  selectFuzzypPlaceOrder(String key,  Page<T> page,String order);
     /**
      * 更新实体
      */

@@ -55,12 +55,15 @@ public interface BaseMapper<T extends Base, ID extends Serializable> {
      * 查询实体（模糊搜索）
      */
     List<T> selectFuzzyName(String key);
-
+    List<T> selectFuzzyAuthor(String key);
+    List<T> selectFuzzyKeywords(String key);
+    List<T>  selectFuzzyTertiaryAuthor(String key);
     /**
      * 查询实体（模糊搜索）
      */
     List<T> selectFuzzyNameOrder(String key, String order);
-
+    List<T> selectFuzzySpeakerOrder(String key, String order);
+    List<T> selectFuzzypPlaceOrder(String key, String order);
     /**
      * 根据参数查询对象
      */

@@ -130,6 +130,7 @@
         from <include refid="TABLE_NAME"/>
         where NAME like #{key,jdbcType=VARCHAR}
     </select>
+
     <select id="selectFuzzyNameOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -137,6 +138,21 @@
         where NAME like #{param1,jdbcType=VARCHAR}
         order by TIME ${param2}
     </select>
+    <select id="selectFuzzySpeakerOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where SPEAKER like #{param1,jdbcType=VARCHAR}
+        order by TIME ${param2}
+    </select>
+    <select id="selectFuzzypPlaceOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from <include refid="TABLE_NAME"/>
+        where PLACE like #{param1,jdbcType=VARCHAR}
+        order by TIME ${param2}
+    </select>
+
     <!-- 按照日期自动删除 -->
     <delete id="deleteBeforeTime">
         delete from <include refid="TABLE_NAME"/>

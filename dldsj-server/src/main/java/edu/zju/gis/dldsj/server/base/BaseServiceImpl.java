@@ -276,6 +276,62 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
         }
         return result;
     };
+    public Result<Page<T>> selectFuzzyKeywords(String key, Page<T> page){
+        Result<Page<T>> result = new Result<>();
+        try {
+            key = "%" + key + "%";
+            PageHelper.startPage(page.getPageNo(), page.getPageSize());
+            List<T> newT = mapper.selectFuzzyKeywords(key);
+            Page<T> pageResult = new Page<T>(newT);
+            if(newT.size() != 0){
+                result.setCode(CodeConstants.SUCCESS).setBody(pageResult).setMessage("查询成功");
+            }
+            else{
+                result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("查询失败：无实体");
+            }
+        } catch (RuntimeException e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
+        }
+        return result;
+    };
+
+    public Result<Page<T>> selectFuzzyAuthor(String key, Page<T> page){
+        Result<Page<T>> result = new Result<>();
+        try {
+            key = "%" + key + "%";
+            PageHelper.startPage(page.getPageNo(), page.getPageSize());
+            List<T> newT = mapper.selectFuzzyAuthor(key);
+            Page<T> pageResult = new Page<T>(newT);
+            if(newT.size() != 0){
+                result.setCode(CodeConstants.SUCCESS).setBody(pageResult).setMessage("查询成功");
+            }
+            else{
+                result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("查询失败：无实体");
+            }
+        } catch (RuntimeException e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
+        }
+        return result;
+    };
+
+    public Result<Page<T>>  selectFuzzyTertiaryAuthor(String key, Page<T> page){
+        Result<Page<T>> result = new Result<>();
+        try {
+            key = "%" + key + "%";
+            PageHelper.startPage(page.getPageNo(), page.getPageSize());
+            List<T> newT = mapper.selectFuzzyTertiaryAuthor(key);
+            Page<T> pageResult = new Page<T>(newT);
+            if(newT.size() != 0){
+                result.setCode(CodeConstants.SUCCESS).setBody(pageResult).setMessage("查询成功");
+            }
+            else{
+                result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("查询失败：无实体");
+            }
+        } catch (RuntimeException e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
+        }
+        return result;
+    };
 
     /**
      * 查询实体（模糊排序）
@@ -298,6 +354,45 @@ public abstract class BaseServiceImpl<Mapper extends BaseMapper<T, ID>, T extend
         }
         return result;
     }
+
+    public Result<Page<T>> selectFuzzySpeakerOrder(String key, Page<T> page, String order){
+        Result<Page<T>> result = new Result<>();
+        try {
+            key = "%" + key + "%";
+            PageHelper.startPage(page.getPageNo(), page.getPageSize());
+            List<T> newT = mapper.selectFuzzySpeakerOrder(key, order);
+            Page<T> pageResult = new Page<T>(newT);
+            if(newT.size() != 0){
+                result.setCode(CodeConstants.SUCCESS).setBody(pageResult).setMessage("查询成功");
+            }
+            else{
+                result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("查询失败：无实体");
+            }
+        } catch (RuntimeException e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
+        }
+        return result;
+    }
+
+    public Result<Page<T>> selectFuzzypPlaceOrder(String key, Page<T> page, String order){
+        Result<Page<T>> result = new Result<>();
+        try {
+            key = "%" + key + "%";
+            PageHelper.startPage(page.getPageNo(), page.getPageSize());
+            List<T> newT = mapper.selectFuzzypPlaceOrder(key, order);
+            Page<T> pageResult = new Page<T>(newT);
+            if(newT.size() != 0){
+                result.setCode(CodeConstants.SUCCESS).setBody(pageResult).setMessage("查询成功");
+            }
+            else{
+                result.setCode(CodeConstants.VALIDATE_ERROR).setMessage("查询失败：无实体");
+            }
+        } catch (RuntimeException e) {
+            result.setCode(CodeConstants.SERVICE_ERROR).setMessage("查询失败：" + e.getMessage());
+        }
+        return result;
+    }
+
 
     /**
      * 更新实体

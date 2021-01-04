@@ -38,6 +38,7 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
 
     /**
      * 插入实体（批量）
+     *
      * @param t List
      * @return Result
      */
@@ -49,6 +50,7 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
 
     /**
      * 删除实体
+     *
      * @param id ID
      * @return Result
      */
@@ -60,6 +62,7 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
 
     /**
      * 删除实体（批量）
+     *
      * @param ids String
      * @return Result
      */
@@ -71,6 +74,7 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
 
     /**
      * 查询实体
+     *
      * @param id ID
      * @return Result
      */
@@ -82,6 +86,7 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
 
     /**
      * 查询实体（批量）
+     *
      * @param ids String
      * @return Result
      */
@@ -93,6 +98,7 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
 
     /**
      * 查询实体（所有）
+     *
      * @return Result
      */
     @RequestMapping(value = "/allselect", method = RequestMethod.GET)
@@ -103,6 +109,7 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
 
     /**
      * 查询实体（所有排序）
+     *
      * @return Result
      */
     @RequestMapping(value = "/allselectorder", method = RequestMethod.GET)
@@ -132,6 +139,24 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
         return service.selectFuzzyName(key, page);
     }
 
+    @RequestMapping(value = "/fuzzy/{key}/{type}", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<Page<T>> selectFuzzyName(@PathVariable String key, Page<T> page, @PathVariable String type) {
+        if (type.equals("1")) {
+//            按名字模糊查询
+            return service.selectFuzzyName(key, page);
+        } else if (type.equals("2")) {
+            //            按关键字模糊查询
+            return service.selectFuzzyKeywords(key, page);
+        } else if (type.equals("3")) {
+            //            按作者字模糊查询
+            return service.selectFuzzyAuthor(key, page);
+        } else {
+            //            按指导老师字模糊查询
+            return service.selectFuzzyTertiaryAuthor(key, page);
+        }
+    }
+
     /***
      * 查询实体（模糊搜索）
      * @param key String
@@ -143,8 +168,24 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
         return service.selectFuzzyNameOrder(key, page, order);
     }
 
+    @RequestMapping(value = "/fuzzyorder/{key}/{type}", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<Page<T>> selectFuzzyOrder(@PathVariable String key, @PathVariable String type, String order, Page<T> page) {
+        if (type.equals("1")) {
+//    按名字模糊查询
+            return service.selectFuzzyNameOrder(key, page, order);
+        } else if (type.equals("2")) {
+            //   按主讲人模糊查询
+            return service.selectFuzzySpeakerOrder(key, page, order);
+        } else {
+            // 按地点模糊查询
+            return service.selectFuzzypPlaceOrder(key, page, order);
+        }
+    }
+
     /**
      * 更新实例
+     *
      * @param t T
      * @return Result
      */
@@ -156,6 +197,7 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
 
     /**
      * 更新实例（批量）
+     *
      * @param t List
      * @return Result
      */
@@ -168,6 +210,7 @@ public abstract class BaseController<T extends Base<ID>, Service extends BaseSer
     /**
      * 将根据查询条件获取的列表结果分页
      * 默认pageNo=1, pageSize=20
+     *
      * @param param
      * @param page
      * @return

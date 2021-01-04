@@ -46,6 +46,7 @@ settings:
     - http://10.79.231.84
     - http://biggeo.zju.edu.cn
     - http://localhost:8082
+    - http://localhost
     - http://10.79.231.84:8082
     - http://td1:8082
     - http://tdex1:8082
