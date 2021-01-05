@@ -5,9 +5,18 @@
     SELECT
 	    ST_AsMVT(tile, ${layerName}, 4096, 'geoms') img
     FROM
-	    (SELECT ST_AsMVTGeom(${geomName}, ST_MakeEnvelope(#{lonMin, jdbcType=DOUBLE}, #{latMin, jdbcType=DOUBLE}, #{lonMax, jdbcType=DOUBLE}, #{latMax, jdbcType=DOUBLE}, 4326)) AS geoms
+	    (SELECT ST_AsMVTGeom(ST_Transform(${geomName}, 3857), ST_MakeEnvelope(#{xMin, jdbcType=DOUBLE}, #{yMin, jdbcType=DOUBLE}, #{xMax, jdbcType=DOUBLE}, #{yMax, jdbcType=DOUBLE}, 3857)) AS geoms
 	    FROM public.${tableName}
-	    WHERE st_intersects(${geomName}, ST_MakeEnvelope(#{lonMin, jdbcType=DOUBLE}, #{latMin, jdbcType=DOUBLE}, #{lonMax, jdbcType=DOUBLE}, #{latMax, jdbcType=DOUBLE}, 4326))) AS tile;
+	    WHERE st_intersects(${geomName}, ST_Transform(ST_MakeEnvelope(#{xMin, jdbcType=DOUBLE}, #{yMin, jdbcType=DOUBLE}, #{xMax, jdbcType=DOUBLE}, #{yMax, jdbcType=DOUBLE}, 3857), 4326)) LIMIT 30000) AS tile;
+    </select>
+
+    <select id="getTile2" resultType="edu.zju.gis.dldsj.server.entity.MvtTile">
+        SELECT
+            ST_AsMVT(tile, ${layerName}, 4096, 'geoms') img
+        FROM
+            (SELECT ST_AsMVTGeom(${geomName}, ST_MakeEnvelope(#{xMin, jdbcType=DOUBLE}, #{yMin, jdbcType=DOUBLE}, #{xMax, jdbcType=DOUBLE}, #{yMax, jdbcType=DOUBLE}, 3857)) AS geoms
+             FROM public.${tableName}
+             WHERE st_intersects(${geomName}, ST_MakeEnvelope(#{xMin, jdbcType=DOUBLE}, #{yMin, jdbcType=DOUBLE}, #{xMax, jdbcType=DOUBLE}, #{yMax, jdbcType=DOUBLE}, 3857)) LIMIT 40000) AS tile;
     </select>
 
     <select id="getOneWkt" resultType="java.lang.String">

@@ -9,7 +9,10 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface TileMapper {
     MvtTile getTile(@Param("tableName") String tableName, @Param("layerName") String layerName, @Param("geomName") String geomName,
-                    @Param("lonMin") Double lonMin, @Param("latMin") Double latMin, @Param("lonMax") Double lonMax, @Param("latMax") Double latMax);
+                    @Param("xMin") Double xMin, @Param("yMin") Double yMin, @Param("xMax") Double xMax, @Param("yMax") Double yMax);
+
+    MvtTile getTile2(@Param("tableName") String tableName, @Param("layerName") String layerName, @Param("geomName") String geomName,
+                    @Param("xMin") Double xMin, @Param("yMin") Double yMin, @Param("xMax") Double xMax, @Param("yMax") Double yMax);
 
     String getOneWkt(@Param("tableName") String tableName, @Param("geomName") String geomName);
 }
