@@ -14,6 +14,7 @@ import edu.zju.gis.dldsj.server.mapper.mysql.GeodataMapper;
 import edu.zju.gis.dldsj.server.mapper.pg.TileMapper;
 import edu.zju.gis.dldsj.server.service.GeodataService;
 import edu.zju.gis.dldsj.server.utils.GeometryUtil;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -166,6 +167,10 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
             if (tile != null) {
                 String type = tile.getString("type");
                 String link;
+                JSONArray extents = tile.optJSONArray("extent");
+                for (int i = 0; i < extents.length() && i < 4; i++) {
+                    vizData.getBbox()[i] = extents.getDouble(i);
+                }
                 switch (type) {
                     case "pg":
                         vizData.setTileType("vector");
