@@ -164,13 +164,17 @@ public class GeodataServiceImpl extends BaseServiceImpl<GeodataMapper, Geodata, 
             GeodataItem geodataItem = geodataItemMapper.getItemBySetAndTitle(geodata.getId(), title).get(0);
             JSONObject remark = new JSONObject(geodataItem.getRemark());
             JSONObject tile = remark.optJSONObject("tile");
+            JSONArray extents = remark.optJSONArray("extent");
+            if (extents.length() == 4) {
+                vizData.setBbox(new Double[]{
+                        Math.max(-180.0, extents.getDouble(0)),
+                        Math.max(-90.0, extents.getDouble(2)),
+                        Math.min(180.0, extents.getDouble(1)),
+                        Math.min(90.0, extents.getDouble(3))});
+            }
             if (tile != null) {
                 String type = tile.getString("type");
                 String link;
-                JSONArray extents = tile.optJSONArray("extent");
-                for (int i = 0; i < extents.length() && i < 4; i++) {
-                    vizData.getBbox()[i] = extents.getDouble(i);
-                }
                 switch (type) {
                     case "pg":
                         vizData.setTileType("vector");
